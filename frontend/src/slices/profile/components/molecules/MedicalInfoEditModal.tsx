@@ -81,10 +81,10 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   const [emergencyPhoneAltCountryCode, setEmergencyPhoneAltCountryCode] = useState<string>('CO');
   const [emergencyPhoneAltNumber, setEmergencyPhoneAltNumber] = useState<string>('');
 
-  // Check if user resides in Colombia
-  const residesInColombia = initialData?.residence_country === 'CO' ||
-                            initialData?.residence_country === 'Colombia' ||
-                            initialData?.residence_country === 'COLOMBIA';
+  // Check if user was born in Colombia (for EPS vs Additional Insurance logic)
+  const bornInColombia = initialData?.birth_country === 'CO' ||
+                         initialData?.birth_country === 'Colombia' ||
+                         initialData?.birth_country === 'COLOMBIA';
 
   // Initialize form data when modal opens
   useEffect(() => {
@@ -239,14 +239,14 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   };
 
   // Debug log
-  console.log('🌎 MedicalInfoEditModal - residence_country:', initialData?.residence_country);
-  console.log('🇨🇴 MedicalInfoEditModal - residesInColombia:', residesInColombia);
+  console.log('🌎 MedicalInfoEditModal - birth_country:', initialData?.birth_country);
+  console.log('🇨🇴 MedicalInfoEditModal - bornInColombia:', bornInColombia);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Required fields validation - EPS only required for Colombia residents
-    if (residesInColombia && !formData.eps) {
+    // Required fields validation - EPS only required for those born in Colombia
+    if (bornInColombia && !formData.eps) {
       newErrors.eps = t('validation.epsRequired');
     }
 
@@ -298,9 +298,9 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
 
     setIsSubmitting(true);
     try {
-      // If user doesn't reside in Colombia, save health_service to additional_insurance field
+      // If user wasn't born in Colombia, save health_service to additional_insurance field
       const dataToSubmit = { ...formData };
-      if (!residesInColombia && formData.health_service) {
+      if (!bornInColombia && formData.health_service) {
         dataToSubmit.additional_insurance = formData.health_service;
       }
 
@@ -348,7 +348,7 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
             <MedicalInfoFormContent
               formData={formData}
               errors={errors}
-              residesInColombia={residesInColombia}
+              residesInColombia={bornInColombia}
               isFormLoading={isFormLoading}
               convertedCountries={convertedCountries}
               emergencyPhoneCountryCode={emergencyPhoneCountryCode}
@@ -441,7 +441,7 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
             <MedicalInfoFormContent
               formData={formData}
               errors={errors}
-              residesInColombia={residesInColombia}
+              residesInColombia={bornInColombia}
               isFormLoading={isFormLoading}
               convertedCountries={convertedCountries}
               emergencyPhoneCountryCode={emergencyPhoneCountryCode}

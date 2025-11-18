@@ -141,6 +141,17 @@ export function MedicalInfoFormContent({
           </div>
           {!residesInColombia && (
             <div className="md:col-span-2">
+              <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start">
+                  <svg className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-xs text-blue-800">
+                    El <strong>seguro adicional</strong> es una cobertura complementaria que algunas personas tienen además del seguro de salud principal.
+                    Por ejemplo: seguros privados, seguros de viaje, o pólizas de salud complementarias. Si no tienes ninguno, puedes dejar este campo vacío.
+                  </p>
+                </div>
+              </div>
               <TextAreaField
                 label={t('labels.additionalInsurance')}
                 value={formData.additional_insurance || ''}
