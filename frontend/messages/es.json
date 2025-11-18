@@ -1584,7 +1584,80 @@
       "description": "Únete a miles de personas que ya tienen su expediente médico digital seguro y siempre accesible. Registro rápido con verificación de identidad médica.",
       "patientButton": "Crear Cuenta Personal",
       "professionalButton": "Registrarse como Profesional",
+      "pricingButton": "Ver Planes y Precios",
       "note": "Protección de datos médicos • Verificación de identidad • Acceso autorizado únicamente"
+    }
+  },
+  "pricing": {
+    "title": "Planes y Precios",
+    "subtitle": "Comienza gratis y mantén tu información médica segura",
+    "backToHome": "Volver al inicio",
+    "free": {
+      "title": "Plan Gratuito",
+      "price": "Gratis",
+      "priceDetail": "Para siempre",
+      "description": "Perfecto para empezar a digitalizar tu historial médico",
+      "features": {
+        "qr": "Código QR de emergencia",
+        "unlimited": "Registros ilimitados",
+        "medications": "Gestión de medicamentos",
+        "allergies": "Registro de alergias",
+        "illnesses": "Historial de enfermedades",
+        "surgeries": "Registro de cirugías",
+        "profile": "Perfil médico completo",
+        "support": "Soporte básico"
+      },
+      "cta": "Comenzar Gratis"
+    },
+    "discount": {
+      "title": "¿Tienes un código de descuento?",
+      "subtitle": "Si eres parte de una empresa asociada, ingresa tu código aquí",
+      "placeholder": "Ingresa tu código",
+      "apply": "Aplicar Código",
+      "applied": "Código aplicado",
+      "invalid": "Código inválido",
+      "partners": "Empresas Asociadas",
+      "partnersDescription": "Accede a beneficios exclusivos si trabajas o eres miembro de:",
+      "companies": {
+        "windstar": "Windstar",
+        "almart": "Almart",
+        "gymx": "Gimnasio X"
+      }
+    },
+    "benefits": {
+      "title": "¿Por qué elegir VitalGo?",
+      "security": {
+        "title": "Seguridad garantizada",
+        "description": "Tus datos médicos protegidos con encriptación de nivel bancario"
+      },
+      "access": {
+        "title": "Acceso universal",
+        "description": "Tu información disponible en cualquier centro médico autorizado"
+      },
+      "free": {
+        "title": "Siempre gratis",
+        "description": "Sin costos ocultos, sin suscripciones, sin sorpresas"
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": {
+        "question": "¿Realmente es gratis para siempre?",
+        "answer": "Sí, el plan gratuito de VitalGo te permite acceder a todas las funciones esenciales sin límite de tiempo."
+      },
+      "q2": {
+        "question": "¿Cómo obtengo un código de descuento?",
+        "answer": "Los códigos de descuento son proporcionados por empresas asociadas a sus empleados o miembros. Contacta con tu departamento de recursos humanos o administración."
+      },
+      "q3": {
+        "question": "¿Mis datos están seguros?",
+        "answer": "Absolutamente. Utilizamos encriptación de nivel bancario y cumplimos con todas las regulaciones de protección de datos médicos."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "description": "Únete a miles de personas que ya confían en VitalGo para gestionar su información médica",
+      "button": "Crear Cuenta Gratis"
     }
   }
 }
