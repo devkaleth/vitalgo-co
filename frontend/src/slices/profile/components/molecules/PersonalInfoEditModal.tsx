@@ -56,6 +56,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
         residence_department: initialData.residence_department || '',
         residence_city: initialData.residence_city || '',
         organ_donor_preference: initialData.organ_donor_preference || '',
+        authorized_decision_maker: initialData.authorized_decision_maker || '',
         height: initialData.height || undefined,
         weight: initialData.weight || undefined
       });

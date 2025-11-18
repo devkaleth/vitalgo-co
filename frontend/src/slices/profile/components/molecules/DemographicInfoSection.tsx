@@ -14,7 +14,7 @@ import { PersonalInfoFormData } from '../../types/personalInfo';
 
 interface DemographicInfoSectionProps {
   data: PersonalInfoFormData;
-  onChange: (field: keyof PersonalInfoFormData, value: string) => void;
+  onChange: (field: keyof PersonalInfoFormData, value: any) => void;
   errors?: Record<string, string>;
 }
 

@@ -51,6 +51,12 @@ class PersonalProfileAPIService {
         cesareans_count: data.cesareans_count,
         abortions_count: data.abortions_count,
         contraceptive_method: data.contraceptive_method,
+        // Donor Preference (Voluntad de la Persona)
+        organ_donor_preference: data.organ_donor_preference,
+        authorized_decision_maker: data.authorized_decision_maker,
+        // Physical Measurements
+        height: data.height,
+        weight: data.weight,
       };
 
       console.log('✅ Personal patient info loaded successfully:', personalInfo);
@@ -107,6 +113,12 @@ class PersonalProfileAPIService {
         cesareans_count: data.cesareans_count,
         abortions_count: data.abortions_count,
         contraceptive_method: data.contraceptive_method,
+        // Donor Preference (Voluntad de la Persona)
+        organ_donor_preference: data.organ_donor_preference,
+        authorized_decision_maker: data.authorized_decision_maker,
+        // Physical Measurements
+        height: data.height,
+        weight: data.weight,
       };
 
       const response = await apiClient.put<{ success: boolean; message: string }>('/profile/complete', apiRequest);
