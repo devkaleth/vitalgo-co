@@ -1392,8 +1392,12 @@
     "pageTitle": "Emergency QR Code",
     "pageSubtitle": "Your medical information in emergencies",
     "download": "Download QR",
+    "downloadButton": "Download QR Code",
     "downloading": "Downloading...",
     "print": "Print QR",
+    "emergencyCardTitle": "My Emergency QR Code",
+    "emergencyUrl": "Emergency URL:",
+    "keepAccessible": "Keep this code accessible for medical emergencies",
     "printing": "Preparing to print...",
     "share": "Share QR",
     "sharing": "Sharing...",
@@ -1458,6 +1462,63 @@
       "shareFailed": "Failed to share QR code",
       "generateFailed": "Failed to generate QR code",
       "loadFailed": "Failed to load QR code"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "scan": {
+        "title": "Scan Your QR",
+        "description": "Medical personnel scan your QR code in emergency situations"
+      },
+      "access": {
+        "title": "Instant Access",
+        "description": "They get immediate access to your medical history and allergies"
+      },
+      "emergency": {
+        "title": "Quick Care",
+        "description": "Receive informed medical care that can save your life"
+      }
+    },
+    "whatIs": {
+      "title": "Your medical emergency QR code",
+      "description": "This QR code contains your essential medical information for emergency situations. Download and print it to carry with you at all times."
+    },
+    "benefits": {
+      "title": "Why is it important?",
+      "speed": {
+        "title": "Faster care",
+        "description": "In emergencies, every second counts. Your QR provides instant access to vital information."
+      },
+      "accuracy": {
+        "title": "Accurate information",
+        "description": "Avoid medical errors by instantly sharing your allergies, medications, and conditions."
+      },
+      "universal": {
+        "title": "Universal access",
+        "description": "Works at any authorized medical center, no matter where you are."
+      }
+    },
+    "usage": {
+      "title": "How to use your QR code?",
+      "print": {
+        "title": "Print it",
+        "description": "Download and print your QR code. Carry it in your wallet, bag, or as a keychain."
+      },
+      "digital": {
+        "title": "Save it digitally",
+        "description": "Save a copy on your phone for quick access when you need it."
+      },
+      "update": {
+        "title": "Keep it updated",
+        "description": "Update your medical information regularly so your QR reflects your current status."
+      }
+    },
+    "security": {
+      "title": "Your information is protected",
+      "description": "Only authorized medical personnel can access your complete information. Every access is logged for your security."
+    },
+    "error": {
+      "title": "Error loading QR",
+      "retry": "Retry"
     }
   },
   "emergency": {

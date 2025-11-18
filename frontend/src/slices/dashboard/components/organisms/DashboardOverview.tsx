@@ -117,10 +117,21 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
 
       {/* Medical Cards Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        {/* Illnesses Management Card */}
+        <div id="illnesses-section" className="h-full">
+          <IllnessesCard
+            maxItems={3}
+            showAddButton={true}
+            onNavigateToFull={() => router.push(`/${locale}/illnesses`)}
+            data-testid="dashboard-illnesses-card"
+            className="h-full"
+          />
+        </div>
+
         {/* Medications Management Card */}
         <div id="medications-section" className="h-full">
           <MedicationsCard
-            maxItems={3}
+            maxItems={4}
             showAddButton={true}
             onNavigateToFull={() => router.push(`/${locale}/medications`)}
             data-testid="dashboard-medications-card"
@@ -135,17 +146,6 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
             showAddButton={true}
             onNavigateToFull={() => router.push(`/${locale}/allergies`)}
             data-testid="dashboard-allergies-card"
-            className="h-full"
-          />
-        </div>
-
-        {/* Illnesses Management Card */}
-        <div id="illnesses-section" className="h-full">
-          <IllnessesCard
-            maxItems={3}
-            showAddButton={true}
-            onNavigateToFull={() => router.push(`/${locale}/illnesses`)}
-            data-testid="dashboard-illnesses-card"
             className="h-full"
           />
         </div>

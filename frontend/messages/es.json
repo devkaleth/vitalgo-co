@@ -1321,8 +1321,12 @@
     "subtitle": "Comparte tu información médica de emergencia",
     "description": "Este código QR contiene tu información médica de emergencia",
     "download": "Descargar QR",
+    "downloadButton": "Descargar Código QR",
     "print": "Imprimir QR",
     "share": "Compartir QR",
+    "emergencyCardTitle": "Mi Código QR de Emergencia",
+    "emergencyUrl": "URL de emergencia:",
+    "keepAccessible": "Mantén este código accesible para emergencias médicas",
     "regenerate": "Regenerar Código",
     "emergency": "Información de Emergencia",
     "scanInstructions": "Instrucciones para Escanear",
@@ -1343,7 +1347,64 @@
     "securityNoteText": "Solo personal médico autorizado puede acceder a la información completa mediante escaneo del código QR.",
     "customize": "Personalizar Información",
     "selectData": "Seleccionar Datos a Incluir",
-    "qrSettings": "Configuración del QR"
+    "qrSettings": "Configuración del QR",
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "scan": {
+        "title": "Escanea tu QR",
+        "description": "Personal médico escanea tu código QR en situaciones de emergencia"
+      },
+      "access": {
+        "title": "Acceso Instantáneo",
+        "description": "Acceden de inmediato a tu historial médico y alergias"
+      },
+      "emergency": {
+        "title": "Atención Rápida",
+        "description": "Recibe atención médica informada que puede salvar tu vida"
+      }
+    },
+    "whatIs": {
+      "title": "Tu código QR de emergencia médica",
+      "description": "Este código QR contiene tu información médica esencial para situaciones de emergencia. Descárgalo e imprímelo para llevarlo siempre contigo."
+    },
+    "benefits": {
+      "title": "¿Por qué es importante?",
+      "speed": {
+        "title": "Atención más rápida",
+        "description": "En emergencias, cada segundo cuenta. Tu QR da acceso instantáneo a información vital."
+      },
+      "accuracy": {
+        "title": "Información precisa",
+        "description": "Evita errores médicos compartiendo tus alergias, medicamentos y condiciones al instante."
+      },
+      "universal": {
+        "title": "Acceso universal",
+        "description": "Funciona en cualquier centro médico autorizado, sin importar dónde te encuentres."
+      }
+    },
+    "usage": {
+      "title": "¿Cómo usar tu código QR?",
+      "print": {
+        "title": "Imprímelo",
+        "description": "Descarga e imprime tu código QR. Llévalo en tu billetera, bolso o como llavero."
+      },
+      "digital": {
+        "title": "Guárdalo digitalmente",
+        "description": "Guarda una copia en tu teléfono para tener acceso rápido cuando lo necesites."
+      },
+      "update": {
+        "title": "Manténlo actualizado",
+        "description": "Actualiza tu información médica regularmente para que el QR refleje tu estado actual."
+      }
+    },
+    "security": {
+      "title": "Tu información está protegida",
+      "description": "Solo personal médico autorizado puede acceder a tu información completa. Cada acceso queda registrado para tu seguridad."
+    },
+    "error": {
+      "title": "Error al cargar QR",
+      "retry": "Reintentar"
+    }
   },
   "emergency": {
     "title": "Información de Emergencia",
