@@ -22,6 +22,8 @@ export interface BasicPatientInfo {
   phoneInternational: string;
   birthDate: string;
   originCountry: string;
+  birthCountry?: string;       // From database: birth_country field
+  residenceCountry?: string;   // From database: residence_country field
   countryCode: string;
   dialCode?: string;      // From database: dial_code field
   phoneNumber?: string;   // From database: phone_number field
@@ -37,6 +39,8 @@ export interface BasicPatientUpdate {
   phoneInternational?: string;
   birthDate?: string;
   originCountry?: string;
+  birthCountry?: string;       // From database: birth_country field
+  residenceCountry?: string;   // From database: residence_country field
   countryCode?: string;
   dialCode?: string;      // From database: dial_code field
   phoneNumber?: string;   // From database: phone_number field

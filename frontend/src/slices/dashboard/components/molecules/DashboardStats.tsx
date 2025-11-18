@@ -95,7 +95,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         title={t('stats.allergies')}
         value={stats.active_allergies}
         icon={allergyIcon}
-        variant="info"
+        variant="warning"
         onClick={() => scrollToSection('allergies-section')}
         data-testid="stats-allergies"
       />
@@ -104,7 +104,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         title={t('stats.surgeries')}
         value={stats.active_surgeries}
         icon={surgeryIcon}
-        variant="info"
+        variant="default"
         onClick={() => scrollToSection('surgeries-section')}
         data-testid="stats-surgeries"
       />
@@ -113,7 +113,7 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         title={t('stats.illnesses')}
         value={stats.active_illnesses}
         icon={illnessIcon}
-        variant="info"
+        variant="warning"
         onClick={() => scrollToSection('illnesses-section')}
         data-testid="stats-illnesses"
       />

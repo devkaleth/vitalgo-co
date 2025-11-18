@@ -4,6 +4,9 @@ Profile completion use case for RF002
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
 from uuid import UUID
+import logging
+
+logger = logging.getLogger(__name__)
 
 from slices.signup.domain.models.patient_model import Patient
 from slices.signup.domain.models.user_model import User
@@ -132,6 +135,14 @@ class CompleteProfileUseCase:
             cesareans_count=patient.cesareans_count,
             abortions_count=patient.abortions_count,
             contraceptive_method=patient.contraceptive_method,
+
+            # Organ donor preference fields (Voluntad de la Persona)
+            organ_donor_preference=patient.organ_donor_preference,
+            authorized_decision_maker=patient.authorized_decision_maker,
+
+            # Physical measurements fields (Medidas Físicas)
+            height=patient.height,
+            weight=patient.weight,
         )
 
     def update_extended_profile(self, user_id: str, profile_data: PatientProfileUpdateDTO) -> Dict[str, Any]:
@@ -145,6 +156,9 @@ class CompleteProfileUseCase:
         Returns:
             Dictionary with update result
         """
+        logger.info(f"🔵 UPDATE_EXTENDED_PROFILE called for user_id: {user_id}")
+        logger.info(f"📦 Received profile_data: {profile_data.model_dump()}")
+
         patient = self.db.query(Patient).filter(Patient.user_id == user_id).first()
         if not patient:
             return {"success": False, "message": "Patient not found"}
@@ -238,6 +252,26 @@ class CompleteProfileUseCase:
             if profile_data.contraceptive_method is not None:
                 patient.contraceptive_method = profile_data.contraceptive_method
 
+            # Update organ donor preference fields (Voluntad de la Persona)
+            logger.info(f"🔍 ORGAN DONOR DATA - organ_donor_preference: {profile_data.organ_donor_preference}")
+            logger.info(f"🔍 ORGAN DONOR DATA - authorized_decision_maker: {profile_data.authorized_decision_maker}")
+            if profile_data.organ_donor_preference is not None:
+                logger.info(f"✅ Setting organ_donor_preference to: {profile_data.organ_donor_preference}")
+                patient.organ_donor_preference = profile_data.organ_donor_preference
+            if profile_data.authorized_decision_maker is not None:
+                logger.info(f"✅ Setting authorized_decision_maker to: {profile_data.authorized_decision_maker}")
+                patient.authorized_decision_maker = profile_data.authorized_decision_maker
+
+            # Update physical measurements fields (Medidas Físicas)
+            logger.info(f"🔍 PHYSICAL MEASUREMENTS - height: {profile_data.height}")
+            logger.info(f"🔍 PHYSICAL MEASUREMENTS - weight: {profile_data.weight}")
+            if profile_data.height is not None:
+                logger.info(f"✅ Setting height to: {profile_data.height}")
+                patient.height = profile_data.height
+            if profile_data.weight is not None:
+                logger.info(f"✅ Setting weight to: {profile_data.weight}")
+                patient.weight = profile_data.weight
+
             self.db.commit()
 
             # TODO: Check updated completeness once completeness calculation is implemented
@@ -322,6 +356,8 @@ class CompleteProfileUseCase:
             phone_international=patient.phone_international,
             birth_date=patient.birth_date,
             origin_country=patient.origin_country or 'CO',  # Safe fallback to default Colombia
+            birth_country=patient.birth_country,  # Birth country field
+            residence_country=patient.residence_country,  # Residence country field
             country_code=patient.country_code or patient.origin_country or 'CO',  # Phone country code fallback to origin country
             dial_code=patient.dial_code,  # Add database field
             phone_number=patient.phone_number,  # Add database field
@@ -383,6 +419,18 @@ class CompleteProfileUseCase:
                 patient.dial_code = update_data.dial_code
             if update_data.phone_number is not None:
                 patient.phone_number = update_data.phone_number
+            if update_data.birth_country is not None:
+                # Validate country code
+                from shared.utils.countries import is_valid_country_code
+                if not is_valid_country_code(update_data.birth_country):
+                    return {"success": False, "message": f"Código de país de nacimiento inválido: {update_data.birth_country}"}
+                patient.birth_country = update_data.birth_country
+            if update_data.residence_country is not None:
+                # Validate country code
+                from shared.utils.countries import is_valid_country_code
+                if not is_valid_country_code(update_data.residence_country):
+                    return {"success": False, "message": f"Código de país de residencia inválido: {update_data.residence_country}"}
+                patient.residence_country = update_data.residence_country
 
             # Update user email if provided
             if update_data.email is not None:

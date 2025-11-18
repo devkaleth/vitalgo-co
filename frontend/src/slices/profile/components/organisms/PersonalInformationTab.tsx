@@ -8,17 +8,20 @@ import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { TabContentProps } from '../../types';
 import { usePersonalPatientInfo } from '../../hooks/usePersonalPatientInfo';
+import { useBasicPatientInfo } from '../../hooks/useBasicPatientInfo';
 import { PersonalInfoEditModal } from '../molecules/PersonalInfoEditModal';
 import {
   formatDemographicData,
   formatResidenceData,
   isPersonalInfoComplete,
-  getMissingPersonalInfoFields
+  getMissingPersonalInfoFields,
+  formatCountryWithFlag
 } from '../../utils/personalInfoUtils';
 
 export function PersonalInformationTab({ 'data-testid': testId }: TabContentProps) {
   const t = useTranslations('profile.personal');
   const { personalInfo, loading, error, updatePersonalInfo, refetch } = usePersonalPatientInfo();
+  const { basicInfo, loading: basicLoading } = useBasicPatientInfo();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditClick = () => {

@@ -25,7 +25,8 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
   const t = useTranslations('onboarding');
   const tCommon = useTranslations('common');
 
-  const [currentStep, setCurrentStep] = useState<OnboardingStep>('basic');
+  // Skip basic info step since it was already completed during registration
+  const [currentStep, setCurrentStep] = useState<OnboardingStep>('personal');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Hooks para cargar y actualizar datos
@@ -44,12 +45,17 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
   };
 
   const handlePersonalInfoSubmit = async (data: any) => {
+    console.log('🟢 ProfileOnboarding: handlePersonalInfoSubmit called with data:', data);
     setIsSubmitting(true);
     const result = await updatePersonalInfo(data);
+    console.log('🟢 ProfileOnboarding: updatePersonalInfo result:', result);
     setIsSubmitting(false);
 
     if (result.success) {
+      console.log('🟢 ProfileOnboarding: Success! Changing step from personal to medical');
       setCurrentStep('medical');
+    } else {
+      console.log('🔴 ProfileOnboarding: Update failed, staying on personal step');
     }
     return result;
   };
@@ -70,9 +76,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
   };
 
   const handleSkipStep = () => {
-    if (currentStep === 'basic') {
-      setCurrentStep('personal');
-    } else if (currentStep === 'personal') {
+    if (currentStep === 'personal') {
       setCurrentStep('medical');
     } else if (currentStep === 'medical') {
       setCurrentStep('completed');
@@ -83,9 +87,9 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
   };
 
   const handleBackStep = () => {
-    if (currentStep === 'personal') {
-      setCurrentStep('basic');
-    } else if (currentStep === 'medical') {
+    // Only allow going back from medical to personal
+    // Cannot go back from personal since basic info was completed during registration
+    if (currentStep === 'medical') {
       setCurrentStep('personal');
     }
   };
@@ -139,17 +143,13 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
           </p>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar - Only 2 steps: Personal & Medical */}
         <div className="flex items-center space-x-2">
-          <div className={`flex-1 h-2 rounded-full ${currentStep === 'basic' || currentStep === 'personal' || currentStep === 'medical' ? 'bg-vitalgo-green' : 'bg-gray-200'}`}></div>
           <div className={`flex-1 h-2 rounded-full ${currentStep === 'personal' || currentStep === 'medical' ? 'bg-vitalgo-green' : 'bg-gray-200'}`}></div>
           <div className={`flex-1 h-2 rounded-full ${currentStep === 'medical' ? 'bg-vitalgo-green' : 'bg-gray-200'}`}></div>
         </div>
 
         <div className="flex justify-between mt-2 text-xs text-gray-500">
-          <span className={currentStep === 'basic' ? 'text-vitalgo-green font-medium' : ''}>
-            Información Básica
-          </span>
           <span className={currentStep === 'personal' ? 'text-vitalgo-green font-medium' : ''}>
             Información Personal
           </span>
@@ -159,7 +159,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
         </div>
       </div>
 
-      {/* Modales inline (sin overlay) */}
+      {/* Modales inline (sin overlay) - Con su propio botón de submit */}
       {currentStep === 'basic' && (
         <BasicInfoEditModal
           isOpen={true}
@@ -168,6 +168,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
           onSubmit={handleBasicInfoSubmit}
           isLoading={isSubmitting}
           inline={true}
+          showButtons={false}
           data-testid="onboarding-basic-modal"
         />
       )}
@@ -180,6 +181,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
           onSubmit={handlePersonalInfoSubmit}
           isLoading={isSubmitting}
           inline={true}
+          showButtons={false}
           data-testid="onboarding-personal-modal"
         />
       )}
@@ -192,14 +194,15 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
           onSubmit={handleMedicalInfoSubmit}
           isLoading={isSubmitting}
           inline={true}
+          showButtons={false}
           data-testid="onboarding-medical-modal"
         />
       )}
 
-      {/* Botones de navegación */}
+      {/* Botones de navegación - Submit del formulario interno */}
       <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-        {/* Botón Atrás */}
-        {currentStep !== 'basic' && (
+        {/* Botón Atrás - Only show on medical step */}
+        {currentStep === 'medical' && (
           <button
             onClick={handleBackStep}
             disabled={isSubmitting}
@@ -214,7 +217,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
         )}
 
         {/* Espaciador si no hay botón atrás */}
-        {currentStep === 'basic' && <div></div>}
+        {currentStep === 'personal' && <div></div>}
 
         {/* Botón Siguiente/Saltar */}
         <div className="flex gap-3">
@@ -227,7 +230,8 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
             Saltar
           </button>
           <button
-            onClick={currentStep === 'basic' ? () => handleBasicInfoSubmit(basicInfo || {}) : currentStep === 'personal' ? () => handlePersonalInfoSubmit(personalInfo || {}) : () => handleMedicalInfoSubmit(personalInfo || {})}
+            type="submit"
+            form={`onboarding-${currentStep}-form`}
             disabled={isSubmitting}
             className="inline-flex items-center px-6 py-2 text-sm font-medium text-white bg-vitalgo-green border border-transparent rounded-md hover:bg-vitalgo-green-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-vitalgo-green disabled:opacity-50 disabled:cursor-not-allowed"
             data-testid="onboarding-save-button"

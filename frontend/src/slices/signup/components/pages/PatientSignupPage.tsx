@@ -133,7 +133,6 @@ export default function PatientSignupPage() {
               <PatientSignupForm
                 onSuccess={handleSuccess}
                 onError={handleError}
-                allowedDocumentTypes={['CC', 'CE', 'PA']}
               />
             )}
 

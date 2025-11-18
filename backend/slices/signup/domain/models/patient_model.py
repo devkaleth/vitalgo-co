@@ -94,6 +94,7 @@ class Patient(Base):
 
     # Donor Preference (Voluntad de la Persona)
     organ_donor_preference = Column(String(30), nullable=True)  # 'DONANTE', 'NO_DONANTE', 'PREFIERO_NO_RESPONDER', or NULL
+    authorized_decision_maker = Column(String(255), nullable=True)  # Person authorized to make decisions if "PREFIERO_NO_RESPONDER"
 
     # Physical Measurements
     height = Column(Integer, nullable=True)  # Height in centimeters

@@ -142,7 +142,7 @@ export const MedicationForm: React.FC<MedicationFormProps> = ({
           {/* Start Date */}
           <div>
             <label htmlFor="startDate" className={labelClasses}>
-              {t('fields.startDate')} <span className={requiredClasses}>*</span>
+              {t('fields.startDate')}
             </label>
             <input
               type="date"

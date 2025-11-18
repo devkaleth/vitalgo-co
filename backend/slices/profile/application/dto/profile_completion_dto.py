@@ -81,6 +81,7 @@ class ExtendedPatientProfileDTO(BaseModel):
 
     # Donor Preference (Voluntad de la Persona)
     organ_donor_preference: Optional[str] = Field(None, max_length=30, description="Organ donor preference: DONANTE, NO_DONANTE, PREFIERO_NO_RESPONDER")
+    authorized_decision_maker: Optional[str] = Field(None, max_length=255, description="Authorized decision maker name when preference is PREFIERO_NO_RESPONDER")
 
     # Physical Measurements
     height: Optional[int] = Field(None, ge=50, le=250, description="Height in centimeters (50-250 cm)")

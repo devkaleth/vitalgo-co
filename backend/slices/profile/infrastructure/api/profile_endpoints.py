@@ -73,6 +73,11 @@ async def update_extended_profile(
     """
     Update extended patient profile with RF002 data
     """
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(f"🔵 ENDPOINT: Received profile_data with fields: organ_donor_preference={profile_data.organ_donor_preference}, height={profile_data.height}, weight={profile_data.weight}")
+    logger.info(f"📦 ENDPOINT: Full profile_data: {profile_data.model_dump()}")
+
     use_case = CompleteProfileUseCase(db)
     result = use_case.update_extended_profile(current_user.id, profile_data)
 

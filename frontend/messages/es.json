@@ -170,6 +170,10 @@
           "label": "País de Origen",
           "placeholder": "Selecciona tu país"
         },
+        "birthCountry": {
+          "label": "País de Nacimiento",
+          "placeholder": "Selecciona tu país de nacimiento"
+        },
         "birthDate": "Fecha de Nacimiento"
       }
     },
@@ -335,7 +339,7 @@
         "residenceCity": "Ciudad de Residencia",
         "eps": "EPS *",
         "epsOther": "Especifique su EPS *",
-        "occupation": "Ocupación *",
+        "occupation": "Ocupación",
         "additionalInsurance": "Seguro Adicional",
         "complementaryPlan": "Plan Complementario",
         "complementaryPlanOther": "Especifique el Plan *",
@@ -343,7 +347,7 @@
         "emergencyName": "Nombre Completo *",
         "emergencyRelationship": "Parentesco *",
         "emergencyPhone": "Teléfono Principal *",
-        "emergencyPhoneAlt": "Teléfono Alternativo",
+        "emergencyPhoneAlt": "Teléfono Alternativo (opcional)",
         "isPregnant": "¿Estás embarazada?",
         "pregnancyWeeks": "Semanas de embarazo",
         "menstrualStatus": "Estado menstrual",
@@ -508,7 +512,7 @@
       },
       "fields": {
         "birthDate": "Fecha de nacimiento",
-        "originCountry": "País de origen",
+        "originCountry": "País de nacimiento",
         "documentType": "Tipo de documento",
         "documentNumber": "N° Documento",
         "phone": "Teléfono"
@@ -1317,8 +1321,12 @@
     "subtitle": "Comparte tu información médica de emergencia",
     "description": "Este código QR contiene tu información médica de emergencia",
     "download": "Descargar QR",
+    "downloadButton": "Descargar Código QR",
     "print": "Imprimir QR",
     "share": "Compartir QR",
+    "emergencyCardTitle": "Mi Código QR de Emergencia",
+    "emergencyUrl": "URL de emergencia:",
+    "keepAccessible": "Mantén este código accesible para emergencias médicas",
     "regenerate": "Regenerar Código",
     "emergency": "Información de Emergencia",
     "scanInstructions": "Instrucciones para Escanear",
@@ -1339,7 +1347,64 @@
     "securityNoteText": "Solo personal médico autorizado puede acceder a la información completa mediante escaneo del código QR.",
     "customize": "Personalizar Información",
     "selectData": "Seleccionar Datos a Incluir",
-    "qrSettings": "Configuración del QR"
+    "qrSettings": "Configuración del QR",
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "scan": {
+        "title": "Escanea tu QR",
+        "description": "Personal médico escanea tu código QR en situaciones de emergencia"
+      },
+      "access": {
+        "title": "Acceso Instantáneo",
+        "description": "Acceden de inmediato a tu historial médico y alergias"
+      },
+      "emergency": {
+        "title": "Atención Rápida",
+        "description": "Recibe atención médica informada que puede salvar tu vida"
+      }
+    },
+    "whatIs": {
+      "title": "Tu código QR de emergencia médica",
+      "description": "Este código QR contiene tu información médica esencial para situaciones de emergencia. Descárgalo e imprímelo para llevarlo siempre contigo."
+    },
+    "benefits": {
+      "title": "¿Por qué es importante?",
+      "speed": {
+        "title": "Atención más rápida",
+        "description": "En emergencias, cada segundo cuenta. Tu QR da acceso instantáneo a información vital."
+      },
+      "accuracy": {
+        "title": "Información precisa",
+        "description": "Evita errores médicos compartiendo tus alergias, medicamentos y condiciones al instante."
+      },
+      "universal": {
+        "title": "Acceso universal",
+        "description": "Funciona en cualquier centro médico autorizado, sin importar dónde te encuentres."
+      }
+    },
+    "usage": {
+      "title": "¿Cómo usar tu código QR?",
+      "print": {
+        "title": "Imprímelo",
+        "description": "Descarga e imprime tu código QR. Llévalo en tu billetera, bolso o como llavero."
+      },
+      "digital": {
+        "title": "Guárdalo digitalmente",
+        "description": "Guarda una copia en tu teléfono para tener acceso rápido cuando lo necesites."
+      },
+      "update": {
+        "title": "Manténlo actualizado",
+        "description": "Actualiza tu información médica regularmente para que el QR refleje tu estado actual."
+      }
+    },
+    "security": {
+      "title": "Tu información está protegida",
+      "description": "Solo personal médico autorizado puede acceder a tu información completa. Cada acceso queda registrado para tu seguridad."
+    },
+    "error": {
+      "title": "Error al cargar QR",
+      "retry": "Reintentar"
+    }
   },
   "emergency": {
     "title": "Información de Emergencia",
@@ -1519,7 +1584,80 @@
       "description": "Únete a miles de personas que ya tienen su expediente médico digital seguro y siempre accesible. Registro rápido con verificación de identidad médica.",
       "patientButton": "Crear Cuenta Personal",
       "professionalButton": "Registrarse como Profesional",
+      "pricingButton": "Ver Planes y Precios",
       "note": "Protección de datos médicos • Verificación de identidad • Acceso autorizado únicamente"
+    }
+  },
+  "pricing": {
+    "title": "Planes y Precios",
+    "subtitle": "Comienza gratis y mantén tu información médica segura",
+    "backToHome": "Volver al inicio",
+    "free": {
+      "title": "Plan Gratuito",
+      "price": "Gratis",
+      "priceDetail": "Para siempre",
+      "description": "Perfecto para empezar a digitalizar tu historial médico",
+      "features": {
+        "qr": "Código QR de emergencia",
+        "unlimited": "Registros ilimitados",
+        "medications": "Gestión de medicamentos",
+        "allergies": "Registro de alergias",
+        "illnesses": "Historial de enfermedades",
+        "surgeries": "Registro de cirugías",
+        "profile": "Perfil médico completo",
+        "support": "Soporte básico"
+      },
+      "cta": "Comenzar Gratis"
+    },
+    "discount": {
+      "title": "¿Tienes un código de descuento?",
+      "subtitle": "Si eres parte de una empresa asociada, ingresa tu código aquí",
+      "placeholder": "Ingresa tu código",
+      "apply": "Aplicar Código",
+      "applied": "Código aplicado",
+      "invalid": "Código inválido",
+      "partners": "Empresas Asociadas",
+      "partnersDescription": "Accede a beneficios exclusivos si trabajas o eres miembro de:",
+      "companies": {
+        "windstar": "Windstar",
+        "almart": "Almart",
+        "gymx": "Gimnasio X"
+      }
+    },
+    "benefits": {
+      "title": "¿Por qué elegir VitalGo?",
+      "security": {
+        "title": "Seguridad garantizada",
+        "description": "Tus datos médicos protegidos con encriptación de nivel bancario"
+      },
+      "access": {
+        "title": "Acceso universal",
+        "description": "Tu información disponible en cualquier centro médico autorizado"
+      },
+      "free": {
+        "title": "Siempre gratis",
+        "description": "Sin costos ocultos, sin suscripciones, sin sorpresas"
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": {
+        "question": "¿Realmente es gratis para siempre?",
+        "answer": "Sí, el plan gratuito de VitalGo te permite acceder a todas las funciones esenciales sin límite de tiempo."
+      },
+      "q2": {
+        "question": "¿Cómo obtengo un código de descuento?",
+        "answer": "Los códigos de descuento son proporcionados por empresas asociadas a sus empleados o miembros. Contacta con tu departamento de recursos humanos o administración."
+      },
+      "q3": {
+        "question": "¿Mis datos están seguros?",
+        "answer": "Absolutamente. Utilizamos encriptación de nivel bancario y cumplimos con todas las regulaciones de protección de datos médicos."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "description": "Únete a miles de personas que ya confían en VitalGo para gestionar su información médica",
+      "button": "Crear Cuenta Gratis"
     }
   }
 }

@@ -72,11 +72,39 @@ export const formatCountryWithFlag = (country?: string): string => {
 export const formatBirthLocation = (info: PersonalPatientInfo): string => {
   if (!info.birth_country) return 'No especificado';
 
-  if (info.birth_country === 'Colombia' && info.birth_department && info.birth_city) {
-    return `${formatCountryWithFlag(info.birth_country)} - ${info.birth_department}, ${info.birth_city}`;
+  // Check if birth country is Colombia (either code 'CO' or full name 'Colombia')
+  const isColombia = info.birth_country === 'CO' || info.birth_country === 'Colombia';
+
+  // Map country code to name if it's a code
+  const countryMap: Record<string, string> = {
+    'CO': 'Colombia',
+    'AR': 'Argentina',
+    'MX': 'México',
+    'US': 'Estados Unidos',
+    'BR': 'Brasil',
+    'CL': 'Chile',
+    'PE': 'Perú',
+    'EC': 'Ecuador',
+    'VE': 'Venezuela',
+    'UY': 'Uruguay',
+    'PY': 'Paraguay',
+    'BO': 'Bolivia',
+    'CA': 'Canadá',
+    'ES': 'España',
+    'FR': 'Francia',
+    'IT': 'Italia',
+    'DE': 'Alemania',
+    'GB': 'Reino Unido'
+  };
+
+  const countryName = countryMap[info.birth_country] || info.birth_country;
+
+  // For Colombia with department and city, show full location
+  if (isColombia && info.birth_department && info.birth_city) {
+    return `${formatCountryWithFlag(countryName)} - ${info.birth_department}, ${info.birth_city}`;
   }
 
-  return formatCountryWithFlag(info.birth_country);
+  return formatCountryWithFlag(countryName);
 };
 
 /**

@@ -1392,8 +1392,12 @@
     "pageTitle": "Emergency QR Code",
     "pageSubtitle": "Your medical information in emergencies",
     "download": "Download QR",
+    "downloadButton": "Download QR Code",
     "downloading": "Downloading...",
     "print": "Print QR",
+    "emergencyCardTitle": "My Emergency QR Code",
+    "emergencyUrl": "Emergency URL:",
+    "keepAccessible": "Keep this code accessible for medical emergencies",
     "printing": "Preparing to print...",
     "share": "Share QR",
     "sharing": "Sharing...",
@@ -1458,6 +1462,63 @@
       "shareFailed": "Failed to share QR code",
       "generateFailed": "Failed to generate QR code",
       "loadFailed": "Failed to load QR code"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "scan": {
+        "title": "Scan Your QR",
+        "description": "Medical personnel scan your QR code in emergency situations"
+      },
+      "access": {
+        "title": "Instant Access",
+        "description": "They get immediate access to your medical history and allergies"
+      },
+      "emergency": {
+        "title": "Quick Care",
+        "description": "Receive informed medical care that can save your life"
+      }
+    },
+    "whatIs": {
+      "title": "Your medical emergency QR code",
+      "description": "This QR code contains your essential medical information for emergency situations. Download and print it to carry with you at all times."
+    },
+    "benefits": {
+      "title": "Why is it important?",
+      "speed": {
+        "title": "Faster care",
+        "description": "In emergencies, every second counts. Your QR provides instant access to vital information."
+      },
+      "accuracy": {
+        "title": "Accurate information",
+        "description": "Avoid medical errors by instantly sharing your allergies, medications, and conditions."
+      },
+      "universal": {
+        "title": "Universal access",
+        "description": "Works at any authorized medical center, no matter where you are."
+      }
+    },
+    "usage": {
+      "title": "How to use your QR code?",
+      "print": {
+        "title": "Print it",
+        "description": "Download and print your QR code. Carry it in your wallet, bag, or as a keychain."
+      },
+      "digital": {
+        "title": "Save it digitally",
+        "description": "Save a copy on your phone for quick access when you need it."
+      },
+      "update": {
+        "title": "Keep it updated",
+        "description": "Update your medical information regularly so your QR reflects your current status."
+      }
+    },
+    "security": {
+      "title": "Your information is protected",
+      "description": "Only authorized medical personnel can access your complete information. Every access is logged for your security."
+    },
+    "error": {
+      "title": "Error loading QR",
+      "retry": "Retry"
     }
   },
   "emergency": {
@@ -1691,7 +1752,80 @@
       "description": "Join thousands of people who already have their secure and always accessible digital medical record. Quick registration with medical identity verification.",
       "patientButton": "Create Personal Account",
       "professionalButton": "Sign Up as Professional",
+      "pricingButton": "View Plans & Pricing",
       "note": "Medical data protection • Identity verification • Authorized access only"
+    }
+  },
+  "pricing": {
+    "title": "Plans & Pricing",
+    "subtitle": "Start free and keep your medical information secure",
+    "backToHome": "Back to home",
+    "free": {
+      "title": "Free Plan",
+      "price": "Free",
+      "priceDetail": "Forever",
+      "description": "Perfect to start digitizing your medical history",
+      "features": {
+        "qr": "Emergency QR code",
+        "unlimited": "Unlimited records",
+        "medications": "Medication management",
+        "allergies": "Allergy tracking",
+        "illnesses": "Illness history",
+        "surgeries": "Surgery records",
+        "profile": "Complete medical profile",
+        "support": "Basic support"
+      },
+      "cta": "Start Free"
+    },
+    "discount": {
+      "title": "Have a discount code?",
+      "subtitle": "If you're part of a partner company, enter your code here",
+      "placeholder": "Enter your code",
+      "apply": "Apply Code",
+      "applied": "Code applied",
+      "invalid": "Invalid code",
+      "partners": "Partner Companies",
+      "partnersDescription": "Access exclusive benefits if you work at or are a member of:",
+      "companies": {
+        "windstar": "Windstar",
+        "almart": "Almart",
+        "gymx": "Gym X"
+      }
+    },
+    "benefits": {
+      "title": "Why choose VitalGo?",
+      "security": {
+        "title": "Guaranteed security",
+        "description": "Your medical data protected with bank-level encryption"
+      },
+      "access": {
+        "title": "Universal access",
+        "description": "Your information available at any authorized medical center"
+      },
+      "free": {
+        "title": "Always free",
+        "description": "No hidden costs, no subscriptions, no surprises"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "question": "Is it really free forever?",
+        "answer": "Yes, VitalGo's free plan gives you access to all essential features with no time limit."
+      },
+      "q2": {
+        "question": "How do I get a discount code?",
+        "answer": "Discount codes are provided by partner companies to their employees or members. Contact your HR department or administration."
+      },
+      "q3": {
+        "question": "Is my data secure?",
+        "answer": "Absolutely. We use bank-level encryption and comply with all medical data protection regulations."
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Join thousands of people who already trust VitalGo to manage their medical information",
+      "button": "Create Free Account"
     }
   }
 }

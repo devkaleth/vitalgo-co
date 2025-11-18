@@ -7,21 +7,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { PersonalPatientInfo, PersonalPatientUpdate } from '../../types/personalInfo';
-import { SelectField } from '../atoms/SelectField';
-import { TextAreaField } from '../atoms/TextAreaField';
-import { RadioButtonField } from '../atoms/RadioButtonField';
-import { PhoneInputGroup } from '../../../../shared/components/molecules/PhoneInputGroup';
 import { Country, getCountryByCode } from '../../../signup/data/countries';
 import { splitPhoneInternational, combinePhoneInternational } from '../../utils/phoneUtils';
 import { useCountries } from '@/hooks/useCountries';
 import type { Country as APICountry } from '@/services/countriesService';
-import {
-  epsOptions,
-  bloodTypeOptions,
-  complementaryPlanOptions,
-  emergencyContactRelationshipOptions,
-  isOtherValueRequired
-} from '../../data/medicalData';
+import { isOtherValueRequired } from '../../data/medicalData';
+import { MedicalInfoFormContent } from './MedicalInfoFormContent';
 
 interface MedicalInfoEditModalProps {
   isOpen: boolean;
@@ -30,6 +21,7 @@ interface MedicalInfoEditModalProps {
   onSubmit: (data: PersonalPatientUpdate) => Promise<{ success: boolean; message: string }>;
   isLoading?: boolean;
   inline?: boolean; // New prop for inline rendering without overlay
+  showButtons?: boolean; // Show form buttons (default: true)
   'data-testid'?: string;
 }
 
@@ -63,6 +55,7 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   onSubmit,
   isLoading = false,
   inline = false,
+  showButtons = true,
   'data-testid': testId = 'medical-info-edit-modal'
 }) => {
   const t = useTranslations('profile.forms');
@@ -88,10 +81,10 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   const [emergencyPhoneAltCountryCode, setEmergencyPhoneAltCountryCode] = useState<string>('CO');
   const [emergencyPhoneAltNumber, setEmergencyPhoneAltNumber] = useState<string>('');
 
-  // Check if user resides in Colombia
-  const residesInColombia = initialData?.residence_country === 'CO' ||
-                            initialData?.residence_country === 'Colombia' ||
-                            initialData?.residence_country === 'COLOMBIA';
+  // Check if user was born in Colombia (for EPS vs Additional Insurance logic)
+  const bornInColombia = initialData?.birth_country === 'CO' ||
+                         initialData?.birth_country === 'Colombia' ||
+                         initialData?.birth_country === 'COLOMBIA';
 
   // Initialize form data when modal opens
   useEffect(() => {
@@ -246,14 +239,14 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   };
 
   // Debug log
-  console.log('🌎 MedicalInfoEditModal - residence_country:', initialData?.residence_country);
-  console.log('🇨🇴 MedicalInfoEditModal - residesInColombia:', residesInColombia);
+  console.log('🌎 MedicalInfoEditModal - birth_country:', initialData?.birth_country);
+  console.log('🇨🇴 MedicalInfoEditModal - bornInColombia:', bornInColombia);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Required fields validation - EPS only required for Colombia residents
-    if (residesInColombia && !formData.eps) {
+    // Required fields validation - EPS only required for those born in Colombia
+    if (bornInColombia && !formData.eps) {
       newErrors.eps = t('validation.epsRequired');
     }
 
@@ -305,9 +298,9 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
 
     setIsSubmitting(true);
     try {
-      // If user doesn't reside in Colombia, save health_service to additional_insurance field
+      // If user wasn't born in Colombia, save health_service to additional_insurance field
       const dataToSubmit = { ...formData };
-      if (!residesInColombia && formData.health_service) {
+      if (!bornInColombia && formData.health_service) {
         dataToSubmit.additional_insurance = formData.health_service;
       }
 
@@ -351,277 +344,45 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
           </div>
 
           {/* Content */}
-          <form onSubmit={handleSubmit} className="px-6 pb-4">
-            <div className="space-y-6">
-              {/* Section 1: Seguridad Social y Ocupación */}
-              <div className="border-b border-gray-200 pb-6">
-                <h4 className="text-lg font-medium text-vitalgo-dark mb-4 flex items-center">
-                  <div className="w-6 h-6 bg-vitalgo-green/10 rounded-full flex items-center justify-center mr-3">
-                    <svg className="h-4 w-4 text-vitalgo-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  {t('sectionTitles.socialSecurityOccupation')}
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* EPS field only for Colombia residents */}
-                  {residesInColombia ? (
-                    <>
-                      <SelectField
-                        label={t('labels.eps')}
-                        value={formData.eps || ''}
-                        onChange={(value) => handleFieldChange('eps', value)}
-                        options={epsOptions}
-                        placeholder={t('placeholders.selectEps')}
-                        required
-                        error={errors.eps}
-                      />
+          <form id="onboarding-medical-form" onSubmit={handleSubmit} className="px-6 pb-4">
+            <MedicalInfoFormContent
+              formData={formData}
+              errors={errors}
+              residesInColombia={bornInColombia}
+              isFormLoading={isFormLoading}
+              convertedCountries={convertedCountries}
+              emergencyPhoneCountryCode={emergencyPhoneCountryCode}
+              emergencyPhoneNumber={emergencyPhoneNumber}
+              emergencyPhoneAltCountryCode={emergencyPhoneAltCountryCode}
+              emergencyPhoneAltNumber={emergencyPhoneAltNumber}
+              handleFieldChange={handleFieldChange}
+              handleEmergencyCountryChange={handleEmergencyCountryChange}
+              handleEmergencyPhoneChange={handleEmergencyPhoneChange}
+              handleEmergencyAltCountryChange={handleEmergencyAltCountryChange}
+              handleEmergencyPhoneAltChange={handleEmergencyPhoneAltChange}
+              testId={`${testId}-inline`}
+            />
 
-                      {isOtherValueRequired(formData.eps || '') && (
-                        <div className="md:col-span-2">
-                          <TextAreaField
-                            label={t('labels.epsOther')}
-                            value={formData.eps_other || ''}
-                            onChange={(value) => handleFieldChange('eps_other', value)}
-                            placeholder={t('placeholders.epsOther')}
-                            required
-                            error={errors.eps_other}
-                            rows={2}
-                          />
-                        </div>
-                      )}
-                    </>
+            {/* Footer - Only shown if showButtons is true */}
+            {showButtons && (
+              <div className="bg-gray-50 px-6 py-4 mt-6 rounded-b-lg">
+                <button
+                  type="submit"
+                  disabled={isFormLoading}
+                  className="inline-flex w-full justify-center rounded-md bg-vitalgo-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-vitalgo-green-light focus:outline-none focus:ring-2 focus:ring-vitalgo-green disabled:opacity-50 disabled:cursor-not-allowed"
+                  data-testid={`${testId}-submit-button`}
+                >
+                  {isFormLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      {t('buttons.saving')}
+                    </div>
                   ) : (
-                    /* Health Service field for non-Colombia residents */
-                    <div className="md:col-span-2">
-                      <TextAreaField
-                        label="Servicio de Salud"
-                        value={formData.health_service || ''}
-                        onChange={(value) => handleFieldChange('health_service', value)}
-                        placeholder="Ingresa tu servicio de salud o seguro médico"
-                        error={errors.health_service}
-                        rows={2}
-                      />
-                    </div>
+                    t('buttons.save')
                   )}
-
-                  <div className="md:col-span-2">
-                    <TextAreaField
-                      label={t('labels.occupation')}
-                      value={formData.occupation || ''}
-                      onChange={(value) => handleFieldChange('occupation', value)}
-                      placeholder={t('placeholders.occupation')}
-                      required
-                      error={errors.occupation}
-                      rows={2}
-                    />
-                  </div>
-
-                  {/* Show additional insurance only for non-Colombia residents */}
-                  {!residesInColombia && (
-                    <div className="md:col-span-2">
-                      <TextAreaField
-                        label={t('labels.additionalInsurance')}
-                        value={formData.additional_insurance || ''}
-                        onChange={(value) => handleFieldChange('additional_insurance', value)}
-                        placeholder={t('placeholders.additionalInsurance')}
-                        error={errors.additional_insurance}
-                        rows={2}
-                      />
-                    </div>
-                  )}
-
-                  {/* Complementary plan only for Colombia residents */}
-                  {residesInColombia && (
-                    <>
-                      <SelectField
-                        label={t('labels.complementaryPlan')}
-                        value={formData.complementary_plan || ''}
-                        onChange={(value) => handleFieldChange('complementary_plan', value)}
-                        options={complementaryPlanOptions}
-                        placeholder={t('placeholders.complementaryPlan')}
-                        error={errors.complementary_plan}
-                      />
-
-                      {isOtherValueRequired(formData.complementary_plan || '') && (
-                        <TextAreaField
-                          label={t('labels.complementaryPlanOther')}
-                          value={formData.complementary_plan_other || ''}
-                          onChange={(value) => handleFieldChange('complementary_plan_other', value)}
-                          placeholder={t('placeholders.complementaryPlanOther')}
-                          required
-                          error={errors.complementary_plan_other}
-                          rows={2}
-                        />
-                      )}
-                    </>
-                  )}
-                </div>
+                </button>
               </div>
-
-              {/* Section 2: Información Médica */}
-              <div className="border-b border-gray-200 pb-6">
-                <h4 className="text-lg font-medium text-vitalgo-dark mb-4 flex items-center">
-                  <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  {t('sectionTitles.medicalInfo')}
-                </h4>
-                <div>
-                  <RadioButtonField
-                    label={t('labels.bloodType')}
-                    name="blood_type"
-                    value={formData.blood_type || ''}
-                    onChange={(value) => handleFieldChange('blood_type', value)}
-                    options={bloodTypeOptions}
-                    required
-                    error={errors.blood_type}
-                  />
-                </div>
-              </div>
-
-              {/* Section 3: Contacto de Emergencia */}
-              <div>
-                <h4 className="text-lg font-medium text-vitalgo-dark mb-4 flex items-center">
-                  <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="h-4 w-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                  </div>
-                  {t('sectionTitles.emergencyContact')}
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <TextAreaField
-                      label={t('labels.emergencyName')}
-                      value={formData.emergency_contact_name || ''}
-                      onChange={(value) => handleFieldChange('emergency_contact_name', value)}
-                      placeholder={t('placeholders.emergencyName')}
-                      required
-                      error={errors.emergency_contact_name}
-                      rows={2}
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <SelectField
-                      label={t('labels.emergencyRelationship')}
-                      value={formData.emergency_contact_relationship || ''}
-                      onChange={(value) => handleFieldChange('emergency_contact_relationship', value)}
-                      options={emergencyContactRelationshipOptions}
-                      placeholder={t('placeholders.emergencyRelationship')}
-                      required
-                      error={errors.emergency_contact_relationship}
-                    />
-                  </div>
-
-                  {/* Primary Emergency Phone */}
-                  <div className="md:col-span-2">
-                    <PhoneInputGroup
-                      countryCode={emergencyPhoneCountryCode}
-                      phoneNumber={emergencyPhoneNumber}
-                      onCountryChange={handleEmergencyCountryChange}
-                      onPhoneChange={handleEmergencyPhoneChange}
-                      error={errors.emergency_contact_phone}
-                      disabled={isFormLoading}
-                      data-testid={`${testId}-emergency-phone-group`}
-                      countries={convertedCountries.length > 0 ? convertedCountries : undefined}
-                    />
-                  </div>
-
-                  {/* Alternative Emergency Phone */}
-                  <div className="md:col-span-2">
-                    <div className="space-y-4">
-                      <div className="space-y-1">
-                        <h4 className="text-sm font-medium text-gray-900">
-                          {t('labels.emergencyPhoneAlt')}
-                        </h4>
-                        <p className="text-xs text-gray-600">
-                          Teléfono alternativo de contacto (opcional)
-                        </p>
-                      </div>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="lg:col-span-1">
-                          <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                            Indicativo <span className="text-red-500">*</span>
-                          </label>
-                          <select
-                            value={emergencyPhoneAltCountryCode}
-                            onChange={(e) => {
-                              const country = convertedCountries.find(c => c.code === e.target.value);
-                              if (country) handleEmergencyAltCountryChange(country);
-                            }}
-                            disabled={isFormLoading}
-                            className="w-full px-3 py-2 border rounded-md text-base focus:outline-none focus:ring-2 transition-colors duration-150 border-vitalgo-dark-lighter focus:ring-vitalgo-green focus:border-vitalgo-green"
-                          >
-                            {convertedCountries.map((country) => (
-                              <option key={country.code} value={country.code}>
-                                {country.flag} {country.dialCode} {country.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div className="lg:col-span-1">
-                          <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                            Número de teléfono
-                          </label>
-                          <input
-                            type="tel"
-                            value={emergencyPhoneAltNumber}
-                            onChange={(e) => handleEmergencyPhoneAltChange(e.target.value)}
-                            disabled={isFormLoading}
-                            placeholder="3001234567"
-                            className="w-full px-3 py-2 border rounded-md text-base focus:outline-none focus:ring-2 transition-colors duration-150 border-vitalgo-dark-lighter focus:ring-vitalgo-green focus:border-vitalgo-green"
-                            style={{ fontSize: '16px' }}
-                          />
-                          {errors.emergency_contact_phone_alt && (
-                            <p className="mt-1 text-sm text-red-600 font-medium">
-                              {errors.emergency_contact_phone_alt}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      {emergencyPhoneAltNumber && (
-                        <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                          <div className="flex items-center space-x-3">
-                            <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                              Número completo:
-                            </span>
-                            <div className="flex items-center space-x-2">
-                              <span className="text-lg flex-shrink-0" role="img">
-                                {getCountryByCode(emergencyPhoneAltCountryCode)?.flag || '🏳️'}
-                              </span>
-                              <span className="font-mono text-sm text-gray-900 flex items-center">
-                                <span className="text-blue-600 font-medium">
-                                  {getCountryByCode(emergencyPhoneAltCountryCode)?.dialCode || ''}
-                                </span>
-                                <span className="ml-1">
-                                  {emergencyPhoneAltNumber.replace(/\D/g, '')}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* General Error */}
-              {errors.general && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-start">
-                    <svg className="h-5 w-5 text-red-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.866-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                    <p className="ml-3 text-sm text-red-700">{errors.general}</p>
-                  </div>
-                </div>
-              )}
-            </div>
+            )}
           </form>
         </div>
       </div>
@@ -650,8 +411,79 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
           className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl"
           data-testid="modal-content"
         >
-          {/* Reuse inline content here - just wrapped */}
-          {/* Duplicating content to maintain both modes */}
+          {/* Header */}
+          <div className="bg-white px-6 pt-6 pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h3
+                className="text-xl font-semibold text-vitalgo-dark"
+                id="modal-title"
+                data-testid="modal-title"
+              >
+                {t('modals.editMedicalInfo')}
+              </h3>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-500"
+                data-testid={`${testId}-close-button`}
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-sm text-vitalgo-dark-light">
+              {t('sectionDescriptions.completeMedicalInfo')}
+            </p>
+          </div>
+
+          {/* Content */}
+          <form onSubmit={handleSubmit} className="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <MedicalInfoFormContent
+              formData={formData}
+              errors={errors}
+              residesInColombia={bornInColombia}
+              isFormLoading={isFormLoading}
+              convertedCountries={convertedCountries}
+              emergencyPhoneCountryCode={emergencyPhoneCountryCode}
+              emergencyPhoneNumber={emergencyPhoneNumber}
+              emergencyPhoneAltCountryCode={emergencyPhoneAltCountryCode}
+              emergencyPhoneAltNumber={emergencyPhoneAltNumber}
+              handleFieldChange={handleFieldChange}
+              handleEmergencyCountryChange={handleEmergencyCountryChange}
+              handleEmergencyPhoneChange={handleEmergencyPhoneChange}
+              handleEmergencyAltCountryChange={handleEmergencyAltCountryChange}
+              handleEmergencyPhoneAltChange={handleEmergencyPhoneAltChange}
+              testId={testId}
+            />
+          </form>
+
+          {/* Footer */}
+          <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end space-x-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-vitalgo-green"
+              data-testid={`${testId}-cancel-button`}
+            >
+              {tCommon('cancel')}
+            </button>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              disabled={isFormLoading}
+              className="inline-flex justify-center rounded-md bg-vitalgo-green px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-vitalgo-green-light focus:outline-none focus:ring-2 focus:ring-vitalgo-green disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid={`${testId}-submit-button`}
+            >
+              {isFormLoading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {t('buttons.saving')}
+                </div>
+              ) : (
+                t('buttons.save')
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

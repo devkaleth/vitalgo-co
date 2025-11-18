@@ -27,6 +27,8 @@ interface PersonalInfoSectionProps {
   onCountryChange: (country: Country) => void;
   onOriginCountryChange: (country: Country) => void;
   documentTypes: DocumentType[];
+  countries: Country[]; // Add countries prop
+  isLoadingCountries?: boolean; // Add loading state
   validationStates: {
     firstName?: FieldValidationState;
     lastName?: FieldValidationState;
@@ -55,6 +57,8 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   onCountryChange,
   onOriginCountryChange,
   documentTypes,
+  countries,
+  isLoadingCountries = false,
   validationStates,
   errors
 }) => {
@@ -100,6 +104,20 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           data-testid="lastName-input"
         />
 
+        <div className="md:col-span-2">
+          <CountrySelect
+            value={originCountry}
+            onChange={onOriginCountryChange}
+            countries={countries}
+            isLoading={isLoadingCountries}
+            label={t('fields.birthCountry.label')}
+            placeholder={t('fields.birthCountry.placeholder')}
+            error={errors.originCountry}
+            required
+            data-testid="birthCountry-select"
+          />
+        </div>
+
         <DocumentTypeSelect
           id="documentType"
           name="documentType"
@@ -126,18 +144,6 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           autocomplete="off"
           data-testid="documentNumber-input"
         />
-
-        <div className="md:col-span-2">
-          <CountrySelect
-            value={originCountry}
-            onChange={onOriginCountryChange}
-            label={t('fields.originCountry.label')}
-            placeholder={t('fields.originCountry.placeholder')}
-            error={errors.originCountry}
-            required
-            data-testid="originCountry-select"
-          />
-        </div>
 
         <div className="md:col-span-2">
           <PhoneInputGroup

@@ -26,6 +26,8 @@ class BasicProfileAPIService {
         phoneInternational: data.phone_international,
         birthDate: data.birth_date,
         originCountry: data.origin_country,
+        birthCountry: data.birth_country,        // Birth country field
+        residenceCountry: data.residence_country, // Residence country field
         countryCode: data.country_code,
         dialCode: data.dial_code,          // Use database field directly!
         phoneNumber: data.phone_number,    // Use database field directly!
@@ -60,6 +62,8 @@ class BasicProfileAPIService {
         phone_international: data.phoneInternational,
         birth_date: data.birthDate,
         origin_country: data.originCountry,
+        birth_country: data.birthCountry,           // Birth country field
+        residence_country: data.residenceCountry,   // Residence country field
         country_code: data.countryCode,
         dial_code: data.dialCode,       // Include new database field
         phone_number: data.phoneNumber, // Include new database field

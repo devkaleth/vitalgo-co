@@ -39,6 +39,15 @@ export function CTASection() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
+            <Link href="/precios">
+              <Button
+                size="lg"
+                className="bg-white/20 text-white border-2 border-white hover:bg-white hover:text-vitalgo-green transition-colors px-8 py-4 text-lg"
+                data-testid="home-cta-pricing-button"
+              >
+                {t('cta.pricingButton')}
+              </Button>
+            </Link>
           </div>
 
           <p

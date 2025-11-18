@@ -117,43 +117,47 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
 
       {/* Medical Cards Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {/* Medications Management Card */}
-        <div id="medications-section">
-          <MedicationsCard
-            maxItems={3}
-            showAddButton={true}
-            onNavigateToFull={() => router.push(`/${locale}/medications`)}
-            data-testid="dashboard-medications-card"
-          />
-        </div>
-
-        {/* Allergies Management Card */}
-        <div id="allergies-section">
-          <AllergiesCard
-            maxItems={3}
-            showAddButton={true}
-            onNavigateToFull={() => router.push(`/${locale}/allergies`)}
-            data-testid="dashboard-allergies-card"
-          />
-        </div>
-
         {/* Illnesses Management Card */}
-        <div id="illnesses-section">
+        <div id="illnesses-section" className="h-full">
           <IllnessesCard
             maxItems={3}
             showAddButton={true}
             onNavigateToFull={() => router.push(`/${locale}/illnesses`)}
             data-testid="dashboard-illnesses-card"
+            className="h-full"
+          />
+        </div>
+
+        {/* Medications Management Card */}
+        <div id="medications-section" className="h-full">
+          <MedicationsCard
+            maxItems={4}
+            showAddButton={true}
+            onNavigateToFull={() => router.push(`/${locale}/medications`)}
+            data-testid="dashboard-medications-card"
+            className="h-full"
+          />
+        </div>
+
+        {/* Allergies Management Card */}
+        <div id="allergies-section" className="h-full">
+          <AllergiesCard
+            maxItems={3}
+            showAddButton={true}
+            onNavigateToFull={() => router.push(`/${locale}/allergies`)}
+            data-testid="dashboard-allergies-card"
+            className="h-full"
           />
         </div>
 
         {/* Surgeries Management Card */}
-        <div id="surgeries-section">
+        <div id="surgeries-section" className="h-full">
           <SurgeriesCard
             maxItems={3}
             showAddButton={true}
             onNavigateToFull={() => router.push(`/${locale}/surgeries`)}
             data-testid="dashboard-surgeries-card"
+            className="h-full"
           />
         </div>
       </div>

@@ -52,6 +52,7 @@ export interface PersonalPatientInfo {
 
   // Donor Preference (Voluntad de la Persona)
   organ_donor_preference?: string | null; // 'DONANTE' | 'NO_DONANTE' | 'PREFIERO_NO_RESPONDER' | null
+  authorized_decision_maker?: string | null; // Person authorized to make decisions if "PREFIERO_NO_RESPONDER"
 
   // Physical Measurements
   height?: number | null; // Height in centimeters
@@ -108,6 +109,7 @@ export interface PersonalPatientUpdate {
 
   // Donor Preference (Voluntad de la Persona)
   organ_donor_preference?: string | null; // 'DONANTE' | 'NO_DONANTE' | 'PREFIERO_NO_RESPONDER' | null
+  authorized_decision_maker?: string | null; // Person authorized to make decisions if "PREFIERO_NO_RESPONDER"
 
   // Physical Measurements
   height?: number | null; // Height in centimeters

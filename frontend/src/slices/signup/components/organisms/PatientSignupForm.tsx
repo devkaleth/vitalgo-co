@@ -10,24 +10,32 @@ import { CheckboxWithLink } from '../atoms/CheckboxWithLink';
 import { SubmitButton } from '../atoms/SubmitButton';
 import { SignupApiService } from '../../services/signupApi';
 import { DocumentType, PatientRegistrationForm, FieldValidationState, RegistrationResponse } from '../../types';
-import { Country, getDefaultCountry } from '../../data/countries';
+import { Country, getDefaultCountry, getCountryByCode } from '../../data/countries';
+import { fetchCountries } from '../../../../services/countriesService';
+import { useGeolocation } from '../../../../shared/hooks/useGeolocation';
+import { getAllowedDocumentTypes } from '../../utils/documentTypesByCountry';
 
 interface PatientSignupFormProps {
   onSuccess: (response: RegistrationResponse) => void;
   onError: (error: string) => void;
-  allowedDocumentTypes?: string[]; // Filter document types - if undefined, show all
 }
 
 export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   onSuccess,
-  onError,
-  allowedDocumentTypes
+  onError
 }) => {
   // Translation hooks
   const tSignup = useTranslations('signup');
   const tValidation = useTranslations('validation');
   const tForms = useTranslations('forms');
   const tCommon = useTranslations('common');
+
+  // Geolocation hook - Auto-detect user's country
+  const { countryCode: detectedCountryCode, dialCode: detectedDialCode, isLoading: isDetectingLocation } = useGeolocation({
+    autoFetch: true,
+    fetchFullData: false,
+    fallbackCountry: 'CO',
+  });
 
   // Form state
   const [formData, setFormData] = useState<PatientRegistrationForm>({
@@ -37,7 +45,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     documentNumber: '',
     phoneInternational: '', // Computed from country + phone
     birthDate: '',
-    originCountry: 'CO', // Default to Colombia
+    originCountry: 'CO', // Will be updated by geolocation
     email: '',
     password: '',
     confirmPassword: '',
@@ -47,13 +55,17 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
 
   // New phone fields state
   const [phoneState, setPhoneState] = useState({
-    countryCode: getDefaultCountry().code, // Default to Colombia
+    countryCode: getDefaultCountry().code, // Will be updated by geolocation
     dialCode: getDefaultCountry().dialCode,
     phoneNumber: ''
   });
 
   // Document types
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([]);
+
+  // Countries state
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
 
   // Validation states
   const [validationStates, setValidationStates] = useState<{
@@ -66,25 +78,84 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load document types on mount
+  // Load countries on mount
+  useEffect(() => {
+    const loadCountries = async () => {
+      try {
+        setIsLoadingCountries(true);
+        const countriesData = await fetchCountries();
+
+        // Transform API countries to match the local Country interface
+        const transformedCountries: Country[] = countriesData.map(c => ({
+          code: c.code,
+          name: c.name,
+          dialCode: c.phone_code,
+          flag: c.flag_emoji || '',
+        }));
+
+        setCountries(transformedCountries);
+      } catch (error) {
+        console.error('Error loading countries:', error);
+        onError(tSignup('errors.loadCountries') || 'Error al cargar países');
+      } finally {
+        setIsLoadingCountries(false);
+      }
+    };
+
+    loadCountries();
+  }, [onError, tSignup]);
+
+  // Load document types on mount and when origin country changes
   useEffect(() => {
     const loadDocumentTypes = async () => {
       try {
         const types = await SignupApiService.getDocumentTypes();
 
-        // Filter document types if allowedDocumentTypes is provided
-        const filteredTypes = allowedDocumentTypes
-          ? types.filter(type => allowedDocumentTypes.includes(type.code))
-          : types;
+        // Filter document types based on selected country
+        const allowedTypes = getAllowedDocumentTypes(formData.originCountry);
+        const filteredTypes = types.filter(type => allowedTypes.includes(type.code));
 
         setDocumentTypes(filteredTypes);
+
+        // Reset document type if current selection is not in the allowed list
+        if (formData.documentType && !allowedTypes.includes(formData.documentType)) {
+          setFormData(prev => ({ ...prev, documentType: '' }));
+        }
       } catch (error) {
         onError(tSignup('errors.loadDocumentTypes'));
       }
     };
 
     loadDocumentTypes();
-  }, [onError, allowedDocumentTypes, tSignup]);
+  }, [formData.originCountry, onError, tSignup]);
+
+  // Update country and phone dial code when geolocation is detected
+  useEffect(() => {
+    if (detectedCountryCode && !isDetectingLocation && countries.length > 0) {
+      // Update origin country in form data
+      setFormData(prev => ({
+        ...prev,
+        originCountry: detectedCountryCode
+      }));
+
+      // Update phone country code and dial code from loaded countries
+      const detectedCountry = countries.find(c => c.code === detectedCountryCode);
+      if (detectedCountry) {
+        setPhoneState(prev => ({
+          ...prev,
+          countryCode: detectedCountry.code,
+          dialCode: detectedCountry.dialCode
+        }));
+      } else if (detectedDialCode) {
+        // Fallback to dial code from geolocation hook
+        setPhoneState(prev => ({
+          ...prev,
+          countryCode: detectedCountryCode,
+          dialCode: detectedDialCode
+        }));
+      }
+    }
+  }, [detectedCountryCode, detectedDialCode, isDetectingLocation, countries]);
 
   // Handle input changes
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -452,6 +523,8 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         onCountryChange={handleCountryChange}
         onOriginCountryChange={handleOriginCountryChange}
         documentTypes={documentTypes}
+        countries={countries}
+        isLoadingCountries={isLoadingCountries}
         validationStates={{
           firstName: validationStates.firstName,
           lastName: validationStates.lastName,

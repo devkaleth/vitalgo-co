@@ -78,10 +78,8 @@ export function useMedicationForm({
         break;
 
       case 'startDate':
-        if (!value || (typeof value === 'string' && !value.trim())) {
-          return 'La fecha de inicio es requerida';
-        }
-        if (typeof value === 'string') {
+        // Start date is now optional
+        if (value && typeof value === 'string' && value.trim()) {
           const startDate = new Date(value);
           const today = new Date();
           const oneYearFromNow = new Date();
@@ -96,10 +94,12 @@ export function useMedicationForm({
       case 'endDate':
         if (value && typeof value === 'string' && value.trim()) {
           const endDate = new Date(value);
-          const startDate = new Date(formData.startDate);
-
-          if (endDate <= startDate) {
-            return 'La fecha de fin debe ser posterior a la fecha de inicio';
+          // Only validate against start date if start date is provided
+          if (formData.startDate && formData.startDate.trim()) {
+            const startDate = new Date(formData.startDate);
+            if (endDate <= startDate) {
+              return 'La fecha de fin debe ser posterior a la fecha de inicio';
+            }
           }
         }
         break;
@@ -212,8 +212,7 @@ export function useMedicationForm({
   const isValid = Object.keys(errors).length === 0 &&
                   formData.medicationName.trim() !== '' &&
                   formData.dosage.trim() !== '' &&
-                  formData.frequency.trim() !== '' &&
-                  formData.startDate.trim() !== '';
+                  formData.frequency.trim() !== '';
 
   return {
     formData,

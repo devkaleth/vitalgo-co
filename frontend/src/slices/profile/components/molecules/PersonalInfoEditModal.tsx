@@ -17,6 +17,7 @@ interface PersonalInfoEditModalProps {
   onSubmit: (data: PersonalPatientUpdate) => Promise<{ success: boolean; message: string }>;
   isLoading?: boolean;
   inline?: boolean; // New prop for inline rendering without overlay
+  showButtons?: boolean; // Show form buttons (default: true)
   'data-testid'?: string;
 }
 
@@ -27,6 +28,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
   onSubmit,
   isLoading = false,
   inline = false,
+  showButtons = true,
   'data-testid': testId = 'personal-info-edit-modal'
 }) => {
   const t = useTranslations('profile.forms');
@@ -54,6 +56,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
         residence_department: initialData.residence_department || '',
         residence_city: initialData.residence_city || '',
         organ_donor_preference: initialData.organ_donor_preference || '',
+        authorized_decision_maker: initialData.authorized_decision_maker || '',
         height: initialData.height || undefined,
         weight: initialData.weight || undefined
       });
@@ -94,64 +97,61 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
+    console.log('🔍 Validating form data:', formData);
 
     // Required fields validation
     if (!formData.biological_sex?.trim()) {
+      console.log('❌ Validation error: biological_sex is missing');
       newErrors.biological_sex = t('validation.biologicalSexRequired');
     }
 
     if (!formData.gender?.trim()) {
+      console.log('❌ Validation error: gender is missing');
       newErrors.gender = t('validation.genderRequired');
     }
 
     // Validate "otro" gender field if selected
     if (formData.gender === 'OTRO' && !formData.gender_other?.trim()) {
+      console.log('❌ Validation error: gender_other is missing when OTRO selected');
       newErrors.gender_other = t('validation.specifyGender');
     }
 
-    if (!formData.birth_country?.trim()) {
-      newErrors.birth_country = t('validation.birthCountryRequired');
-    }
-
-    // Validate "otro" birth country field if selected
-    if (formData.birth_country === 'OTHER' && !formData.birth_country_other?.trim()) {
-      newErrors.birth_country_other = t('validation.specifyBirthCountry');
-    }
-
-    // Colombian birth location validation
-    if (formData.birth_country === 'CO') {
-      if (!formData.birth_department?.trim()) {
-        newErrors.birth_department = t('validation.birthDepartmentRequiredColombia');
-      }
-      if (!formData.birth_city?.trim()) {
-        newErrors.birth_city = t('validation.birthCityRequiredColombia');
-      }
-    }
+    // NOTE: Birth location fields (birth_country, birth_department, birth_city) are not validated here
+    // because they are collected during registration and not shown in this form
 
     // Residence information validation
     if (!formData.residence_address?.trim()) {
+      console.log('❌ Validation error: residence_address is missing');
       newErrors.residence_address = t('validation.residenceAddressRequired');
     }
 
     if (!formData.residence_country?.trim()) {
+      console.log('❌ Validation error: residence_country is missing');
       newErrors.residence_country = t('validation.residenceCountryRequired');
     }
 
     // Validate "otro" residence country field if selected
     if (formData.residence_country === 'OTHER' && !formData.residence_country_other?.trim()) {
+      console.log('❌ Validation error: residence_country_other is missing when OTHER selected');
       newErrors.residence_country_other = t('validation.specifyResidenceCountry');
     }
 
     // Only validate Colombian residence fields if residence country is Colombia
     if (formData.residence_country === 'CO') {
+      console.log('🇨🇴 Validating Colombian residence fields...');
       if (!formData.residence_department?.trim()) {
+        console.log('❌ Validation error: residence_department is missing for CO');
         newErrors.residence_department = t('validation.residenceDepartmentRequired');
       }
 
       if (!formData.residence_city?.trim()) {
+        console.log('❌ Validation error: residence_city is missing for CO');
         newErrors.residence_city = t('validation.residenceCityRequired');
       }
     }
+
+    console.log('📋 Validation errors:', newErrors);
+    console.log('✅ Validation result:', Object.keys(newErrors).length === 0 ? 'PASSED' : 'FAILED');
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -159,19 +159,34 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🔵 PersonalInfoEditModal: handleSubmit called');
 
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      console.log('❌ PersonalInfoEditModal: Validation failed');
+      return;
+    }
+
+    console.log('✅ PersonalInfoEditModal: Validation passed, submitting...', formData);
 
     try {
       setIsSubmitting(true);
       const result = await onSubmit(formData);
+      console.log('📦 PersonalInfoEditModal: onSubmit result:', result);
 
       if (result.success) {
-        onClose();
+        console.log('✅ PersonalInfoEditModal: Submission successful, inline mode:', inline);
+        // Only close modal if not in inline mode
+        if (!inline) {
+          onClose();
+        } else {
+          console.log('ℹ️ PersonalInfoEditModal: Inline mode - not closing modal, parent should handle tab change');
+        }
       } else {
+        console.log('❌ PersonalInfoEditModal: Submission failed:', result.message);
         setErrors({ general: result.message });
       }
     } catch (error) {
+      console.log('❌ PersonalInfoEditModal: Exception during submission:', error);
       setErrors({ general: t('messages.errorUpdate') });
     } finally {
       setIsSubmitting(false);
@@ -204,7 +219,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
           </div>
 
           {/* Content */}
-          <form onSubmit={handleSubmit} className="px-6 pb-4">
+          <form id="onboarding-personal-form" onSubmit={handleSubmit} className="px-6 pb-4">
             <div className="space-y-6">
               {/* Demographic Information Section */}
               <DemographicInfoSection
@@ -232,6 +247,27 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
                 </div>
               )}
             </div>
+
+            {/* Footer - Only shown if showButtons is true */}
+            {showButtons && (
+              <div className="bg-gray-50 px-6 py-4 mt-6 rounded-b-lg">
+                <button
+                  type="submit"
+                  disabled={isFormLoading}
+                  className="inline-flex w-full justify-center rounded-md bg-vitalgo-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-vitalgo-green-light focus:outline-none focus:ring-2 focus:ring-vitalgo-green disabled:opacity-50 disabled:cursor-not-allowed"
+                  data-testid={`${testId}-submit-button`}
+                >
+                  {isFormLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      {t('buttons.saving')}
+                    </div>
+                  ) : (
+                    t('buttons.save')
+                  )}
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
@@ -298,7 +334,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
           </div>
 
           {/* Content */}
-          <form onSubmit={handleSubmit} className="px-6 pb-4">
+          <form id="personal-info-edit-form" onSubmit={handleSubmit} className="px-6 pb-4">
             <div className="space-y-6">
               {/* General Error */}
               {errors.general && (
@@ -314,20 +350,16 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
 
               {/* Demographic Information Section */}
               <DemographicInfoSection
-                formData={formData}
+                data={formData}
+                onChange={handleFieldChange}
                 errors={errors}
-                isFormLoading={isFormLoading}
-                onChange={handleInputChange}
-                testId={testId}
               />
 
               {/* Residence Information Section */}
               <ResidenceInfoSection
-                formData={formData}
+                data={formData}
+                onChange={handleFieldChange}
                 errors={errors}
-                isFormLoading={isFormLoading}
-                onChange={handleInputChange}
-                testId={testId}
               />
             </div>
           </form>
@@ -336,7 +368,7 @@ export const PersonalInfoEditModal: React.FC<PersonalInfoEditModalProps> = ({
           <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse sm:px-6">
             <button
               type="submit"
-              onClick={handleSubmit}
+              form="personal-info-edit-form"
               disabled={isFormLoading}
               className="inline-flex w-full justify-center rounded-md bg-vitalgo-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-vitalgo-green-light focus:outline-none focus:ring-2 focus:ring-vitalgo-green sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid={`${testId}-submit-button`}

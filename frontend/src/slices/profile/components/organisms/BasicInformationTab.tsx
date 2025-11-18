@@ -9,14 +9,17 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { TabContentProps } from '../../types';
 import { useBasicPatientInfo } from '../../hooks/useBasicPatientInfo';
+import { usePersonalPatientInfo } from '../../hooks/usePersonalPatientInfo';
 import { BasicInfoEditModal } from '../molecules/BasicInfoEditModal';
 import { getCountryByCode } from '../../../signup/data/countries';
+import { formatCountryWithFlag } from '../../utils/personalInfoUtils';
 
 export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) {
   const t = useTranslations('profile.basic');
   const tCommon = useTranslations('common');
   const locale = useLocale();
   const { basicInfo, loading, error, updateBasicInfo, refetch } = useBasicPatientInfo();
+  const { personalInfo, loading: personalLoading } = usePersonalPatientInfo();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -90,7 +93,38 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
     return `${country.flag} ${country.name}`;
   };
 
-  if (loading) {
+  // Get birth country from personalInfo, fallback to origin_country
+  const getBirthCountryDisplay = () => {
+    if (personalInfo?.birth_country) {
+      // Map country code to name if needed
+      const countryMap: Record<string, string> = {
+        'CO': 'Colombia',
+        'US': 'Estados Unidos',
+        'AR': 'Argentina',
+        'MX': 'México',
+        'BR': 'Brasil',
+        'CL': 'Chile',
+        'PE': 'Perú',
+        'EC': 'Ecuador',
+        'VE': 'Venezuela',
+        'UY': 'Uruguay',
+        'PY': 'Paraguay',
+        'BO': 'Bolivia',
+        'CA': 'Canadá',
+        'ES': 'España',
+        'FR': 'Francia',
+        'IT': 'Italia',
+        'DE': 'Alemania',
+        'GB': 'Reino Unido'
+      };
+      const countryName = countryMap[personalInfo.birth_country] || personalInfo.birth_country;
+      return formatCountryWithFlag(countryName);
+    }
+    // Fallback to origin_country from basic info
+    return getCountryDisplay(basicInfo?.originCountry || 'CO');
+  };
+
+  if (loading || personalLoading) {
     return (
       <div className="bg-white rounded-b-xl border border-gray-200 p-6 mt-0 min-h-[400px]" data-testid={testId}>
         <div className="space-y-6">
@@ -238,7 +272,7 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-vitalgo-dark-lighter">{t('fields.originCountry')}</span>
-                  <span className="text-sm font-medium text-vitalgo-dark">{getCountryDisplay(basicInfo.originCountry)}</span>
+                  <span className="text-sm font-medium text-vitalgo-dark">{getBirthCountryDisplay()}</span>
                 </div>
               </div>
             </div>
