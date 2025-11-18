@@ -4,6 +4,9 @@ Profile completion use case for RF002
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
 from uuid import UUID
+import logging
+
+logger = logging.getLogger(__name__)
 
 from slices.signup.domain.models.patient_model import Patient
 from slices.signup.domain.models.user_model import User
@@ -132,6 +135,14 @@ class CompleteProfileUseCase:
             cesareans_count=patient.cesareans_count,
             abortions_count=patient.abortions_count,
             contraceptive_method=patient.contraceptive_method,
+
+            # Organ donor preference fields (Voluntad de la Persona)
+            organ_donor_preference=patient.organ_donor_preference,
+            authorized_decision_maker=patient.authorized_decision_maker,
+
+            # Physical measurements fields (Medidas Físicas)
+            height=patient.height,
+            weight=patient.weight,
         )
 
     def update_extended_profile(self, user_id: str, profile_data: PatientProfileUpdateDTO) -> Dict[str, Any]:
@@ -145,6 +156,9 @@ class CompleteProfileUseCase:
         Returns:
             Dictionary with update result
         """
+        logger.info(f"🔵 UPDATE_EXTENDED_PROFILE called for user_id: {user_id}")
+        logger.info(f"📦 Received profile_data: {profile_data.model_dump()}")
+
         patient = self.db.query(Patient).filter(Patient.user_id == user_id).first()
         if not patient:
             return {"success": False, "message": "Patient not found"}
@@ -239,15 +253,23 @@ class CompleteProfileUseCase:
                 patient.contraceptive_method = profile_data.contraceptive_method
 
             # Update organ donor preference fields (Voluntad de la Persona)
+            logger.info(f"🔍 ORGAN DONOR DATA - organ_donor_preference: {profile_data.organ_donor_preference}")
+            logger.info(f"🔍 ORGAN DONOR DATA - authorized_decision_maker: {profile_data.authorized_decision_maker}")
             if profile_data.organ_donor_preference is not None:
+                logger.info(f"✅ Setting organ_donor_preference to: {profile_data.organ_donor_preference}")
                 patient.organ_donor_preference = profile_data.organ_donor_preference
             if profile_data.authorized_decision_maker is not None:
+                logger.info(f"✅ Setting authorized_decision_maker to: {profile_data.authorized_decision_maker}")
                 patient.authorized_decision_maker = profile_data.authorized_decision_maker
 
             # Update physical measurements fields (Medidas Físicas)
+            logger.info(f"🔍 PHYSICAL MEASUREMENTS - height: {profile_data.height}")
+            logger.info(f"🔍 PHYSICAL MEASUREMENTS - weight: {profile_data.weight}")
             if profile_data.height is not None:
+                logger.info(f"✅ Setting height to: {profile_data.height}")
                 patient.height = profile_data.height
             if profile_data.weight is not None:
+                logger.info(f"✅ Setting weight to: {profile_data.weight}")
                 patient.weight = profile_data.weight
 
             self.db.commit()
