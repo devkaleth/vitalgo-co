@@ -238,6 +238,18 @@ class CompleteProfileUseCase:
             if profile_data.contraceptive_method is not None:
                 patient.contraceptive_method = profile_data.contraceptive_method
 
+            # Update organ donor preference fields (Voluntad de la Persona)
+            if profile_data.organ_donor_preference is not None:
+                patient.organ_donor_preference = profile_data.organ_donor_preference
+            if profile_data.authorized_decision_maker is not None:
+                patient.authorized_decision_maker = profile_data.authorized_decision_maker
+
+            # Update physical measurements fields (Medidas Físicas)
+            if profile_data.height is not None:
+                patient.height = profile_data.height
+            if profile_data.weight is not None:
+                patient.weight = profile_data.weight
+
             self.db.commit()
 
             # TODO: Check updated completeness once completeness calculation is implemented
