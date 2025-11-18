@@ -35,6 +35,26 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
 }) => {
   const country = getCountryByCode(countryCode);
 
+  // Validate phone number length
+  const validatePhoneLength = (phoneValue: string): string | null => {
+    if (!phoneValue) return null;
+
+    const digits = phoneValue.replace(/\D/g, '');
+
+    if (!digits) return null;
+
+    if (country?.maxLength) {
+      if (digits.length < country.maxLength) {
+        return `El número debe tener ${country.maxLength} dígitos (tiene ${digits.length})`;
+      }
+      if (digits.length > country.maxLength) {
+        return `El número excede los ${country.maxLength} dígitos permitidos`;
+      }
+    }
+
+    return null;
+  };
+
   const formatPhoneNumber = (input: string): string => {
     // Remove all non-digit characters
     const digits = input.replace(/\D/g, '');
@@ -89,7 +109,8 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       );
     }
 
-    if (validation?.isValid === true) {
+    // Show success only if length is also valid
+    if (validation?.isValid === true && !lengthError) {
       return (
         <div className="absolute right-3 top-3">
           <svg className="w-4 h-4 text-vitalgo-green" fill="currentColor" viewBox="0 0 20 20">
@@ -103,7 +124,8 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       );
     }
 
-    if (validation?.isValid === false) {
+    // Show error if validation failed or length is invalid
+    if (validation?.isValid === false || lengthError) {
       return (
         <div className="absolute right-3 top-3">
           <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -121,7 +143,8 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   };
 
   const hasValidationIcon = validation && (validation.isValidating || validation.isValid !== null);
-  const finalError = error || validation?.error;
+  const lengthError = validatePhoneLength(value);
+  const finalError = error || validation?.error || lengthError;
 
   return (
     <div className="space-y-2">
@@ -194,7 +217,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       )}
 
       {/* Validation success message */}
-      {validation?.isValid === true && !finalError && (
+      {validation?.isValid === true && !finalError && !lengthError && (
         <p className="text-sm text-vitalgo-green" data-testid={`${testId}-success`}>
           ✓ Número válido
         </p>
