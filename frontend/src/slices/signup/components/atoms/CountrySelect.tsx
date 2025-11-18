@@ -32,8 +32,10 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCountries, setFilteredCountries] = useState(countries);
+  const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const selectedCountry = countries.find(c => c.code === value);
 
@@ -73,9 +75,25 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   };
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-    if (!isOpen) {
+    const newIsOpen = !isOpen;
+    setIsOpen(newIsOpen);
+    if (!newIsOpen) {
       setSearchTerm('');
+    } else {
+      // Calculate if there's enough space below for the dropdown
+      if (buttonRef.current) {
+        const buttonRect = buttonRef.current.getBoundingClientRect();
+        const dropdownHeight = 300; // Approximate height of dropdown (search + max-h-48)
+        const spaceBelow = window.innerHeight - buttonRect.bottom;
+        const spaceAbove = buttonRect.top;
+
+        // If not enough space below but enough above, open upward
+        if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+          setDropdownPosition('top');
+        } else {
+          setDropdownPosition('bottom');
+        }
+      }
     }
   };
 
@@ -93,6 +111,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
       <div className="relative" ref={dropdownRef}>
         {/* Select button */}
         <button
+          ref={buttonRef}
           type="button"
           onClick={toggleDropdown}
           disabled={isLoading}
@@ -128,7 +147,12 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
 
         {/* Dropdown menu */}
         {isOpen && (
-          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-hidden">
+          <div
+            className={`
+              absolute z-50 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-hidden
+              ${dropdownPosition === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'}
+            `}
+          >
             {/* Search input */}
             <div className="p-3 border-b border-gray-200">
               <div className="relative">

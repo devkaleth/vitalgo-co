@@ -8,12 +8,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { BasicPatientInfo, BasicPatientUpdate } from '../../types';
 import { PhoneInputGroup } from '../../../../shared/components/molecules/PhoneInputGroup';
-import { Country, getCountryByCode } from '../../../signup/data/countries';
+import { Country, getCountryByCode, countries as staticCountries } from '../../../signup/data/countries';
 import { splitPhoneInternational, combinePhoneInternational } from '../../utils/phoneUtils';
 import { useCountries } from '@/hooks/useCountries';
 import type { Country as APICountry } from '@/services/countriesService';
 import { SignupApiService } from '../../../signup/services/signupApi';
 import type { DocumentType } from '../../../signup/types';
+import { CountrySelect } from '../../../signup/components/atoms/CountrySelect';
 
 interface BasicInfoEditModalProps {
   isOpen: boolean;
@@ -45,13 +46,16 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
   // Load countries from API
   const { countries: apiCountries, isLoading: countriesLoading, error: countriesError } = useCountries();
 
-  // Convert API countries to format expected by PhoneInputGroup
-  const convertedCountries: Country[] = apiCountries.map((country: APICountry) => ({
-    code: country.code,
-    name: country.name,
-    dialCode: country.phone_code,
-    flag: country.flag_emoji || '',
-  }));
+  // Convert API countries to format expected by PhoneInputGroup and CountrySelect
+  // Use static countries as fallback if API hasn't loaded yet
+  const convertedCountries: Country[] = apiCountries.length > 0
+    ? apiCountries.map((country: APICountry) => ({
+        code: country.code,
+        name: country.name,
+        dialCode: country.phone_code,
+        flag: country.flag_emoji || '',
+      }))
+    : staticCountries;
 
   // Document types state
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([]);
@@ -117,6 +121,8 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
         phoneInternational: initialData.phoneInternational,
         birthDate: initialData.birthDate,
         email: initialData.email,
+        birthCountry: initialData.birthCountry || '',
+        residenceCountry: initialData.residenceCountry || '',
       });
 
       setPhoneCountryCode(countryCode);
@@ -191,6 +197,21 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
       setErrors(prev => ({ ...prev, phoneInternational: '' }));
     }
     console.log('📞 Phone changed:', { phoneNumber: newPhoneNumber, phoneInternational: newPhoneInternational });
+  };
+
+  // Country selection handlers
+  const handleBirthCountryChange = (country: Country) => {
+    setFormData(prev => ({ ...prev, birthCountry: country.code }));
+    if (errors.birthCountry) {
+      setErrors(prev => ({ ...prev, birthCountry: '' }));
+    }
+  };
+
+  const handleResidenceCountryChange = (country: Country) => {
+    setFormData(prev => ({ ...prev, residenceCountry: country.code }));
+    if (errors.residenceCountry) {
+      setErrors(prev => ({ ...prev, residenceCountry: '' }));
+    }
   };
 
   const validateForm = (): boolean => {
@@ -462,6 +483,35 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                 )}
               </div>
 
+              {/* Country Fields Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Birth Country */}
+                <div>
+                  <CountrySelect
+                    value={formData.birthCountry || ''}
+                    onChange={handleBirthCountryChange}
+                    countries={convertedCountries}
+                    label="País de Nacimiento"
+                    placeholder="Selecciona país de nacimiento"
+                    isLoading={countriesLoading}
+                    data-testid={`${testId}-birth-country`}
+                  />
+                </div>
+
+                {/* Residence Country */}
+                <div>
+                  <CountrySelect
+                    value={formData.residenceCountry || ''}
+                    onChange={handleResidenceCountryChange}
+                    countries={convertedCountries}
+                    label="País de Residencia"
+                    placeholder="Selecciona país de residencia"
+                    isLoading={countriesLoading}
+                    data-testid={`${testId}-residence-country`}
+                  />
+                </div>
+              </div>
+
               {/* General Error */}
               {errors.general && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -496,10 +546,10 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
         data-testid="modal-overlay"
       />
 
-      {/* Modal container */}
-      <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+      {/* Modal container - Scrollable wrapper */}
+      <div className="flex min-h-full items-start justify-center p-4 text-center sm:p-8 overflow-y-auto">
         <div
-          className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
+          className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-0 sm:w-full sm:max-w-2xl"
           data-testid="modal-content"
         >
           {/* Header */}
@@ -706,6 +756,35 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                 )}
               </div>
 
+              {/* Country Fields Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Birth Country */}
+                <div>
+                  <CountrySelect
+                    value={formData.birthCountry || ''}
+                    onChange={handleBirthCountryChange}
+                    countries={convertedCountries}
+                    label="País de Nacimiento"
+                    placeholder="Selecciona país de nacimiento"
+                    isLoading={countriesLoading}
+                    data-testid={`${testId}-birth-country`}
+                  />
+                </div>
+
+                {/* Residence Country */}
+                <div>
+                  <CountrySelect
+                    value={formData.residenceCountry || ''}
+                    onChange={handleResidenceCountryChange}
+                    countries={convertedCountries}
+                    label="País de Residencia"
+                    placeholder="Selecciona país de residencia"
+                    isLoading={countriesLoading}
+                    data-testid={`${testId}-residence-country`}
+                  />
+                </div>
+              </div>
+
               {/* General Error */}
               {errors.general && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -722,7 +801,7 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
 
           {/* Footer - Only shown if showButtons is true */}
           {showButtons && (
-            <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse sm:px-6">
+            <div className="bg-gray-50 px-6 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-200">
               <button
                 type="submit"
                 onClick={handleSubmit}

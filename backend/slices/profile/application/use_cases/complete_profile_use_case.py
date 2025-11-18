@@ -322,6 +322,8 @@ class CompleteProfileUseCase:
             phone_international=patient.phone_international,
             birth_date=patient.birth_date,
             origin_country=patient.origin_country or 'CO',  # Safe fallback to default Colombia
+            birth_country=patient.birth_country,  # Birth country field
+            residence_country=patient.residence_country,  # Residence country field
             country_code=patient.country_code or patient.origin_country or 'CO',  # Phone country code fallback to origin country
             dial_code=patient.dial_code,  # Add database field
             phone_number=patient.phone_number,  # Add database field
@@ -383,6 +385,18 @@ class CompleteProfileUseCase:
                 patient.dial_code = update_data.dial_code
             if update_data.phone_number is not None:
                 patient.phone_number = update_data.phone_number
+            if update_data.birth_country is not None:
+                # Validate country code
+                from shared.utils.countries import is_valid_country_code
+                if not is_valid_country_code(update_data.birth_country):
+                    return {"success": False, "message": f"Código de país de nacimiento inválido: {update_data.birth_country}"}
+                patient.birth_country = update_data.birth_country
+            if update_data.residence_country is not None:
+                # Validate country code
+                from shared.utils.countries import is_valid_country_code
+                if not is_valid_country_code(update_data.residence_country):
+                    return {"success": False, "message": f"Código de país de residencia inválido: {update_data.residence_country}"}
+                patient.residence_country = update_data.residence_country
 
             # Update user email if provided
             if update_data.email is not None:
