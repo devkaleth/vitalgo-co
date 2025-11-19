@@ -5,6 +5,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { IllnessStatusProps } from '../../types';
 
 export const IllnessStatus: React.FC<IllnessStatusProps> = ({
@@ -12,6 +13,7 @@ export const IllnessStatus: React.FC<IllnessStatusProps> = ({
   size = 'md',
   'data-testid': testId
 }) => {
+  const t = useTranslations('illnesses');
   // Size classes
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
@@ -22,25 +24,21 @@ export const IllnessStatus: React.FC<IllnessStatusProps> = ({
   // Status configuration with VitalGo brand colors
   const statusConfig = {
     activa: {
-      label: 'Activa',
       bgColor: 'bg-red-100',
       textColor: 'text-red-800',
       borderColor: 'border-red-200',
     },
     en_tratamiento: {
-      label: 'En Tratamiento',
       bgColor: 'bg-blue-100',
       textColor: 'text-blue-800',
       borderColor: 'border-blue-200',
     },
     curada: {
-      label: 'Curada',
       bgColor: 'bg-green-100',
       textColor: 'text-green-800',
       borderColor: 'border-green-200',
     },
     cronica: {
-      label: 'Crónica',
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-800',
       borderColor: 'border-orange-200',
@@ -48,6 +46,7 @@ export const IllnessStatus: React.FC<IllnessStatusProps> = ({
   };
 
   const config = statusConfig[illness.status];
+  const statusLabel = t(`statusLabels.${illness.status}`);
 
   // Fallback for unknown status
   if (!config) {
@@ -69,14 +68,15 @@ export const IllnessStatus: React.FC<IllnessStatusProps> = ({
   `;
 
   // Add chronic indicator if applicable
+  const chronicLabel = t('chronicCondition');
   const label = illness.isChronic && illness.status !== 'cronica'
-    ? `${config.label} • Crónica`
-    : config.label;
+    ? `${statusLabel} • ${t('statusLabels.cronica')}`
+    : statusLabel;
 
   return (
     <span
       className={badgeClasses}
-      title={illness.isChronic ? `${config.label} (Condición crónica)` : config.label}
+      title={illness.isChronic ? `${statusLabel} (${chronicLabel})` : statusLabel}
       data-testid={testId}
     >
       {/* Chronic indicator dot */}

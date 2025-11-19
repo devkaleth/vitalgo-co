@@ -3,6 +3,7 @@
  * Displays individual medical data items with edit/delete actions
  */
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { PatientMedication, PatientAllergy, PatientSurgery, PatientIllness } from '../../types';
 
 type MedicalDataItem = PatientMedication | PatientAllergy | PatientSurgery | PatientIllness;
@@ -22,6 +23,7 @@ export const MedicalDataCard: React.FC<MedicalDataCardProps> = ({
   onDelete,
   'data-testid': testId
 }) => {
+  const t = useTranslations('dashboard.labels');
   const getTypeIcon = () => {
     switch (type) {
       case 'medication':
@@ -71,13 +73,13 @@ export const MedicalDataCard: React.FC<MedicalDataCardProps> = ({
         return `${med.dosage} - ${med.frequency}`;
       case 'allergy':
         const allergy = data as PatientAllergy;
-        return `Severidad: ${allergy.severity}`;
+        return `${t('severity')}: ${allergy.severity}`;
       case 'surgery':
         const surgery = data as PatientSurgery;
         return new Date(surgery.surgery_date).toLocaleDateString('es-ES');
       case 'illness':
         const illness = data as PatientIllness;
-        return `Estado: ${illness.status}`;
+        return `${t('status')}: ${illness.status}`;
     }
   };
 
@@ -90,7 +92,7 @@ export const MedicalDataCard: React.FC<MedicalDataCardProps> = ({
             ? 'bg-green-100 text-green-800'
             : 'bg-gray-100 text-gray-800'
         }`}>
-          {med.is_active ? 'Activo' : 'Inactivo'}
+          {med.is_active ? t('active') : t('inactive')}
         </span>
       );
     }

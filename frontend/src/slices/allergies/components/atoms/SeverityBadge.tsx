@@ -5,6 +5,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { SeverityLevel } from '../../types';
 
 interface SeverityBadgeProps {
@@ -16,22 +17,18 @@ interface SeverityBadgeProps {
 
 const severityConfig = {
   leve: {
-    label: 'Leve',
     color: 'bg-green-50 text-green-700 border-green-200',
     dotColor: 'bg-green-500'
   },
   moderada: {
-    label: 'Moderada',
     color: 'bg-yellow-50 text-yellow-700 border-yellow-200',
     dotColor: 'bg-yellow-500'
   },
   severa: {
-    label: 'Severa',
     color: 'bg-orange-50 text-orange-700 border-orange-200',
     dotColor: 'bg-orange-500'
   },
   critica: {
-    label: 'Crítica',
     color: 'bg-red-50 text-red-700 border-red-200',
     dotColor: 'bg-red-500'
   }
@@ -43,7 +40,9 @@ export const SeverityBadge: React.FC<SeverityBadgeProps> = ({
   className = '',
   'data-testid': testId
 }) => {
+  const t = useTranslations('allergies');
   const config = severityConfig[severityLevel];
+  const severityLabel = t(`severityLabels.${severityLevel}`);
 
   const sizeClasses = {
     sm: 'px-2 py-1 text-xs',
@@ -59,14 +58,14 @@ export const SeverityBadge: React.FC<SeverityBadgeProps> = ({
         ${className}
       `}
       data-testid={testId}
-      title={`Severidad: ${config.label}`}
+      title={`${t('severity')}: ${severityLabel}`}
     >
       {/* Severity indicator dot */}
       <span
         className={`inline-block w-2 h-2 rounded-full mr-1 ${config.dotColor}`}
         aria-hidden="true"
       />
-      {config.label}
+      {severityLabel}
     </span>
   );
 };

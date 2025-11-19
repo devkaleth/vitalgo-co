@@ -36,6 +36,7 @@
   },
   "nav": {
     "home": "Inicio",
+    "pricing": "Precios",
     "login": "Iniciar Sesión",
     "signup": "Registrarse",
     "dashboard": "Panel de Control",
@@ -245,7 +246,19 @@
     "description": "Ver y gestionar tu información médica",
     "pageTitle": "Panel de Control Médico | VitalGo",
     "pageDescription": "Gestiona tu información médica de forma segura. Accede a tus medicamentos, alergias, cirugías e historial médico.",
-    "pageKeywords": "panel de control médico, expediente digital, información médica, medicamentos, alergias"
+    "pageKeywords": "panel de control médico, expediente digital, información médica, medicamentos, alergias",
+    "pageTitles": {
+      "surgeries": "Cirugías",
+      "illnesses": "Enfermedades",
+      "allergies": "Alergias",
+      "medications": "Medicamentos"
+    },
+    "labels": {
+      "severity": "Severidad",
+      "status": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    }
   },
   "profile": {
     "title": "Mi Perfil",
@@ -793,6 +806,11 @@
       "discontinued": "Suspendido",
       "paused": "Pausado"
     },
+    "statusLabels": {
+      "active": "Activo",
+      "ended": "Finalizado",
+      "suspended": "Suspendido"
+    },
     "noMedications": "No hay medicamentos registrados",
     "activeMedications": "Medicamentos Activos",
     "pastMedications": "Medicamentos Pasados",
@@ -915,6 +933,12 @@
       "moderate": "Moderada",
       "severe": "Severa",
       "lifeThreatening": "Potencialmente Mortal"
+    },
+    "severityLabels": {
+      "leve": "Leve",
+      "moderada": "Moderada",
+      "severa": "Severa",
+      "critica": "Crítica"
     },
     "reaction": "Reacción",
     "reactions": "Reacciones",
@@ -1055,6 +1079,13 @@
       "resolved": "Resuelta",
       "chronic": "Crónica"
     },
+    "statusLabels": {
+      "activa": "Activa",
+      "en_tratamiento": "En Tratamiento",
+      "curada": "Curada",
+      "cronica": "Crónica"
+    },
+    "chronicCondition": "Condición crónica",
     "severity": "Severidad",
     "severityLevels": {
       "mild": "Leve",
@@ -1406,6 +1437,80 @@
       "retry": "Reintentar"
     }
   },
+  "emergencyAccess": {
+    "cards": {
+      "basicInfo": {
+        "title": "Información Básica",
+        "fullName": "Nombre Completo",
+        "documentType": "Tipo de Documento",
+        "documentNumber": "Número de Documento",
+        "birthDate": "Fecha de Nacimiento",
+        "age": "Edad",
+        "years": "años",
+        "biologicalSex": "Sexo Biológico",
+        "gender": "Género"
+      },
+      "personalInfo": {
+        "title": "Información Personal",
+        "bloodType": "Tipo de Sangre",
+        "eps": "EPS",
+        "occupation": "Ocupación",
+        "address": "Dirección",
+        "city": "Ciudad",
+        "country": "País",
+        "emergencyContact": "Contacto de Emergencia",
+        "name": "Nombre",
+        "relationship": "Relación",
+        "phone": "Teléfono",
+        "alternativePhone": "Teléfono Alternativo"
+      },
+      "medicalInfo": {
+        "title": "Información Médica",
+        "allergies": "ALERGIAS",
+        "medications": "Medicamentos Activos",
+        "illnesses": "Enfermedades",
+        "surgeries": "Cirugías",
+        "severity": "Severidad",
+        "reaction": "Reacción",
+        "notes": "Notas",
+        "dosage": "Dosis",
+        "frequency": "Frecuencia",
+        "prescribedBy": "Prescrito por",
+        "status": "Estado",
+        "chronic": "CRÓNICA",
+        "diagnosisDate": "Fecha de diagnóstico",
+        "cie10Code": "Código CIE-10",
+        "treatment": "Tratamiento",
+        "date": "Fecha",
+        "hospital": "Hospital",
+        "complications": "Complicaciones",
+        "noMedicalData": "No hay información médica registrada"
+      },
+      "gynecologicalInfo": {
+        "title": "Información Ginecológica",
+        "pregnant": "EMBARAZADA",
+        "gestationWeeks": "Semanas de gestación",
+        "lastMenstruation": "Fecha de Última Menstruación",
+        "previousPregnancies": "Embarazos Previos",
+        "births": "Partos",
+        "cesareans": "Cesáreas",
+        "abortions": "Abortos",
+        "contraceptiveMethod": "Método Anticonceptivo"
+      }
+    },
+    "biologicalSex": {
+      "F": "Femenino",
+      "M": "Masculino",
+      "I": "Intersexual"
+    },
+    "gender": {
+      "MASCULINO": "Masculino",
+      "FEMENINO": "Femenino",
+      "NO_BINARIO": "No binario",
+      "PREFIERO_NO_DECIR": "Prefiero no decir",
+      "OTRO": "Otro"
+    }
+  },
   "emergency": {
     "title": "Información de Emergencia",
     "accessedBy": "Accedido por",
@@ -1578,6 +1683,24 @@
         "role": "Paramédica - Cruz Roja Colombia",
         "content": "En emergencias cada segundo cuenta. Con VitalGo veo las alergias y condiciones del paciente antes de llegar al hospital."
       }
+    },
+    "pricing": {
+      "badge": "Precios",
+      "title": "Comienza gratis, crece cuando quieras",
+      "subtitle": "Accede a todas las funciones esenciales sin costo. Tu salud digital empieza hoy.",
+      "freePlan": {
+        "title": "Plan Gratuito",
+        "price": "Gratis",
+        "subtitle": "Para siempre",
+        "features": [
+          "Código QR de emergencia",
+          "Registros médicos ilimitados",
+          "Gestión de medicamentos y alergias",
+          "Perfil médico completo"
+        ],
+        "cta": "Comenzar Gratis"
+      },
+      "viewFullPricing": "Ver todos los planes y beneficios"
     },
     "cta": {
       "title": "Tu salud merece estar en buenas manos",

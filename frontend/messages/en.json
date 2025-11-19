@@ -35,6 +35,7 @@
   },
   "nav": {
     "home": "Home",
+    "pricing": "Pricing",
     "login": "Log In",
     "signup": "Sign Up",
     "dashboard": "Dashboard",
@@ -230,6 +231,10 @@
           "label": "Country of Origin",
           "placeholder": "Select your country"
         },
+        "birthCountry": {
+          "label": "Birth Country",
+          "placeholder": "Select your birth country"
+        },
         "birthDate": "Birth Date"
       }
     },
@@ -313,7 +318,19 @@
     "description": "View and manage your medical information",
     "pageTitle": "Medical Dashboard | VitalGo",
     "pageDescription": "Manage your medical information securely. Access your medications, allergies, surgeries and medical history.",
-    "pageKeywords": "medical dashboard, digital records, medical information, medications, allergies"
+    "pageKeywords": "medical dashboard, digital records, medical information, medications, allergies",
+    "pageTitles": {
+      "surgeries": "Surgeries",
+      "illnesses": "Illnesses",
+      "allergies": "Allergies",
+      "medications": "Medications"
+    },
+    "labels": {
+      "severity": "Severity",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   },
   "profile": {
     "title": "My Profile",
@@ -820,6 +837,12 @@
       "deleteConfirm": "Delete",
       "deleteCancel": "Cancel"
     },
+    "status": "Status",
+    "statusLabels": {
+      "active": "Active",
+      "ended": "Ended",
+      "suspended": "Suspended"
+    },
     "emptyState": {
       "title": "No medications registered",
       "description": "Start by adding your current medications to keep track of your treatment",
@@ -955,6 +978,12 @@
       "moderate": "Moderate",
       "severe": "Severe",
       "lifeThreatening": "Life-Threatening"
+    },
+    "severityLabels": {
+      "leve": "Mild",
+      "moderada": "Moderate",
+      "severa": "Severe",
+      "critica": "Critical"
     },
     "validation": {
       "nameRequired": "Allergy name is required",
@@ -1270,6 +1299,13 @@
       "cured": "Cured",
       "monitoring": "Under Monitoring"
     },
+    "statusLabels": {
+      "activa": "Active",
+      "en_tratamiento": "Under Treatment",
+      "curada": "Cured",
+      "cronica": "Chronic"
+    },
+    "chronicCondition": "Chronic condition",
     "severityLevels": {
       "mild": "Mild",
       "moderate": "Moderate",
@@ -1521,6 +1557,80 @@
       "retry": "Retry"
     }
   },
+  "emergencyAccess": {
+    "cards": {
+      "basicInfo": {
+        "title": "Basic Information",
+        "fullName": "Full Name",
+        "documentType": "Document Type",
+        "documentNumber": "Document Number",
+        "birthDate": "Birth Date",
+        "age": "Age",
+        "years": "years",
+        "biologicalSex": "Biological Sex",
+        "gender": "Gender"
+      },
+      "personalInfo": {
+        "title": "Personal Information",
+        "bloodType": "Blood Type",
+        "eps": "Health Insurance",
+        "occupation": "Occupation",
+        "address": "Address",
+        "city": "City",
+        "country": "Country",
+        "emergencyContact": "Emergency Contact",
+        "name": "Name",
+        "relationship": "Relationship",
+        "phone": "Phone",
+        "alternativePhone": "Alternative Phone"
+      },
+      "medicalInfo": {
+        "title": "Medical Information",
+        "allergies": "ALLERGIES",
+        "medications": "Active Medications",
+        "illnesses": "Illnesses",
+        "surgeries": "Surgeries",
+        "severity": "Severity",
+        "reaction": "Reaction",
+        "notes": "Notes",
+        "dosage": "Dosage",
+        "frequency": "Frequency",
+        "prescribedBy": "Prescribed by",
+        "status": "Status",
+        "chronic": "CHRONIC",
+        "diagnosisDate": "Diagnosis Date",
+        "cie10Code": "ICD-10 Code",
+        "treatment": "Treatment",
+        "date": "Date",
+        "hospital": "Hospital",
+        "complications": "Complications",
+        "noMedicalData": "No medical information registered"
+      },
+      "gynecologicalInfo": {
+        "title": "Gynecological Information",
+        "pregnant": "PREGNANT",
+        "gestationWeeks": "Weeks of gestation",
+        "lastMenstruation": "Last Menstruation Date",
+        "previousPregnancies": "Previous Pregnancies",
+        "births": "Births",
+        "cesareans": "Cesarean Sections",
+        "abortions": "Abortions",
+        "contraceptiveMethod": "Contraceptive Method"
+      }
+    },
+    "biologicalSex": {
+      "F": "Female",
+      "M": "Male",
+      "I": "Intersex"
+    },
+    "gender": {
+      "MASCULINO": "Male",
+      "FEMENINO": "Female",
+      "NO_BINARIO": "Non-binary",
+      "PREFIERO_NO_DECIR": "Prefer not to say",
+      "OTRO": "Other"
+    }
+  },
   "emergency": {
     "title": "Emergency Access",
     "subtitle": "Medical information for emergency responders",
@@ -1746,6 +1856,24 @@
         "role": "Paramedic - Colombian Red Cross",
         "content": "In emergencies every second counts. With VitalGo I can see the patient's allergies and conditions before arriving at the hospital."
       }
+    },
+    "pricing": {
+      "badge": "Pricing",
+      "title": "Start free, grow when you want",
+      "subtitle": "Access all essential features at no cost. Your digital health starts today.",
+      "freePlan": {
+        "title": "Free Plan",
+        "price": "Free",
+        "subtitle": "Forever",
+        "features": [
+          "Emergency QR code",
+          "Unlimited medical records",
+          "Medication and allergy management",
+          "Complete medical profile"
+        ],
+        "cta": "Start Free"
+      },
+      "viewFullPricing": "View all plans and benefits"
     },
     "cta": {
       "title": "Your health deserves to be in good hands",
