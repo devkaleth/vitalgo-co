@@ -256,6 +256,52 @@ Uses BigInteger PKs for optimal performance in high-volume operations.
 - `created_at`: DateTime(timezone) - Record creation (auto-generated)
 - `updated_at`: DateTime(timezone) - Last modification (auto-updated)
 
+## Subscription & Payment Tables
+
+### subscription_plans
+- `id`: Integer (PK) - Plan identifier (auto-increment)
+- `name`: String(50, unique) - Internal plan name (e.g., "free", "premium", "enterprise")
+- `display_name`: String(100) - User-facing plan name for UI
+- `description`: Text (nullable) - Detailed plan description
+- `price`: Numeric(10, 2) - Plan price (e.g., 0.00 for free, 9.99 for premium)
+- `currency`: String(3) - Currency code (default: "USD")
+- `duration_days`: Integer (nullable) - Plan duration in days (NULL = lifetime/unlimited)
+- `is_active`: Boolean - Whether plan is available for purchase (default: true)
+- `is_popular`: Boolean - Highlight as popular plan in UI (default: false)
+- `features`: JSON (nullable) - List of plan features as JSON array
+- `max_records`: Integer (nullable) - Maximum medical records allowed (NULL = unlimited)
+- `created_at`: DateTime(timezone) - Plan creation timestamp (auto-generated)
+- `updated_at`: DateTime(timezone) - Last modification timestamp (auto-updated)
+
+### user_subscriptions
+- `id`: BigInteger (PK) - Subscription identifier (auto-increment)
+- `user_id`: UUID (FK->users.id) - User who owns subscription with cascade delete
+- `plan_id`: Integer (FK->subscription_plans.id) - Selected plan with restrict delete
+- `status`: String(20) - Subscription status (default: "active") - Values: "active", "expired", "cancelled"
+- `start_date`: DateTime(timezone) - When subscription started (auto-generated)
+- `end_date`: DateTime(timezone, nullable) - When subscription ends (NULL = lifetime)
+- `auto_renew`: Boolean - Auto-renewal flag (default: false)
+- `payment_method`: String(50, nullable) - Payment method used (e.g., "credit_card", "paypal")
+- `transaction_id`: String(255, nullable) - Payment gateway transaction ID
+- `created_at`: DateTime(timezone) - Record creation timestamp (auto-generated)
+- `updated_at`: DateTime(timezone) - Last modification timestamp (auto-updated)
+
+### discount_codes
+- `id`: Integer (PK) - Discount code identifier (auto-increment)
+- `code`: String(50, unique) - Discount code string (e.g., "WELCOME2024", "PARTNER50")
+- `description`: Text (nullable) - Internal description of discount code purpose
+- `discount_type`: String(20) - Type of discount - Values: "percentage", "fixed"
+- `discount_value`: Numeric(10, 2) - Discount amount (e.g., 20.00 for 20% or $20 fixed)
+- `max_uses`: Integer (nullable) - Maximum number of times code can be used (NULL = unlimited)
+- `used_count`: Integer - Number of times code has been used (default: 0)
+- `valid_from`: DateTime(timezone, nullable) - When code becomes valid (NULL = immediately)
+- `valid_until`: DateTime(timezone, nullable) - When code expires (NULL = never)
+- `is_active`: Boolean - Whether code is active and can be used (default: true)
+- `partner_company`: String(100, nullable) - Partner company associated with code
+- `applicable_plans`: JSON (nullable) - List of plan IDs this code applies to (NULL = all plans)
+- `created_at`: DateTime(timezone) - Code creation timestamp (auto-generated)
+- `updated_at`: DateTime(timezone) - Last modification timestamp (auto-updated)
+
 ## Emergency Access Tables
 
 ### emergency_qrs
@@ -353,6 +399,11 @@ Uses BigInteger PKs for optimal performance in high-volume operations.
 **Authentication & Security:**
 - `user_sessions` - Active sessions (58 sessions)
 - `login_attempts` - Login audit trail
+
+**Subscription & Payment:**
+- `subscription_plans` - Available subscription plans
+- `user_subscriptions` - User plan assignments and status
+- `discount_codes` - Promotional and partner discount codes
 
 **Medical Records (Dashboard System):**
 - `patient_medications` - Medications (16 records, BigInteger PK)
