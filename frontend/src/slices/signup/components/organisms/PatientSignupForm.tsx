@@ -16,6 +16,8 @@ import { fetchCountries } from '../../../../services/countriesService';
 import { useGeolocation } from '../../../../shared/hooks/useGeolocation';
 import { getAllowedDocumentTypes } from '../../utils/documentTypesByCountry';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 interface PatientSignupFormProps {
   onSuccess: (response: RegistrationResponse) => void;
   onError: (error: string) => void;
@@ -121,7 +123,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
       if (planId) {
         setLoadingPlan(true);
         try {
-          const response = await fetch(`http://localhost:8000/api/subscriptions/plans/${planId}`);
+          const response = await fetch(`${API_BASE_URL}/api/subscriptions/plans/${planId}`);
           if (response.ok) {
             const plan = await response.json();
             setSelectedPlan(plan);

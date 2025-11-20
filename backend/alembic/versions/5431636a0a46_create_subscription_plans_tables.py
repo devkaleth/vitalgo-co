@@ -1,7 +1,7 @@
 """create_subscription_plans_tables
 
 Revision ID: 5431636a0a46
-Revises: 743c17eeac08
+Revises: 0b7cd9e5d4df
 Create Date: 2025-11-20 12:10:30.456121
 
 """
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = '5431636a0a46'
-down_revision: Union[str, Sequence[str], None] = '743c17eeac08'
+down_revision: Union[str, Sequence[str], None] = '0b7cd9e5d4df'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

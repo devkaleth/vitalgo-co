@@ -9,6 +9,8 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { Check, Shield, Globe, Infinity, Tag, Building2, Dumbbell, Store } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 interface SubscriptionPlan {
   id: number;
   name: string;
@@ -46,7 +48,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
     // Fetch plans from API
     const fetchPlans = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/subscriptions/plans');
+        const response = await fetch(`${API_BASE_URL}/api/subscriptions/plans`);
         if (response.ok) {
           const data = await response.json();
           setPlans(data);
@@ -69,7 +71,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
     setDiscountMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/subscriptions/validate-discount', {
+      const response = await fetch(`${API_BASE_URL}/api/subscriptions/validate-discount`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
