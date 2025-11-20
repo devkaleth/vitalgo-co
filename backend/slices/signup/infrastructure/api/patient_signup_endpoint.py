@@ -64,11 +64,26 @@ async def register_patient(
         )
 
     except Exception as e:
+        import traceback
+        error_msg = str(e)
+        tb = traceback.format_exc()
+        print(f"=" * 80)
+        print(f"ERROR en registro: {error_msg}")
+        print(f"=" * 80)
+        print(f"Traceback completo:\n{tb}")
+        print(f"=" * 80)
+
+        # Write to file for debugging
+        with open("/tmp/signup_error.log", "a") as f:
+            f.write(f"\n{'=' * 80}\n")
+            f.write(f"ERROR: {error_msg}\n")
+            f.write(f"Traceback:\n{tb}\n")
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
                 "success": False,
                 "message": "Error interno del servidor",
-                "errors": {"general": ["Error procesando registro"]}
+                "errors": {"general": [f"Error procesando registro: {error_msg}"]}
             }
         )

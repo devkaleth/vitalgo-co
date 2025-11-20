@@ -154,6 +154,7 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             onPhoneBlur={() => onFieldBlur('phone')}
             validation={validationStates.phone}
             error={errors.phone}
+            countries={countries}
             data-testid="phone-input-group"
           />
         </div>

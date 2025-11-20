@@ -98,6 +98,7 @@ export class SignupApiService {
         document_number: formData.documentNumber,
         phone_international: formData.phoneInternational,
         birth_date: formData.birthDate,
+        origin_country: formData.originCountry, // Include origin country
         email: formData.email,
         password: formData.password,
         confirm_password: formData.confirmPassword,

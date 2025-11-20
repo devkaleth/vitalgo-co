@@ -11,10 +11,10 @@ from sqlalchemy import (
     BigInteger, ForeignKey, JSON, Date, Text
 )
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-Base = declarative_base()
+from shared.database import Base
 
 
 class DiscountCode(Base):
