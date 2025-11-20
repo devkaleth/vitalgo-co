@@ -100,7 +100,7 @@ export const SurgeryForm: React.FC<SurgeryFormProps> = ({
         {/* Surgery Date */}
         <div>
           <label htmlFor="surgeryDate" className={labelClasses}>
-            {t('fields.surgeryDate')} <span className={requiredClasses}>*</span>
+            {t('fields.surgeryDate')}
           </label>
           <input
             type="date"

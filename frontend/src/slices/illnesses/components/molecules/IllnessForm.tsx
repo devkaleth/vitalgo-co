@@ -88,7 +88,7 @@ export const IllnessForm: React.FC<IllnessFormProps> = ({
           {/* Diagnosis Date */}
           <div>
             <label htmlFor="diagnosisDate" className={labelClasses}>
-              {t('fields.diagnosisDate')} <span className={requiredClasses}>*</span>
+              {t('fields.diagnosisDate')}
             </label>
             <input
               type="date"

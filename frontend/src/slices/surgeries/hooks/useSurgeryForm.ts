@@ -31,18 +31,17 @@ const validateField = (field: keyof SurgeryFormData, value: any, allData: Surger
       return null;
 
     case 'surgeryDate':
-      if (!value || typeof value !== 'string' || value.trim().length === 0) {
-        return 'La fecha de la cirugía es requerida';
-      }
-      const date = new Date(value);
-      if (isNaN(date.getTime())) {
-        return 'La fecha debe ser válida';
-      }
-      const now = new Date();
-      const maxDate = new Date();
-      maxDate.setFullYear(now.getFullYear() + 5); // Allow up to 5 years in future for scheduled surgeries
-      if (date > maxDate) {
-        return 'La fecha no puede ser más de 5 años en el futuro';
+      if (value && typeof value === 'string' && value.trim().length > 0) {
+        const date = new Date(value);
+        if (isNaN(date.getTime())) {
+          return 'La fecha debe ser válida';
+        }
+        const now = new Date();
+        const maxDate = new Date();
+        maxDate.setFullYear(now.getFullYear() + 5); // Allow up to 5 years in future for scheduled surgeries
+        if (date > maxDate) {
+          return 'La fecha no puede ser más de 5 años en el futuro';
+        }
       }
       return null;
 
@@ -123,8 +122,7 @@ export const useSurgeryForm = ({
 
   // Validate form and determine if it's valid
   const isValid = Object.keys(errors).length === 0 &&
-                  formData.procedureName.trim().length > 0 &&
-                  formData.surgeryDate.trim().length > 0;
+                  formData.procedureName.trim().length > 0;
 
   const handleInputChange = useCallback((field: keyof SurgeryFormData, value: string | number | undefined) => {
     setFormData(prevData => {

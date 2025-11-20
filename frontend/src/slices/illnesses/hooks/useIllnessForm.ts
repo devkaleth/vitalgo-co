@@ -191,7 +191,6 @@ export function useIllnessForm({
   // Check if form is valid (required fields + no errors)
   const isValid = Object.keys(errors).length === 0 &&
                   formData.illnessName.trim() !== '' &&
-                  formData.diagnosisDate.trim() !== '' &&
                   formData.status.trim() !== '';
 
   return {
