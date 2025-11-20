@@ -145,73 +145,60 @@ export const PricingPage: React.FC<PricingPageProps> = ({
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Plans Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              className={`bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden flex flex-col ${
-                plan.is_popular ? 'border-2 border-vitalgo-green' : 'border border-gray-200'
-              }`}
-            >
+        {/* Free Plan - Centered */}
+        <div className="max-w-lg mx-auto mb-16">
+          {freePlan && (
+            <div className="bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden flex flex-col border-2 border-vitalgo-green">
               {/* Popular Badge */}
-              {plan.is_popular && (
-                <div className="absolute top-0 right-0 bg-vitalgo-green text-white px-6 py-2 rounded-bl-xl font-semibold">
-                  Popular
-                </div>
-              )}
+              <div className="absolute top-0 right-0 bg-vitalgo-green text-white px-6 py-2 rounded-bl-xl font-semibold">
+                Popular
+              </div>
 
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {plan.display_name}
+                  {freePlan.display_name}
                 </h2>
                 <div className="flex items-baseline justify-center gap-2 mb-2">
-                  <span className={`text-5xl font-bold ${plan.is_popular ? 'text-vitalgo-green' : 'text-gray-900'}`}>
-                    {plan.price === 0 ? 'Gratis' : `$${plan.price}`}
+                  <span className="text-5xl font-bold text-vitalgo-green">
+                    Gratis
                   </span>
                   <span className="text-gray-600 text-lg">
-                    {plan.duration_days ? `/${plan.duration_days} días` : '/Para siempre'}
+                    /Para siempre
                   </span>
                 </div>
-                {plan.price === 0 && (
-                  <div className="mb-3">
-                    <span className="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">
-                      ⚡ Por tiempo limitado
-                    </span>
-                  </div>
-                )}
+                <div className="mb-3">
+                  <span className="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">
+                    ⚡ Por tiempo limitado
+                  </span>
+                </div>
                 <p className="text-gray-600">
-                  {plan.description}
+                  {freePlan.description}
                 </p>
               </div>
 
               {/* Features List */}
               <div className="space-y-4 mb-8 flex-grow">
-                {plan.features && plan.features.map((feature, idx) => (
+                {freePlan.features && freePlan.features.map((feature, idx) => (
                   <div key={idx} className="flex items-start gap-3">
-                    <div className={`${plan.is_popular ? 'bg-vitalgo-green/10' : 'bg-blue-500/10'} p-1 rounded-full flex-shrink-0 mt-0.5`}>
-                      <Check className={`w-5 h-5 ${plan.is_popular ? 'text-vitalgo-green' : 'text-blue-600'}`} />
+                    <div className="bg-vitalgo-green/10 p-1 rounded-full flex-shrink-0 mt-0.5">
+                      <Check className="w-5 h-5 text-vitalgo-green" />
                     </div>
                     <span className="text-gray-700">{feature}</span>
                   </div>
                 ))}
               </div>
 
-              {/* CTA Button - Always at bottom */}
+              {/* CTA Button */}
               <div className="mt-auto">
                 <button
-                  onClick={() => handleSelectPlan(plan.id)}
-                  className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-colors ${
-                    plan.is_popular
-                      ? 'bg-vitalgo-green text-white hover:bg-vitalgo-green/90'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
+                  onClick={() => handleSelectPlan(freePlan.id)}
+                  className="w-full py-4 px-6 rounded-lg font-semibold text-lg transition-colors bg-vitalgo-green text-white hover:bg-vitalgo-green/90"
                 >
                   Iniciar Plan
                 </button>
               </div>
             </div>
-          ))}
+          )}
         </div>
 
         {/* Discount Code Section */}
