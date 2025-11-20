@@ -103,6 +103,7 @@ export class SignupApiService {
         confirm_password: formData.confirmPassword,
         accept_terms: formData.acceptTerms,
         accept_privacy: formData.acceptPrivacy,
+        ...(formData.planId && { plan_id: formData.planId }), // Include plan_id if provided
       };
 
       const response = await fetch(`${API_BASE_URL}/patient`, {

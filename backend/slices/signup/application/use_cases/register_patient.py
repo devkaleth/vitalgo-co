@@ -14,6 +14,7 @@ from slices.auth.infrastructure.security.jwt_service import JWTService
 from slices.auth.application.ports.user_session_repository import UserSessionRepository
 from slices.auth.application.ports.auth_repository import AuthRepository
 from slices.auth.application.dto import UserResponseDto
+from slices.subscriptions.domain.repository import SubscriptionRepositoryPort
 
 
 class RegisterPatientUseCase:
@@ -25,13 +26,15 @@ class RegisterPatientUseCase:
         patient_repository: PatientRepository,
         jwt_service: JWTService,
         user_session_repository: UserSessionRepository,
-        auth_repository: AuthRepository
+        auth_repository: AuthRepository,
+        subscription_repository: Optional[SubscriptionRepositoryPort] = None
     ):
         self.user_repository = user_repository
         self.patient_repository = patient_repository
         self.jwt_service = jwt_service
         self.user_session_repository = user_session_repository
         self.auth_repository = auth_repository
+        self.subscription_repository = subscription_repository
 
     async def execute(
         self,
@@ -74,10 +77,33 @@ class RegisterPatientUseCase:
             refresh_expires_at=refresh_token_data["expires_at"]
         )
 
-        # 6. Update user login info (first login)
+        # 6. Create subscription if plan_id provided
+        if registration_data.plan_id and self.subscription_repository:
+            try:
+                await self.subscription_repository.create_user_subscription(
+                    user_id=user.id,
+                    plan_id=registration_data.plan_id
+                )
+            except Exception as e:
+                # Log error but don't fail registration
+                # User can be assigned plan later
+                print(f"Warning: Could not create subscription: {e}")
+        elif not registration_data.plan_id and self.subscription_repository:
+            # If no plan selected, assign default free plan
+            try:
+                free_plan = await self.subscription_repository.get_plan_by_name("free")
+                if free_plan:
+                    await self.subscription_repository.create_user_subscription(
+                        user_id=user.id,
+                        plan_id=free_plan["id"]
+                    )
+            except Exception as e:
+                print(f"Warning: Could not assign default free plan: {e}")
+
+        # 7. Update user login info (first login)
         await self.auth_repository.update_last_login(user.id)
 
-        # 7. Create user response for consistent format with auth
+        # 8. Create user response for consistent format with auth
         user_response = UserResponseDto(
             id=str(user.id),
             email=user.email,
@@ -89,7 +115,7 @@ class RegisterPatientUseCase:
             mandatory_fields_completed=False  # New users need to add medical data
         )
 
-        # 8. Return enhanced response with auth tokens
+        # 9. Return enhanced response with auth tokens
         return PatientRegistrationResponse(
             success=True,
             message="Cuenta creada exitosamente",

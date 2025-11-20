@@ -12,6 +12,7 @@ from slices.signup.infrastructure.persistence.patient_repository import SQLAlche
 from slices.auth.infrastructure.security.jwt_service_singleton import get_jwt_service
 from slices.auth.infrastructure.persistence.sqlalchemy_user_session_repository import SQLAlchemyUserSessionRepository
 from slices.auth.infrastructure.persistence.sqlalchemy_auth_repository import SQLAlchemyAuthRepository
+from slices.subscriptions.infrastructure.persistence.subscription_repository import SubscriptionRepository
 
 router = APIRouter(prefix="/api/signup", tags=["Patient Signup"])
 
@@ -23,12 +24,14 @@ def get_register_patient_use_case(db: Session = Depends(get_db)) -> RegisterPati
     jwt_service = get_jwt_service()
     user_session_repository = SQLAlchemyUserSessionRepository(db)
     auth_repository = SQLAlchemyAuthRepository(db)
+    subscription_repository = SubscriptionRepository(db)
     return RegisterPatientUseCase(
         user_repository,
         patient_repository,
         jwt_service,
         user_session_repository,
-        auth_repository
+        auth_repository,
+        subscription_repository
     )
 
 

@@ -26,6 +26,7 @@ class PatientRegistrationDTO(BaseModel):
     confirm_password: str = Field(..., min_length=8, max_length=128, description="Password confirmation")
     accept_terms: bool = Field(..., description="Accept terms and conditions")
     accept_privacy: bool = Field(..., description="Accept privacy policy")
+    plan_id: Optional[int] = Field(default=None, description="Selected subscription plan ID (optional)")
 
     class Config:
         str_strip_whitespace = True

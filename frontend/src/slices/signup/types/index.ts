@@ -22,6 +22,7 @@ export interface PatientRegistrationForm {
   confirmPassword: string;
   acceptTerms: boolean;
   acceptPrivacy: boolean;
+  planId?: number; // Optional selected subscription plan
 }
 
 export interface ValidationResult {

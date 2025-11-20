@@ -4,6 +4,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { PersonalInfoSection } from '../molecules/PersonalInfoSection';
 import { AccountSection } from '../molecules/AccountSection';
 import { CheckboxWithLink } from '../atoms/CheckboxWithLink';
@@ -29,6 +30,10 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   const tValidation = useTranslations('validation');
   const tForms = useTranslations('forms');
   const tCommon = useTranslations('common');
+
+  // Get locale from params
+  const params = useParams();
+  const locale = params?.locale as string || 'es';
 
   // Geolocation hook - Auto-detect user's country
   const { countryCode: detectedCountryCode, dialCode: detectedDialCode, isLoading: isDetectingLocation } = useGeolocation({
@@ -78,6 +83,10 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   // Submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Selected plan state
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [loadingPlan, setLoadingPlan] = useState(false);
+
   // Load countries on mount
   useEffect(() => {
     const loadCountries = async () => {
@@ -104,6 +113,29 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
 
     loadCountries();
   }, [onError, tSignup]);
+
+  // Load selected plan from localStorage
+  useEffect(() => {
+    const loadSelectedPlan = async () => {
+      const planId = localStorage.getItem('selectedPlanId');
+      if (planId) {
+        setLoadingPlan(true);
+        try {
+          const response = await fetch(`http://localhost:8000/api/subscriptions/plans/${planId}`);
+          if (response.ok) {
+            const plan = await response.json();
+            setSelectedPlan(plan);
+          }
+        } catch (error) {
+          console.error('Error loading plan:', error);
+        } finally {
+          setLoadingPlan(false);
+        }
+      }
+    };
+
+    loadSelectedPlan();
+  }, []);
 
   // Load document types on mount and when origin country changes
   useEffect(() => {
@@ -493,9 +525,18 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     setIsSubmitting(true);
 
     try {
-      const response = await SignupApiService.registerPatient(formData);
+      // Get selected plan from localStorage
+      const selectedPlanId = localStorage.getItem('selectedPlanId');
+      const formDataWithPlan = {
+        ...formData,
+        planId: selectedPlanId ? parseInt(selectedPlanId, 10) : undefined
+      };
+
+      const response = await SignupApiService.registerPatient(formDataWithPlan);
 
       if (response.success) {
+        // Clear selected plan from localStorage after successful registration
+        localStorage.removeItem('selectedPlanId');
         onSuccess(response);
       } else {
         onError(response.message || tSignup('errors.registrationFailed'));
@@ -509,6 +550,51 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8" data-testid="patient-signup-form">
+      {/* Selected Plan Indicator */}
+      {selectedPlan && (
+        <div className="bg-gradient-to-r from-vitalgo-green/10 to-green-50 border-2 border-vitalgo-green rounded-xl p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="bg-vitalgo-green text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg">
+                ✓
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 font-medium">Plan Seleccionado</p>
+                <h3 className="text-xl font-bold text-gray-900">{selectedPlan.display_name}</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  {selectedPlan.price === 0 ? (
+                    <span className="font-semibold text-vitalgo-green">Gratis - Para siempre</span>
+                  ) : (
+                    <span>
+                      <span className="font-semibold text-gray-900">${selectedPlan.price}</span>
+                      {selectedPlan.duration_days && <span className="text-gray-500"> / {selectedPlan.duration_days} días</span>}
+                    </span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <a
+              href={`/${locale}/precios`}
+              className="text-vitalgo-green hover:text-vitalgo-green/80 font-medium text-sm underline"
+            >
+              Cambiar plan
+            </a>
+          </div>
+        </div>
+      )}
+
+      {loadingPlan && (
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 animate-pulse">
+          <div className="flex items-center gap-4">
+            <div className="bg-gray-300 rounded-full w-12 h-12"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-300 rounded w-32 mb-2"></div>
+              <div className="h-6 bg-gray-300 rounded w-48"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <PersonalInfoSection
         firstName={formData.firstName}
         lastName={formData.lastName}

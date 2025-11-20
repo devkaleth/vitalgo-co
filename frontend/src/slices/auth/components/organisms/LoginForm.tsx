@@ -256,7 +256,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <p className="text-sm text-gray-600">
             {t('noAccount')}{' '}
             <a
-              href="/signup/paciente"
+              href="/precios"
               className="text-vitalgo-green hover:text-vitalgo-green/80 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-vitalgo-green/20 rounded-sm"
             >
               {t('signUpHere')}

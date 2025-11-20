@@ -19,6 +19,7 @@ from slices.profile.infrastructure.api.profile_endpoints import router as profil
 from slices.qr.infrastructure.api.qr_simple_router import router as qr_router
 from slices.emergency_access.infrastructure.api.emergency_access_router import router as emergency_access_router
 from slices.countries.infrastructure.api.countries_router import router as countries_router
+from slices.subscriptions.infrastructure.api.subscriptions_router import router as subscriptions_router
 
 # Create FastAPI app instance
 app = FastAPI(
@@ -49,6 +50,7 @@ app.include_router(profile_router)
 app.include_router(qr_router)
 app.include_router(emergency_access_router)
 app.include_router(countries_router)
+app.include_router(subscriptions_router)
 
 
 @app.get("/")

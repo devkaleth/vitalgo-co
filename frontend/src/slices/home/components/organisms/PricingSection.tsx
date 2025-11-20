@@ -88,10 +88,10 @@ export function PricingSection() {
 
               <div className="mb-8">
                 <a
-                  href="/es/signup/paciente"
+                  href="/es/precios"
                   className="block w-full text-center px-6 py-3 bg-vitalgo-green text-white font-medium rounded-lg hover:bg-vitalgo-green-light transition-colors duration-150"
                 >
-                  Comenzar gratis
+                  Ver Planes
                 </a>
               </div>
 
