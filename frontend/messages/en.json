@@ -336,6 +336,35 @@
     "title": "My Profile",
     "pageTitle": "My Profile",
     "pageDescription": "Manage your personal and medical information securely.",
+    "managePlan": "Manage Plan",
+    "managePlanModal": {
+      "title": "Manage Plan",
+      "currentPlan": "Your Current Plan",
+      "availablePlans": "Available Plans",
+      "loading": "Loading plans...",
+      "lifetime": "Lifetime",
+      "active": "Active",
+      "cancelWarning": "By canceling your plan, you will lose access to all premium features. Your data will be saved for 8 days.",
+      "cancelButton": "Cancel Subscription"
+    },
+    "cancelSubscription": {
+      "warning": {
+        "title": "Cancel Subscription",
+        "message": "Canceling the account will deactivate it and data will be lost. Do you want to continue?",
+        "confirm": "Cancel Subscription"
+      },
+      "confirmation": {
+        "title": "Are You Sure?",
+        "message": "This action will cancel your active subscription. Your data will remain for 8 more days before being permanently deleted.",
+        "confirm": "Yes, Cancel",
+        "cancelling": "Cancelling..."
+      },
+      "success": {
+        "title": "Unsubscription Successful",
+        "message": "Your unsubscription has been successful. Your data will remain in our system for 8 more days, after which it cannot be recovered. You only need to log in again and your subscription will be active again.",
+        "understood": "Understood"
+      }
+    },
     "footer": {
       "copyright": "© 2024 VitalGo. All rights reserved.",
       "privacy": "Privacy",
@@ -1954,6 +1983,10 @@
       "title": "Ready to get started?",
       "description": "Join thousands of people who already trust VitalGo to manage their medical information",
       "button": "Create Free Account"
+    },
+    "loginAlert": {
+      "title": "Plan Required to Continue",
+      "message": "The user you're trying to log in with doesn't have an active plan. Please select a plan to continue accessing your account."
     }
   }
 }

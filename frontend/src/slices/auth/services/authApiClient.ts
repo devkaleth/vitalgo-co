@@ -181,7 +181,8 @@ class AuthApiClientImpl implements AuthApiClient {
           userType: data.user.user_type,
           isVerified: data.user.is_verified,
           profileCompleted: data.user.profile_completed,
-          mandatoryFieldsCompleted: data.user.mandatory_fields_completed
+          mandatoryFieldsCompleted: data.user.mandatory_fields_completed,
+          hasActiveSubscription: data.user.has_active_subscription
         },
         redirectUrl: data.redirect_url
       };
@@ -296,7 +297,8 @@ class AuthApiClientImpl implements AuthApiClient {
         userType: data.user.user_type,
         isVerified: data.user.is_verified,
         profileCompleted: data.user.profile_completed,
-        mandatoryFieldsCompleted: data.user.mandatory_fields_completed
+        mandatoryFieldsCompleted: data.user.mandatory_fields_completed,
+        hasActiveSubscription: data.user.has_active_subscription
       },
       redirectUrl: data.redirect_url
     };
@@ -322,7 +324,8 @@ class AuthApiClientImpl implements AuthApiClient {
             userType: data.user.user_type,
             isVerified: data.user.is_verified,
             profileCompleted: data.user.profile_completed,
-            mandatoryFieldsCompleted: data.user.mandatory_fields_completed
+            mandatoryFieldsCompleted: data.user.mandatory_fields_completed,
+            hasActiveSubscription: data.user.has_active_subscription
           }
         };
       }
@@ -351,7 +354,8 @@ class AuthApiClientImpl implements AuthApiClient {
         userType: data.user.user_type,
         isVerified: data.user.is_verified,
         profileCompleted: data.user.profile_completed,
-        mandatoryFieldsCompleted: data.user.mandatory_fields_completed
+        mandatoryFieldsCompleted: data.user.mandatory_fields_completed,
+        hasActiveSubscription: data.user.has_active_subscription
       }
     };
   }

@@ -58,6 +58,12 @@ class UserResponseDto(BaseModel):
         example=False
     )
 
+    has_active_subscription: bool = Field(
+        default=False,
+        description="Whether the user has an active subscription plan",
+        example=True
+    )
+
     class Config:
         """Pydantic configuration"""
         from_attributes = True

@@ -46,3 +46,8 @@ class SubscriptionRepositoryPort(ABC):
     async def get_user_subscription_history(self, user_id: UUID) -> List[dict]:
         """Get all user subscriptions"""
         pass
+
+    @abstractmethod
+    async def cancel_user_subscription(self, user_id: UUID) -> bool:
+        """Cancel user's active subscription"""
+        pass

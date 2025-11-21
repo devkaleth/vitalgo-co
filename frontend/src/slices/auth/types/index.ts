@@ -17,6 +17,7 @@ export interface User {
   isVerified: boolean;
   profileCompleted: boolean;
   mandatoryFieldsCompleted: boolean;
+  hasActiveSubscription?: boolean;
 }
 
 export interface LoginResponse {

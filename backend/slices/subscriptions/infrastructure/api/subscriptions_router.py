@@ -196,6 +196,37 @@ async def get_my_subscription_history(
         )
 
 
+@router.post("/cancel", status_code=status.HTTP_200_OK)
+async def cancel_subscription(
+    current_user: User = Depends(get_current_user),
+    service: SubscriptionService = Depends(get_subscription_service)
+):
+    """
+    Cancel the authenticated user's active subscription.
+    Sets status to 'cancelled' instead of deleting.
+    Requires authentication.
+    """
+    try:
+        result = await service.cancel_user_subscription(current_user.id)
+        if not result:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No se encontró suscripción activa para cancelar"
+            )
+        return {
+            "success": True,
+            "message": "Suscripción cancelada exitosamente"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error canceling subscription: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error al cancelar suscripción"
+        )
+
+
 @router.post("/validate-discount", response_model=ValidateDiscountResponse)
 async def validate_discount_code(
     request: ValidateDiscountRequest,

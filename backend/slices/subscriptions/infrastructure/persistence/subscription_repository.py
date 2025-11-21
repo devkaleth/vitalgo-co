@@ -93,3 +93,17 @@ class SubscriptionRepository(SubscriptionRepositoryPort):
             UserSubscription.user_id == user_id
         ).order_by(UserSubscription.created_at.desc()).all()
         return [sub.to_dict() for sub in subscriptions]
+
+    async def cancel_user_subscription(self, user_id: UUID) -> bool:
+        """Cancel user's active subscription by setting status to 'cancelled'"""
+        subscription = self.session.query(UserSubscription).filter(
+            UserSubscription.user_id == user_id,
+            UserSubscription.status == 'active'
+        ).first()
+
+        if not subscription:
+            return False
+
+        subscription.status = 'cancelled'
+        self.session.commit()
+        return True

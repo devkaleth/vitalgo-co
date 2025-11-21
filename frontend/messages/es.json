@@ -264,6 +264,35 @@
     "title": "Mi Perfil",
     "pageTitle": "Mi Perfil",
     "pageDescription": "Gestiona tu información personal y médica de forma segura.",
+    "managePlan": "Gestionar Plan",
+    "managePlanModal": {
+      "title": "Gestionar Plan",
+      "currentPlan": "Tu Plan Actual",
+      "availablePlans": "Planes Disponibles",
+      "loading": "Cargando planes...",
+      "lifetime": "De por vida",
+      "active": "Activo",
+      "cancelWarning": "Al cancelar tu plan, perderás acceso a todas las funcionalidades premium. Tus datos permanecerán guardados por 8 días.",
+      "cancelButton": "Cancelar Suscripción"
+    },
+    "cancelSubscription": {
+      "warning": {
+        "title": "Cancelar Suscripción",
+        "message": "Al cancelar la cuenta se desactivará y se perderán los datos. ¿Deseas continuar?",
+        "confirm": "Cancelar Suscripción"
+      },
+      "confirmation": {
+        "title": "¿Estás Seguro?",
+        "message": "Esta acción cancelará tu suscripción activa. Tus datos permanecerán 8 días más antes de ser eliminados permanentemente.",
+        "confirm": "Sí, Cancelar",
+        "cancelling": "Cancelando..."
+      },
+      "success": {
+        "title": "Desuscripción Exitosa",
+        "message": "Tu desuscripción ha sido exitosa. Tus datos permanecerán en nuestro sistema por 8 días más, luego de lo cual no se podrán recuperar. Solo necesitas loguearte de nuevo y tu suscripción quedará activa de nuevo.",
+        "understood": "Entendido"
+      }
+    },
     "footer": {
       "copyright": "© 2024 VitalGo. Todos los derechos reservados.",
       "privacy": "Privacidad",
@@ -1783,6 +1812,10 @@
       "title": "¿Listo para comenzar?",
       "description": "Únete a miles de personas que ya confían en VitalGo para gestionar su información médica",
       "button": "Crear Cuenta Gratis"
+    },
+    "loginAlert": {
+      "title": "Plan Requerido para Continuar",
+      "message": "El usuario con el que intenta entrar no tiene un plan activo. Por favor, selecciona un plan para poder continuar con el acceso a tu cuenta."
     }
   }
 }

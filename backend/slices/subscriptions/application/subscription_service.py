@@ -51,3 +51,7 @@ class SubscriptionService:
     async def get_user_subscription_history(self, user_id: UUID) -> List[dict]:
         """Get user's subscription history"""
         return await self.repository.get_user_subscription_history(user_id)
+
+    async def cancel_user_subscription(self, user_id: UUID) -> bool:
+        """Cancel user's active subscription"""
+        return await self.repository.cancel_user_subscription(user_id)

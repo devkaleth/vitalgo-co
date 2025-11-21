@@ -21,6 +21,7 @@ from slices.auth.infrastructure.persistence import (
 )
 from slices.auth.infrastructure.security.password_service import PasswordService
 from slices.auth.infrastructure.security.jwt_service_singleton import get_jwt_service
+from slices.subscriptions.infrastructure.persistence.subscription_repository import SubscriptionRepository
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 security = HTTPBearer()
@@ -32,6 +33,7 @@ def get_auth_use_case(db: Session = Depends(get_db)) -> AuthenticateUserUseCase:
     auth_repository = SQLAlchemyAuthRepository(db)
     login_attempt_repository = SQLAlchemyLoginAttemptRepository(db)
     user_session_repository = SQLAlchemyUserSessionRepository(db)
+    subscription_repository = SubscriptionRepository(db)
     password_service = PasswordService()
     jwt_service = get_jwt_service()
 
@@ -40,7 +42,8 @@ def get_auth_use_case(db: Session = Depends(get_db)) -> AuthenticateUserUseCase:
         login_attempt_repository=login_attempt_repository,
         user_session_repository=user_session_repository,
         password_service=password_service,
-        jwt_service=jwt_service
+        jwt_service=jwt_service,
+        subscription_repository=subscription_repository
     )
 
 

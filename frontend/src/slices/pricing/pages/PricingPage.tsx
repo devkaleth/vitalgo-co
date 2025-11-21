@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { Check, Shield, Globe, Infinity, Tag, Building2, Dumbbell, Store } from 'lucide-react';
+import { LocalStorageService } from '../../../shared/services/local-storage-service';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -43,6 +44,20 @@ export const PricingPage: React.FC<PricingPageProps> = ({
   const [loading, setLoading] = useState(true);
   const [validatingCode, setValidatingCode] = useState(false);
   const [discountMessage, setDiscountMessage] = useState('');
+
+  // Get 'from' parameter from URL to track origin (login or register)
+  const [fromSource, setFromSource] = useState<'login' | 'register' | null>(null);
+
+  useEffect(() => {
+    // Check URL parameters for 'from' source
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const from = urlParams.get('from');
+      if (from === 'login' || from === 'register') {
+        setFromSource(from);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch plans from API
@@ -101,11 +116,84 @@ export const PricingPage: React.FC<PricingPageProps> = ({
     }
   };
 
-  const handleSelectPlan = (planId: number) => {
+  const handleSelectPlan = async (planId: number) => {
+    console.log('🔍 PRICING PAGE: Plan selected', { planId, fromSource });
+
     // Save selected plan to localStorage
     localStorage.setItem('selectedPlanId', planId.toString());
-    // Redirect to signup
-    router.push(`/${locale}/signup/paciente`);
+
+    // Determine redirect based on origin
+    if (fromSource === 'login') {
+      // User came from login - they're already authenticated
+      // Subscribe them to the plan and redirect to dashboard
+      try {
+        // Use LocalStorageService for consistent token access
+        const accessToken = LocalStorageService.getAccessToken();
+        const user = LocalStorageService.getUser();
+
+        console.log('🔍 PRICING PAGE: Checking authentication', {
+          hasAccessToken: !!accessToken,
+          tokenLength: accessToken?.length,
+          hasUser: !!user,
+          userId: user?.id,
+          userEmail: user?.email
+        });
+
+        if (accessToken) {
+          console.log('🔍 PRICING PAGE: Calling subscription API', {
+            url: `${API_BASE_URL}/api/subscriptions/subscribe`,
+            planId,
+            hasToken: true
+          });
+
+          // Call subscription API
+          const response = await fetch(`${API_BASE_URL}/api/subscriptions/subscribe`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+              plan_id: planId
+            })
+          });
+
+          console.log('🔍 PRICING PAGE: Subscription API response', {
+            status: response.status,
+            ok: response.ok,
+            statusText: response.statusText
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log('✅ PRICING PAGE: Subscription successful', data);
+            // Successfully subscribed - redirect to dashboard
+            router.push(`/${locale}/dashboard`);
+          } else {
+            const errorData = await response.json().catch(() => ({}));
+            console.error('❌ PRICING PAGE: Error subscribing to plan', {
+              status: response.status,
+              error: errorData
+            });
+            // Still redirect to dashboard, user can try again later
+            router.push(`/${locale}/dashboard`);
+          }
+        } else {
+          console.warn('⚠️ PRICING PAGE: No access token found - redirecting to login');
+          // No token found, redirect to login
+          router.push(`/${locale}/login`);
+        }
+      } catch (error) {
+        console.error('❌ PRICING PAGE: Exception during subscription', error);
+        // Redirect to dashboard anyway
+        router.push(`/${locale}/dashboard`);
+      }
+    } else {
+      console.log('🔍 PRICING PAGE: Redirecting to signup (not from login)');
+      // User came from register or directly to pricing page
+      // Redirect to signup with selected plan
+      router.push(`/${locale}/signup/paciente`);
+    }
   };
 
   const features = [
@@ -143,6 +231,31 @@ export const PricingPage: React.FC<PricingPageProps> = ({
           </p>
         </div>
       </div>
+
+      {/* Alert Banner for users coming from login without subscription */}
+      {fromSource === 'login' && (
+        <div className="bg-amber-50 border-b-2 border-amber-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="bg-amber-100 p-3 rounded-full">
+                  <svg className="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-amber-900 mb-2">
+                  {t('loginAlert.title')}
+                </h3>
+                <p className="text-amber-800 leading-relaxed">
+                  {t('loginAlert.message')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Free Plan - Centered */}

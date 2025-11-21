@@ -9,6 +9,7 @@ from slices.auth.application.dto import LoginRequestDto, LoginResponseDto, UserR
 from slices.auth.application.ports import AuthRepository, LoginAttemptRepository, UserSessionRepository
 from slices.auth.infrastructure.security.password_service import PasswordService
 from slices.auth.infrastructure.security.jwt_service import JWTService
+from slices.subscriptions.infrastructure.persistence.subscription_repository import SubscriptionRepository
 
 
 class AuthenticateUserUseCase:
@@ -20,13 +21,15 @@ class AuthenticateUserUseCase:
         login_attempt_repository: LoginAttemptRepository,
         user_session_repository: UserSessionRepository,
         password_service: PasswordService,
-        jwt_service: JWTService
+        jwt_service: JWTService,
+        subscription_repository: Optional[SubscriptionRepository] = None
     ):
         self.auth_repository = auth_repository
         self.login_attempt_repository = login_attempt_repository
         self.user_session_repository = user_session_repository
         self.password_service = password_service
         self.jwt_service = jwt_service
+        self.subscription_repository = subscription_repository
 
     async def execute(
         self,
@@ -126,10 +129,21 @@ class AuthenticateUserUseCase:
         if user.user_type == 'patient':
             patient = await self.auth_repository.get_patient_by_user_id(user.id)
 
-        # Step 11: Determine redirect URL based on user type and profile completeness
-        redirect_url = self._get_redirect_url(user)
+        # Step 11: Check if user has active subscription
+        has_active_subscription = False
+        if self.subscription_repository:
+            try:
+                subscription = await self.subscription_repository.get_user_active_subscription(user.id)
+                has_active_subscription = subscription is not None
+            except Exception as e:
+                # Log error but continue - subscription check is not critical for login
+                print(f"Error checking subscription: {e}")
+                has_active_subscription = False
 
-        # Step 12: Create response - handle both patients and non-patients (paramedics, etc.)
+        # Step 12: Determine redirect URL based on user type, profile completeness, and subscription
+        redirect_url = self._get_redirect_url(user, has_active_subscription)
+
+        # Step 13: Create response - handle both patients and non-patients (paramedics, etc.)
         if patient:
             # Patient user - use patient profile data
             user_response = UserResponseDto(
@@ -140,7 +154,8 @@ class AuthenticateUserUseCase:
                 user_type=user.user_type,
                 is_verified=user.is_verified,
                 profile_completed=True,  # TODO: Implement actual profile completion logic
-                mandatory_fields_completed=True  # TODO: Implement actual mandatory fields validation
+                mandatory_fields_completed=True,  # TODO: Implement actual mandatory fields validation
+                has_active_subscription=has_active_subscription
             )
         else:
             # Non-patient user (paramedic, etc.) - derive name from email
@@ -158,7 +173,8 @@ class AuthenticateUserUseCase:
                 user_type=user.user_type,
                 is_verified=user.is_verified,
                 profile_completed=True,
-                mandatory_fields_completed=True
+                mandatory_fields_completed=True,
+                has_active_subscription=has_active_subscription
             )
 
         return {
@@ -232,8 +248,16 @@ class AuthenticateUserUseCase:
             "error": error_data
         }
 
-    def _get_redirect_url(self, user) -> Optional[str]:
-        """Determine redirect URL based on user profile completeness"""
+    def _get_redirect_url(self, user, has_active_subscription: bool = False) -> Optional[str]:
+        """
+        Determine redirect URL based on user profile completeness and subscription status
+
+        Priority order:
+        1. Profile completion (basic info)
+        2. Mandatory fields completion (medical info)
+        3. Subscription check
+        4. Dashboard
+        """
         # TODO: Implement actual profile completion logic
         # For now, always redirect to dashboard since profile fields are hardcoded as True
         profile_completed = getattr(user, 'profile_completed', True)
@@ -243,5 +267,8 @@ class AuthenticateUserUseCase:
             return "/completar-perfil"
         elif not mandatory_fields_completed:
             return "/completar-perfil-medico"
+        elif not has_active_subscription:
+            # User needs to select a subscription plan
+            return "/precios?from=login"
         else:
             return "/dashboard"
