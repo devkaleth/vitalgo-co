@@ -27,7 +27,6 @@ export interface IllnessFormData {
   illnessName: string;
   diagnosisDate: string;
   status: IllnessStatus;
-  isChronic: boolean;
   treatmentDescription?: string;
   cie10Code?: string;
   diagnosedBy?: string;

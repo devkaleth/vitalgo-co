@@ -31,7 +31,7 @@ const transformToApiRequest = (frontendData: IllnessFormData): Record<string, an
   illness_name: frontendData.illnessName,            // camelCase → snake_case
   diagnosis_date: frontendData.diagnosisDate,        // ISO date string
   status: frontendData.status,
-  is_chronic: frontendData.isChronic,                // camelCase → snake_case
+  is_chronic: frontendData.status === 'cronica',     // Auto-calculated from status
   treatment_description: frontendData.treatmentDescription, // camelCase → snake_case
   cie10_code: frontendData.cie10Code,                // camelCase → snake_case
   diagnosed_by: frontendData.diagnosedBy,            // camelCase → snake_case

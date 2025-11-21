@@ -90,7 +90,7 @@
 - `created_at`: DateTime(timezone) - Record creation timestamp (auto-generated)
 - `updated_at`: DateTime(timezone) - Last modification timestamp (auto-updated)
 
-**Coverage**: 218 countries and territories including:
+**Coverage**: 218 active countries and territories including:
 - All UN member states (193 countries)
 - Major territories and dependencies
 - Special administrative regions (Hong Kong, Macao)
@@ -104,11 +104,61 @@
 - **Africa**: 54+ countries
 - **Oceania**: 20+ countries/territories
 
+**Sample Data - Latin American Countries**:
+```
+code | name                 | flag_emoji | phone_code
+-----|----------------------|------------|------------
+CO   | Colombia             | 🇨🇴         | +57
+MX   | México               | 🇲🇽         | +52
+AR   | Argentina            | 🇦🇷         | +54
+BR   | Brasil               | 🇧🇷         | +55
+CL   | Chile                | 🇨🇱         | +56
+PE   | Perú                 | 🇵🇪         | +51
+VE   | Venezuela            | 🇻🇪         | +58
+EC   | Ecuador              | 🇪🇨         | +593
+BO   | Bolivia              | 🇧🇴         | +591
+PA   | Panamá               | 🇵🇦         | +507
+CR   | Costa Rica           | 🇨🇷         | +506
+UY   | Uruguay              | 🇺🇾         | +598
+PY   | Paraguay             | 🇵🇾         | +595
+GT   | Guatemala            | 🇬🇹         | +502
+CU   | Cuba                 | 🇨🇺         | +53
+DO   | República Dominicana | 🇩🇴         | +1
+HN   | Honduras             | 🇭🇳         | +504
+SV   | El Salvador          | 🇸🇻         | +503
+NI   | Nicaragua            | 🇳🇮         | +505
+```
+
+**Sample Data - Other Regions**:
+```
+code | name                | flag_emoji | phone_code
+-----|---------------------|------------|------------
+US   | Estados Unidos      | 🇺🇸         | +1
+CA   | Canadá              | 🇨🇦         | +1
+ES   | España              | 🇪🇸         | +34
+FR   | Francia             | 🇫🇷         | +33
+DE   | Alemania            | 🇩🇪         | +49
+IT   | Italia              | 🇮🇹         | +39
+GB   | Reino Unido         | 🇬🇧         | +44
+CN   | China               | 🇨🇳         | +86
+JP   | Japón               | 🇯🇵         | +81
+IN   | India               | 🇮🇳         | +91
+AU   | Australia           | 🇦🇺         | +61
+```
+
 **Data Quality**:
-- All entries include ISO 3166-1 alpha-2 codes
+- All 218 entries include ISO 3166-1 alpha-2 codes
 - Flag emojis for all countries
-- International dialing codes
+- International dialing codes for phone number validation
 - Ordered by relevance (Colombia first, then by geographic proximity)
+- Verified against production database as of November 2025
+
+**Usage**:
+- Used in patient registration forms for birth country, residence country
+- Phone number validation with country dial codes
+- Referenced by `patients.country_code` and `patients.dial_code` fields
+- API endpoint: `GET /api/subscriptions/plans` (countries endpoint to be implemented)
+- Query example: `SELECT code, name, flag_emoji, phone_code FROM countries WHERE is_active = true ORDER BY name;`
 
 ## Authentication & Security Tables
 
