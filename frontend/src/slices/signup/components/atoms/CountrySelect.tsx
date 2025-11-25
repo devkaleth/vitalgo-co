@@ -3,6 +3,7 @@
  * CountrySelect component for selecting country of origin
  */
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Country } from '../../data/countries';
 import { ChevronDown, Search } from 'lucide-react';
 
@@ -22,13 +23,18 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   value,
   onChange,
   countries,
-  placeholder = "Selecciona tu país",
-  label = "País",
+  placeholder,
+  label,
   error,
   required = false,
   isLoading = false,
   'data-testid': testId
 }) => {
+  const t = useTranslations('signup');
+  const tCommon = useTranslations('common');
+
+  const displayPlaceholder = placeholder || tCommon('selectOption');
+  const displayLabel = label || t('originCountry');
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCountries, setFilteredCountries] = useState(countries);
@@ -100,9 +106,9 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
   return (
     <div className="space-y-2" data-testid={testId}>
       {/* Label */}
-      {label && (
+      {displayLabel && (
         <label className="block text-sm font-medium text-gray-700">
-          {label}
+          {displayLabel}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
@@ -127,14 +133,14 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {isLoading ? (
-                <span className="text-gray-500">Cargando países...</span>
+                <span className="text-gray-500">{t('messages.loadingCountries')}</span>
               ) : selectedCountry ? (
                 <>
                   <span className="text-xl">{selectedCountry.flag}</span>
                   <span className="text-gray-900">{selectedCountry.name}</span>
                 </>
               ) : (
-                <span className="text-gray-500">{placeholder}</span>
+                <span className="text-gray-500">{displayPlaceholder}</span>
               )}
             </div>
             <ChevronDown
@@ -160,7 +166,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Buscar país..."
+                  placeholder={t('messages.searchCountry')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -192,7 +198,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                 ))
               ) : (
                 <div className="px-3 py-2 text-gray-500 text-center">
-                  No se encontraron países
+                  {t('messages.noCountriesFound')}
                 </div>
               )}
             </div>

@@ -6,6 +6,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/shared/contexts/AuthContext';
 
 interface ParamedicAuthGuardProps {
@@ -13,6 +14,7 @@ interface ParamedicAuthGuardProps {
 }
 
 export const ParamedicAuthGuard: React.FC<ParamedicAuthGuardProps> = ({ children }) => {
+  const t = useTranslations('emergency');
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
@@ -40,7 +42,7 @@ export const ParamedicAuthGuard: React.FC<ParamedicAuthGuardProps> = ({ children
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Verificando acceso...</p>
+          <p className="mt-4 text-gray-600">{t('messages.verifying')}</p>
         </div>
       </div>
     );
@@ -56,9 +58,9 @@ export const ParamedicAuthGuard: React.FC<ParamedicAuthGuardProps> = ({ children
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center p-8 bg-red-50 rounded-lg">
-          <h2 className="text-xl font-semibold text-red-600 mb-2">Acceso Denegado</h2>
+          <h2 className="text-xl font-semibold text-red-600 mb-2">{t('errors.accessDenied')}</h2>
           <p className="text-gray-700">
-            Solo usuarios paramédicos pueden acceder a esta página.
+            {t('errors.paramedicOnlyPage')}
           </p>
         </div>
       </div>

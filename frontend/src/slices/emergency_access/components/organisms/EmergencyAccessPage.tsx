@@ -5,6 +5,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { useEmergencyData } from '../../hooks/useEmergencyData';
 import {
   BasicInfoCard,
@@ -20,6 +21,7 @@ interface EmergencyAccessPageProps {
 }
 
 export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode }) => {
+  const t = useTranslations('emergency');
   const { data, loading, error, refetch } = useEmergencyData(qrCode);
 
   if (loading) {
@@ -27,7 +29,7 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-vitalgo-green mx-auto"></div>
-          <p className="mt-4 text-vitalgo-dark font-semibold">Cargando información de emergencia...</p>
+          <p className="mt-4 text-vitalgo-dark font-semibold">{t('messages.loading')}</p>
         </div>
       </div>
     );
@@ -43,19 +45,19 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
             <p className="text-gray-700 mb-4">{error.message}</p>
             {error.status === 404 && (
               <p className="text-sm text-gray-600 mb-4">
-                El código QR no corresponde a ningún paciente registrado.
+                {t('errors.qrNotFound')}
               </p>
             )}
             {error.status === 403 && (
               <p className="text-sm text-gray-600 mb-4">
-                Solo usuarios paramédicos pueden acceder a esta información.
+                {t('errors.paramedicOnly')}
               </p>
             )}
             <button
               onClick={refetch}
               className="bg-vitalgo-green text-white px-6 py-3 rounded-lg hover:bg-vitalgo-green-light transition-colors font-medium"
             >
-              Reintentar
+              {t('actions.retry')}
             </button>
           </div>
         </div>
@@ -66,7 +68,7 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
   if (!data) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <p className="text-gray-500">No se encontró información</p>
+        <p className="text-gray-500">{t('messages.noData')}</p>
       </div>
     );
   }
@@ -91,17 +93,17 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
             <div>
               <h1 className="text-3xl font-bold text-vitalgo-dark mb-2 flex items-center gap-3">
                 <span className="text-4xl">🚨</span>
-                Acceso de Emergencia
+                {t('titles.access')}
               </h1>
               <p className="text-gray-600">
-                Información médica del paciente • Solo para uso de paramédicos
+                {t('messages.subtitle')}
               </p>
             </div>
             <button
               onClick={refetch}
               className="bg-vitalgo-green text-white px-6 py-3 rounded-lg hover:bg-vitalgo-green-light transition-colors font-medium"
             >
-              Actualizar
+              {t('actions.refresh')}
             </button>
           </div>
         </div>
@@ -111,8 +113,8 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
           <div className="bg-red-50 border border-gray-200 border-l-4 border-l-red-500 rounded-lg shadow-sm p-6 mb-6">
             <p className="text-red-700 font-bold text-xl text-center flex items-center justify-center gap-2">
               <span className="text-2xl">⚠️</span>
-              PACIENTE EMBARAZADA
-              {data.pregnancyWeeks && ` - ${data.pregnancyWeeks} SEMANAS`}
+              {t('alerts.pregnant')}
+              {data.pregnancyWeeks && ` - ${data.pregnancyWeeks} ${t('messages.weeks')}`}
             </p>
           </div>
         )}
@@ -122,7 +124,7 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
           <div className="bg-red-50 border border-gray-200 border-l-4 border-l-red-500 rounded-lg shadow-sm p-6 mb-6">
             <p className="text-red-700 font-bold text-xl mb-4 flex items-center gap-2">
               <span className="text-2xl">⚠️</span>
-              ALERGIAS REGISTRADAS
+              {t('alerts.allergies')}
             </p>
             <div className="space-y-2">
               {data.allergies.map((allergy, index) => (
@@ -154,8 +156,7 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
             <p className="text-gray-700 text-sm text-center flex items-center justify-center gap-2">
               <span className="text-yellow-600 text-lg">⚠️</span>
               <span>
-                Esta información es confidencial y solo debe ser utilizada en situaciones de emergencia.
-                El acceso no autorizado está prohibido y puede tener consecuencias legales.
+                {t('messages.confidentiality')}
               </span>
             </p>
           </div>

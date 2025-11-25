@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { PublicNavbar } from '@/shared/components/organisms/PublicNavbar';
 import { PublicFooter } from '@/shared/components/organisms/PublicFooter';
 
@@ -11,6 +12,8 @@ interface FieldValidationState {
 }
 
 export function ForgotPasswordPage() {
+  const t = useTranslations('auth.forgotPasswordPage');
+  const tValidation = useTranslations('auth.validation');
   const [email, setEmail] = useState('');
   const [emailValidation, setEmailValidation] = useState<FieldValidationState>({
     isValid: undefined,
@@ -30,7 +33,7 @@ export function ForgotPasswordPage() {
       setEmailValidation({
         isValid: false,
         isValidating: false,
-        message: 'Ingresa un email válido'
+        message: tValidation('enterValidEmail')
       });
     } else if (value && emailRegex.test(value)) {
       setEmailValidation({
@@ -93,17 +96,17 @@ export function ForgotPasswordPage() {
               </div>
 
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Revisa tu email
+                {t('success.title')}
               </h2>
 
               <p className="text-gray-600 mb-8">
-                Te hemos enviado un enlace para restablecer tu contraseña a{' '}
+                {t('success.message')}{' '}
                 <span className="font-medium text-gray-900">{email}</span>
               </p>
 
               <div className="space-y-4">
                 <p className="text-sm text-gray-500">
-                  ¿No recibiste el email? Revisa tu carpeta de spam o solicita un nuevo enlace.
+                  {t('success.noEmailReceived')}
                 </p>
 
                 <div className="flex flex-col space-y-3">
@@ -114,14 +117,14 @@ export function ForgotPasswordPage() {
                     }}
                     className="w-full py-3 px-4 border border-gray-300 rounded-lg font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-vitalgo-green/20"
                   >
-                    Intentar con otro email
+                    {t('success.tryAnotherEmail')}
                   </button>
 
                   <button
                     onClick={() => window.location.href = '/login'}
                     className="w-full py-3 px-4 bg-vitalgo-green text-white rounded-lg font-medium hover:bg-vitalgo-green/90 transition-colors focus:outline-none focus:ring-2 focus:ring-vitalgo-green/20"
                   >
-                    Volver al inicio de sesión
+                    {t('backToLogin')}
                   </button>
                 </div>
               </div>
@@ -142,23 +145,23 @@ export function ForgotPasswordPage() {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              ¿Olvidaste tu contraseña?
+              {t('title')}
             </h2>
             <p className="text-gray-600">
-              Ingresa tu email y te enviaremos un enlace para restablecerla
+              {t('subtitle')}
             </p>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
+                {t('emailLabel')}
               </label>
               <input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="tu-email@ejemplo.com"
+                placeholder={t('emailPlaceholder')}
                 value={email}
                 onChange={handleEmailChange}
                 required
@@ -189,7 +192,7 @@ export function ForgotPasswordPage() {
                 }`}
                 data-testid="forgot-password-submit-button"
               >
-                {isLoading ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
+                {isLoading ? t('submitting') : t('submitButton')}
               </button>
 
               <div className="text-center">
@@ -198,7 +201,7 @@ export function ForgotPasswordPage() {
                   className="text-sm text-vitalgo-green hover:text-vitalgo-green/80 font-medium"
                   data-testid="forgot-password-back-to-login"
                 >
-                  ← Volver al inicio de sesión
+                  {t('backToLoginArrow')}
                 </a>
               </div>
             </div>
@@ -221,11 +224,10 @@ export function ForgotPasswordPage() {
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-blue-800">
-                  Próximamente
+                  {t('comingSoon.title')}
                 </h3>
                 <p className="text-sm text-blue-700 mt-1">
-                  Esta funcionalidad estará disponible próximamente.
-                  Por ahora, contacta a soporte para restablecer tu contraseña.
+                  {t('comingSoon.message')}
                 </p>
               </div>
             </div>

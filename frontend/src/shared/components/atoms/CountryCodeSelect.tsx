@@ -5,6 +5,7 @@
  * Shared component for use across multiple slices
  */
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { countries as defaultCountries, Country, searchCountries, getDefaultCountry } from '../../../slices/signup/data/countries';
 
 interface CountryCodeSelectProps {
@@ -30,6 +31,7 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
   error,
   countries: customCountries
 }) => {
+  const t = useTranslations('phone.countryCode');
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
-        Indicativo
+        {t('label')}
         <span className="text-red-500 ml-1">*</span>
       </label>
 
@@ -121,14 +123,14 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label={`País seleccionado: ${selectedCountry.name}`}
+        aria-label={t('selectedCountry', { country: selectedCountry.name })}
       >
         <div className="flex items-center space-x-3 min-w-0 flex-1">
           {/* Flag emoji */}
           <span
             className="text-2xl flex-shrink-0"
             role="img"
-            aria-label={`Bandera de ${selectedCountry.name}`}
+            aria-label={t('flagOf', { country: selectedCountry.name })}
           >
             {selectedCountry.flag}
           </span>
@@ -175,11 +177,11 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Buscar país o código..."
+              placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              aria-label="Buscar país"
+              aria-label={t('searchLabel')}
             />
           </div>
 
@@ -204,13 +206,13 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
                           : 'text-gray-900'
                         }
                       `}
-                      aria-label={`Seleccionar ${country.name}, código ${country.dialCode}`}
+                      aria-label={t('selectCountry', { country: country.name, dialCode: country.dialCode })}
                     >
                       {/* Flag emoji */}
                       <span
                         className="text-xl flex-shrink-0"
                         role="img"
-                        aria-label={`Bandera de ${country.name}`}
+                        aria-label={t('flagOf', { country: country.name })}
                       >
                         {country.flag}
                       </span>
@@ -248,10 +250,10 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
               </ul>
             ) : (
               <div className="px-4 py-6 text-center text-sm text-gray-500">
-                <span>No se encontraron países</span>
+                <span>{t('noResults')}</span>
                 {searchTerm && (
                   <p className="mt-1">
-                    para "{searchTerm}"
+                    {t('noResultsFor', { searchTerm })}
                   </p>
                 )}
               </div>

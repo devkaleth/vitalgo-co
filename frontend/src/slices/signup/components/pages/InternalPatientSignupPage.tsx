@@ -4,10 +4,12 @@
  * Shows all document types - demonstrates reusability
  */
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { PatientSignupForm } from '../organisms/PatientSignupForm';
 import { RegistrationResponse } from '../../types';
 
 export default function InternalPatientSignupPage() {
+  const t = useTranslations('internalSignup');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -42,7 +44,7 @@ export default function InternalPatientSignupPage() {
                 className="h-8"
               />
               <span className="ml-4 text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
-                Modo Interno
+                {t('badge')}
               </span>
             </div>
             <a
@@ -50,7 +52,7 @@ export default function InternalPatientSignupPage() {
               className="text-gray-600 hover:text-gray-900 font-medium"
               data-testid="back-to-admin"
             >
-              Volver al panel de administración
+              {t('backToAdmin')}
             </a>
           </div>
         </div>
@@ -63,15 +65,14 @@ export default function InternalPatientSignupPage() {
             {/* Page Header */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Registro Interno de Paciente
+                {t('title')}
               </h1>
               <p className="text-gray-600">
-                Registro para staff médico - Todos los tipos de documento disponibles
+                {t('subtitle')}
               </p>
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-blue-800 text-sm">
-                  <strong>Modo interno:</strong> Este formulario incluye todos los tipos de documento colombianos
-                  para uso por parte del personal médico autorizado.
+                  {t('infoBox')}
                 </p>
               </div>
             </div>
@@ -86,7 +87,7 @@ export default function InternalPatientSignupPage() {
                   <span className="text-vitalgo-green font-medium">{successMessage}</span>
                 </div>
                 <p className="text-vitalgo-green text-sm mt-1">
-                  Redirigiendo al panel de administración...
+                  {t('redirectingToAdmin')}
                 </p>
               </div>
             )}
@@ -116,9 +117,7 @@ export default function InternalPatientSignupPage() {
           {/* Additional Info */}
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-600">
-              Formulario para registro interno por personal médico autorizado.
-              Incluye todos los tipos de documento del sistema colombiano para
-              máxima flexibilidad en el registro de pacientes.
+              {t('footer')}
             </p>
           </div>
         </div>

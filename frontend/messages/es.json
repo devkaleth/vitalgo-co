@@ -65,6 +65,26 @@
     "hidePassword": "Ocultar contraseña",
     "rememberMe": "Mantener sesión iniciada",
     "forgotPassword": "¿Olvidaste tu contraseña?",
+    "forgotPasswordPage": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Ingresa tu email y te enviaremos un enlace para restablecerla",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu-email@ejemplo.com",
+      "submitButton": "Enviar enlace de restablecimiento",
+      "submitting": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "backToLoginArrow": "← Volver al inicio de sesión",
+      "success": {
+        "title": "Revisa tu email",
+        "message": "Te hemos enviado un enlace para restablecer tu contraseña a",
+        "noEmailReceived": "¿No recibiste el email? Revisa tu carpeta de spam o solicita un nuevo enlace.",
+        "tryAnotherEmail": "Intentar con otro email"
+      },
+      "comingSoon": {
+        "title": "Próximamente",
+        "message": "Esta funcionalidad estará disponible próximamente. Por ahora, contacta a soporte para restablecer tu contraseña."
+      }
+    },
     "noAccount": "¿No tienes cuenta?",
     "hasAccount": "¿Ya tienes cuenta?",
     "loginButton": "Iniciar sesión",
@@ -86,9 +106,13 @@
   "onboarding": {
     "title": "Completa tu Perfil",
     "subtitle": "Ayúdanos a conocerte mejor completando tu información médica",
-    "skip": "Saltar este paso",
+    "skip": "Saltar",
     "next": "Siguiente",
     "complete": "Finalizar",
+    "back": "Atrás",
+    "saving": "Guardando...",
+    "saveAndFinish": "Guardar y Finalizar",
+    "saveAndContinue": "Guardar y Continuar",
     "step1": "Información Básica",
     "step2": "Información Personal",
     "step3": "Información Médica",
@@ -96,13 +120,22 @@
     "completedMessage": "Has completado tu información médica. Redirigiendo a tu panel de control...",
     "progress": "Paso {current} de {total}"
   },
+  "internalSignup": {
+    "badge": "Modo Interno",
+    "backToAdmin": "Volver al panel de administración",
+    "title": "Registro Interno de Paciente",
+    "subtitle": "Registro para staff médico - Todos los tipos de documento disponibles",
+    "infoBox": "Modo interno: Este formulario incluye todos los tipos de documento colombianos para uso por parte del personal médico autorizado.",
+    "redirectingToAdmin": "Redirigiendo al panel de administración...",
+    "footer": "Formulario para registro interno por personal médico autorizado. Incluye todos los tipos de documento del sistema colombiano para máxima flexibilidad en el registro de pacientes."
+  },
   "signup": {
     "title": "Crear Cuenta",
     "subtitle": "Únete a VitalGo y ten tu historial médico siempre a la mano",
     "personalInfoTitle": "Información Personal",
     "accountInfoTitle": "Información de la Cuenta",
     "legalSectionTitle": "Aceptación Legal",
-    "legalSectionSubtitle": "Por favor revisa y acepta nuestros términos para continuar",
+    "legalSectionSubtitle": "Por favor lee y acepta nuestros términos",
     "step1": "Información Personal",
     "step2": "Información Médica",
     "step3": "Seguridad",
@@ -140,7 +173,21 @@
       "invalidDocument": "Número de documento inválido",
       "emailExists": "Este correo electrónico ya está registrado",
       "weakPassword": "La contraseña debe tener al menos 8 caracteres",
-      "mustAcceptTerms": "Debes aceptar los términos y condiciones"
+      "mustAcceptTerms": "Debes aceptar los términos y condiciones",
+      "loadCountries": "Error al cargar países",
+      "registrationFailed": "Error al registrar la cuenta",
+      "connectionError": "Error de conexión. Verifica tu internet.",
+      "completeAllFields": "Por favor completa todos los campos",
+      "serverError": "Error del servidor. Intenta más tarde.",
+      "unknownError": "Error desconocido"
+    },
+    "messages": {
+      "autoLogin": "Te estamos iniciando sesión automáticamente...",
+      "redirectingPanel": "Redirigiendo al panel en {countdown} segundo{countdown, plural, one {} other {s}}...",
+      "redirectingAdmin": "Redirigiendo al panel de administración...",
+      "loadingCountries": "Cargando países...",
+      "noCountriesFound": "No se encontraron países",
+      "searchCountry": "Buscar país..."
     },
     "page": {
       "title": "Registro de Paciente",
@@ -198,13 +245,85 @@
     },
     "legal": {
       "acceptTermsText": "Acepto los",
-      "acceptPrivacyText": "Acepto la"
+      "acceptPrivacyText": "Acepto la",
+      "termsLink": "Términos y Condiciones",
+      "privacyLink": "Política de Privacidad",
+      "fullText": "He leído y acepto los"
     },
-    "legalSectionTitle": "Aceptación Legal",
-    "legalSectionSubtitle": "Por favor lee y acepta nuestros términos",
     "createAccountButton": "Siguiente",
     "alreadyHaveAccount": "¿Ya tienes cuenta?",
-    "loginLink": "Inicia sesión aquí"
+    "loginLink": "Inicia sesión aquí",
+    "originCountry": "País de Origen",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastNamePlaceholder": "Ingresa tu apellido",
+    "documentTypePlaceholder": "Selecciona tipo",
+    "documentNumberPlaceholder": "Ingresa tu documento",
+    "birthDatePlaceholder": "Selecciona fecha",
+    "originCountryPlaceholder": "Selecciona tu país",
+    "phonePlaceholder": "Tu número de teléfono",
+    "emailPlaceholder": "tu@email.com",
+    "passwordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "validation": {
+      "firstNameRequired": "El nombre es obligatorio",
+      "firstNameInvalid": "Nombre inválido",
+      "firstNameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "lastNameRequired": "El apellido es obligatorio",
+      "lastNameInvalid": "Apellido inválido",
+      "lastNameMinLength": "El apellido debe tener al menos 2 caracteres",
+      "documentRequired": "El documento es obligatorio",
+      "documentInvalid": "Documento inválido",
+      "documentTypeRequired": "Selecciona un tipo de documento",
+      "phoneRequired": "El teléfono es obligatorio",
+      "phoneInvalid": "Teléfono inválido",
+      "phoneInvalidColombia": "El teléfono debe tener 10 dígitos para Colombia",
+      "phoneInvalidUSA": "El teléfono debe tener 10 dígitos para USA",
+      "phoneInvalidMexico": "El teléfono debe tener 10 dígitos para México",
+      "phoneInvalidSpain": "El teléfono debe tener 9 dígitos para España",
+      "emailRequired": "El email es obligatorio",
+      "emailInvalid": "Email inválido",
+      "emailTaken": "Este email ya está registrado",
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordWeak": "La contraseña es muy débil",
+      "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "Debe incluir una mayúscula",
+      "passwordLowercase": "Debe incluir una minúscula",
+      "passwordNumber": "Debe incluir un número",
+      "passwordsMismatch": "Las contraseñas no coinciden",
+      "confirmPasswordRequired": "Confirma tu contraseña",
+      "birthDateRequired": "La fecha de nacimiento es obligatoria",
+      "birthDateInvalid": "Fecha de nacimiento inválida",
+      "ageRestriction": "Debes ser mayor de 18 años",
+      "ageTooOld": "La edad no puede exceder 120 años",
+      "countryRequired": "El país es obligatorio",
+      "termsRequired": "Debes aceptar los términos y condiciones",
+      "privacyRequired": "Debes aceptar la política de privacidad"
+    },
+    "success": {
+      "accountCreated": "Cuenta creada exitosamente",
+      "welcomeMessage": "Bienvenido a VitalGo",
+      "redirecting": "Redirigiendo...",
+      "verificationEmailSent": "Te hemos enviado un email de verificación"
+    },
+    "documentTypes": {
+      "cc": "Cédula de Ciudadanía",
+      "ti": "Tarjeta de Identidad",
+      "ce": "Cédula de Extranjería",
+      "passport": "Pasaporte",
+      "pep": "Permiso Especial de Permanencia",
+      "other": "Otro"
+    },
+    "countries": {
+      "colombia": "Colombia",
+      "usa": "Estados Unidos",
+      "mexico": "México",
+      "spain": "España",
+      "argentina": "Argentina",
+      "chile": "Chile",
+      "peru": "Perú",
+      "venezuela": "Venezuela",
+      "other": "Otro"
+    }
   },
   "dashboard": {
     "title": "Panel de Control",
@@ -258,6 +377,73 @@
       "status": "Estado",
       "active": "Activo",
       "inactive": "Inactivo"
+    },
+    "actions": {
+      "add": "Agregar",
+      "addItem": "Agregar {item}",
+      "retry": "Reintentar"
+    },
+    "confirmations": {
+      "deleteItem": "¿Estás seguro de que quieres eliminar este elemento?"
+    },
+    "messages": {
+      "loadingError": "Error al cargar {title}",
+      "noItems": "No hay {title} registrados"
+    },
+    "subtitle": "Gestiona tu información médica de forma segura",
+    "sections": {
+      "medications": "Medicamentos",
+      "allergies": "Alergias",
+      "illnesses": "Enfermedades",
+      "surgeries": "Cirugías",
+      "appointments": "Citas",
+      "documents": "Documentos"
+    },
+    "medicalOverview": {
+      "title": "Resumen Médico",
+      "activeMedications": "Medicamentos Activos",
+      "knownAllergies": "Alergias Conocidas",
+      "chronicIllnesses": "Enfermedades Crónicas",
+      "pastSurgeries": "Cirugías Pasadas",
+      "lastUpdate": "Última Actualización",
+      "viewDetails": "Ver Detalles"
+    },
+    "emptyStates": {
+      "noMedications": "Sin medicamentos registrados",
+      "noAllergies": "Sin alergias registradas",
+      "noIllnesses": "Sin enfermedades registradas",
+      "noSurgeries": "Sin cirugías registradas",
+      "noActivity": "Sin actividad reciente",
+      "addFirst": "Agregar primero",
+      "getStarted": "Comenzar"
+    }
+  },
+  "phone": {
+    "countryCode": {
+      "label": "Indicativo",
+      "searchPlaceholder": "Buscar país o código...",
+      "searchLabel": "Buscar país",
+      "noResults": "No se encontraron países",
+      "noResultsFor": "para \"{searchTerm}\"",
+      "selectCountry": "Seleccionar {country}, código {dialCode}",
+      "selectedCountry": "País seleccionado: {country}",
+      "flagOf": "Bandera de {country}"
+    },
+    "number": {
+      "label": "Número de teléfono",
+      "placeholder": "Número de teléfono",
+      "format": "Formato: {format}",
+      "digits": "dígitos",
+      "validNumber": "✓ Número válido",
+      "mustHaveDigits": "El número debe tener {maxLength} dígitos (tiene {currentLength})",
+      "exceedsMaxDigits": "El número excede los {maxLength} dígitos permitidos"
+    },
+    "group": {
+      "title": "Información de Contacto",
+      "subtitle": "Selecciona tu país e ingresa tu número de teléfono",
+      "fullNumber": "Número completo:",
+      "validAndAvailable": "Número de teléfono válido y disponible",
+      "validating": "Validando número de teléfono..."
     }
   },
   "profile": {
@@ -359,10 +545,22 @@
         "birthDepartmentRequiredColombia": "El departamento de nacimiento es obligatorio para Colombia",
         "birthCityRequiredColombia": "La ciudad de nacimiento es obligatoria para Colombia",
         "specifyResidenceCountry": "Especifica tu país de residencia",
-        "residenceDepartmentRequired": "El departamento de residencia es obligatorio",
-        "residenceCityRequired": "La ciudad de residencia es obligatoria",
-        "epsRequired": "EPS es requerido",
-        "phoneFormatInvalid": "Formato de teléfono inválido (debe tener 10 dígitos)"
+        "phoneFormatInvalid": "Formato de teléfono inválido (debe tener 10 dígitos)",
+        "documentNumberInvalid": "Número de documento inválido",
+        "phoneInvalid": "Teléfono inválido",
+        "birthDateInvalid": "Fecha de nacimiento inválida",
+        "originCountryRequired": "El país de origen es obligatorio",
+        "heightInvalid": "Talla inválida",
+        "weightInvalid": "Peso inválido",
+        "emergencyContactNameRequired": "El nombre del contacto es obligatorio",
+        "emergencyContactPhoneRequired": "El teléfono del contacto es obligatorio",
+        "emergencyContactRelationRequired": "El parentesco es obligatorio",
+        "pregnancyWeeksInvalid": "Semanas de embarazo inválidas",
+        "pregnancyWeeksRequired": "Las semanas de embarazo son obligatorias",
+        "menstrualStatusRequired": "El estado menstrual es obligatorio",
+        "contraceptiveMethodRequired": "El método anticonceptivo es obligatorio",
+        "numberMustBePositive": "El número debe ser positivo",
+        "selectOption": "Selecciona una opción"
       },
       "labels": {
         "firstName": "Nombres",
@@ -401,7 +599,13 @@
         "contraceptiveMethod": "Método anticonceptivo actual",
         "organDonorPreference": "¿Deseas ser donante de órganos?",
         "height": "Talla (cm)",
-        "weight": "Peso (kg)"
+        "weight": "Peso (kg)",
+        "phone": "Teléfono",
+        "originCountry": "País de Origen",
+        "organDonor": "Donante de Órganos",
+        "emergencyContactName": "Nombre del Contacto",
+        "emergencyContactPhone": "Teléfono del Contacto",
+        "emergencyContactRelation": "Parentesco"
       },
       "placeholders": {
         "firstName": "Ej: Juan Carlos",
@@ -409,6 +613,8 @@
         "documentNumber": "Ej: 12345678",
         "selectDocumentType": "Seleccionar tipo",
         "selectOption": "Selecciona una opción",
+        "selectBirthCountry": "Selecciona país de nacimiento",
+        "selectResidenceCountry": "Selecciona país de residencia",
         "selectEps": "Seleccione su EPS",
         "epsOther": "Ingrese el nombre de su EPS",
         "occupation": "Ingrese su ocupación",
@@ -427,7 +633,20 @@
         "specifyOther": "Especifica...",
         "selectDefault": "Seleccionar...",
         "height": "Ej: 170",
-        "weight": "Ej: 70"
+        "weight": "Ej: 70",
+        "phone": "Número de teléfono",
+        "selectCountry": "Selecciona un país",
+        "selectBiologicalSex": "Selecciona sexo biológico",
+        "selectGender": "Selecciona género",
+        "birthCity": "Ciudad de nacimiento",
+        "residenceCity": "Ciudad de residencia",
+        "selectBloodType": "Selecciona tipo de sangre",
+        "emergencyContactName": "Nombre completo del contacto",
+        "emergencyContactPhone": "Teléfono del contacto",
+        "selectRelation": "Selecciona parentesco",
+        "selectDate": "Selecciona fecha",
+        "selectMenstrualStatus": "Selecciona estado menstrual",
+        "selectContraceptiveMethod": "Selecciona método anticonceptivo"
       },
       "options": {
         "documentTypes": {
@@ -439,13 +658,18 @@
         "pregnancyStatus": {
           "yes": "Sí",
           "no": "No",
-          "preferNotToSay": "Prefiero no responder"
+          "preferNotToSay": "Prefiero no responder",
+          "notSure": "No estoy segura"
         },
         "menstrualStatus": {
           "notStarted": "No ha tenido menstruación",
           "active": "Tiene menstruación",
           "menopause": "En menopausia",
-          "preferNotToSay": "Prefiero no responder"
+          "preferNotToSay": "Prefiero no responder",
+          "regular": "Regular",
+          "irregular": "Irregular",
+          "amenorrhea": "Amenorrea",
+          "postmenopause": "Postmenopausia"
         },
         "contraceptiveMethods": {
           "none": "Ninguno",
@@ -456,12 +680,46 @@
           "injection": "Inyección anticonceptiva",
           "diaphragm": "Diafragma",
           "natural": "Métodos naturales",
-          "other": "Otro"
+          "other": "Otro",
+          "pills": "Píldora anticonceptiva",
+          "naturalMethods": "Métodos naturales",
+          "sterilization": "Esterilización"
         },
         "other": "Otro",
         "donorYes": "Sí, deseo ser donante",
         "donorNo": "No deseo ser donante",
-        "donorPreferNotToSay": "Prefiero no responder"
+        "donorPreferNotToSay": "Prefiero no responder",
+        "biologicalSex": {
+          "male": "Masculino",
+          "female": "Femenino",
+          "intersex": "Intersexual"
+        },
+        "gender": {
+          "male": "Masculino",
+          "female": "Femenino",
+          "nonBinary": "No binario",
+          "other": "Otro",
+          "preferNotToSay": "Prefiero no decir"
+        },
+        "bloodTypes": {
+          "a_positive": "A+",
+          "a_negative": "A-",
+          "b_positive": "B+",
+          "b_negative": "B-",
+          "ab_positive": "AB+",
+          "ab_negative": "AB-",
+          "o_positive": "O+",
+          "o_negative": "O-",
+          "unknown": "Desconocido"
+        },
+        "relationships": {
+          "spouse": "Cónyuge",
+          "parent": "Padre/Madre",
+          "child": "Hijo/a",
+          "sibling": "Hermano/a",
+          "friend": "Amigo/a",
+          "other": "Otro"
+        }
       },
       "buttons": {
         "save": "Guardar Cambios",
@@ -487,7 +745,11 @@
         "medicalSecurity": "Seguridad Social y Ocupación",
         "additionalInfo": "Seguro Adicional",
         "donorPreference": "Voluntad de la Persona",
-        "physicalMeasurements": "Medidas Físicas"
+        "physicalMeasurements": "Medidas Físicas",
+        "residenceLocation": "Ubicación de Residencia",
+        "basicMedicalInfo": "Información Médica Básica",
+        "editBasicInfo": "Editar Información Básica",
+        "editPersonalInfo": "Editar Información Personal"
       },
       "messages": {
         "updateBasicInfo": "Actualiza tu información personal registrada",
@@ -499,7 +761,9 @@
         "noEmergencyContact": "Sin contacto de emergencia",
         "noEmergencyContactMessage": "No hay información de contacto de emergencia configurada.",
         "additionalMedicalInfo": "Información médica adicional próximamente",
-        "errorUpdate": "Error al actualizar. Por favor intenta de nuevo."
+        "errorUpdate": "Error al actualizar. Por favor intenta de nuevo.",
+        "optional": "Opcional",
+        "successUpdate": "Información actualizada exitosamente"
       },
       "modals": {
         "editBasicInfo": "Editar Información Básica",
@@ -557,7 +821,12 @@
         "originCountry": "País de nacimiento",
         "documentType": "Tipo de documento",
         "documentNumber": "N° Documento",
-        "phone": "Teléfono"
+        "phone": "Teléfono",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico",
+        "age": "Edad",
+        "gender": "Género"
       },
       "documentTypes": {
         "cc": "Cédula de Ciudadanía",
@@ -588,7 +857,10 @@
         "cuba": "Cuba",
         "dominicanRepublic": "República Dominicana",
         "spain": "España"
-      }
+      },
+      "edit": "Editar",
+      "error": "Error al cargar información",
+      "retry": "Reintentar"
     },
     "personal": {
       "title": "Información Personal",
@@ -629,6 +901,18 @@
       "status": {
         "complete": "Información completa",
         "incomplete": "Información incompleta"
+      },
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Departamento",
+      "postalCode": "Código Postal",
+      "insuranceProvider": "Aseguradora",
+      "maritalStatuses": {
+        "single": "Soltero/a",
+        "married": "Casado/a",
+        "divorced": "Divorciado/a",
+        "widowed": "Viudo/a",
+        "other": "Otro"
       }
     },
     "medical": {
@@ -668,7 +952,19 @@
       "vaccinations": "Vacunas",
       "lastCheckup": "Último Chequeo Médico",
       "primaryPhysician": "Médico de Cabecera",
-      "physicianPhone": "Teléfono del Médico"
+      "physicianPhone": "Teléfono del Médico",
+      "familyHistory": "Antecedentes Familiares",
+      "smokingStatuses": {
+        "never": "Nunca",
+        "former": "Ex-fumador",
+        "current": "Fumador actual"
+      },
+      "activityLevels": {
+        "sedentary": "Sedentario",
+        "light": "Ligero",
+        "moderate": "Moderado",
+        "active": "Activo"
+      }
     },
     "gynecological": {
       "title": "Información Ginecológica",
@@ -743,7 +1039,19 @@
         "incomplete": "Información incompleta"
       },
       "lastUpdated": "Última actualización: Hoy",
-      "keepUpdatedHint": "💡 Mantén tu información ginecológica actualizada para un mejor cuidado de tu salud reproductiva"
+      "keepUpdatedHint": "💡 Mantén tu información ginecológica actualizada para un mejor cuidado de tu salud reproductiva",
+      "lastMenstrualPeriod": "Fecha de Última Menstruación",
+      "menstrualCycleLength": "Duración del Ciclo Menstrual",
+      "breastfeedingStatus": "Estado de Lactancia",
+      "contraceptiveMethods": {
+        "none": "Ninguno",
+        "pills": "Píldora anticonceptiva",
+        "iud": "DIU",
+        "implant": "Implante",
+        "injection": "Inyección",
+        "condom": "Preservativo",
+        "other": "Otro"
+      }
     },
     "emergency": {
       "title": "Contacto de Emergencia",
@@ -766,6 +1074,22 @@
       "deleteContact": "Eliminar Contacto de Emergencia",
       "primaryContact": "Contacto Principal",
       "secondaryContact": "Contacto Secundario"
+    },
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "documentType": "Tipo de Documento",
+    "documentNumber": "Número de Documento",
+    "birthDate": "Fecha de Nacimiento",
+    "phone": "Teléfono",
+    "bloodType": "Tipo de Sangre",
+    "actions": {
+      "save": "Guardar",
+      "saving": "Guardando...",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "update": "Actualizar",
+      "updating": "Actualizando..."
     }
   },
   "medications": {
@@ -870,10 +1194,14 @@
     "emptyState": {
       "title": "No hay medicamentos registrados",
       "description": "Comienza agregando tu primer medicamento para llevar un mejor control de tu tratamiento",
-      "addFirst": "Agregar primer medicamento"
+      "addFirst": "Agregar primer medicamento",
+      "action": "Agregar medicamento"
     },
     "errors": {
-      "loadFailed": "Error al cargar medicamentos"
+      "loadFailed": "Error al cargar medicamentos",
+      "addFailed": "Error al agregar medicamento",
+      "updateFailed": "Error al actualizar medicamento",
+      "deleteFailed": "Error al eliminar medicamento"
     },
     "form": {
       "title": {
@@ -921,7 +1249,10 @@
         "prescribed": "Prescrito por",
         "start": "Inicio",
         "end": "Fin",
-        "updated": "Actualizado"
+        "updated": "Actualizado",
+        "prescribedBy": "Prescrito por",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin"
       },
       "actions": {
         "edit": "Editar",
@@ -934,6 +1265,39 @@
         "invalidDate": "Fecha inválida",
         "noDetails": "Sin detalles adicionales"
       }
+    },
+    "description": "Gestiona tus medicamentos actuales y pasados",
+    "viewMedication": "Ver Medicamento",
+    "prescribingDoctor": "Doctor que Prescribe",
+    "isActive": "Medicamento activo",
+    "medicationNamePlaceholder": "Ej: Paracetamol",
+    "dosagePlaceholder": "Ej: 500mg",
+    "frequencyPlaceholder": "Ej: Cada 8 horas",
+    "startDatePlaceholder": "Fecha de inicio",
+    "endDatePlaceholder": "Fecha de fin",
+    "prescribingDoctorPlaceholder": "Ej: Dr. Juan Pérez",
+    "notesPlaceholder": "Información adicional sobre el medicamento...",
+    "validation": {
+      "nameRequired": "El nombre del medicamento es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "dosageRequired": "La dosis es obligatoria",
+      "frequencyRequired": "La frecuencia es obligatoria",
+      "startDateRequired": "La fecha de inicio es obligatoria",
+      "startDateInvalid": "Fecha de inicio inválida",
+      "endDateInvalid": "Fecha de fin inválida",
+      "endDateBeforeStart": "La fecha de fin no puede ser anterior a la de inicio",
+      "doctorNameInvalid": "Nombre del doctor inválido"
+    },
+    "filters": {
+      "all": "Todos",
+      "active": "Activos",
+      "inactive": "Inactivos",
+      "search": "Buscar medicamentos..."
+    },
+    "success": {
+      "added": "Medicamento agregado exitosamente",
+      "updated": "Medicamento actualizado exitosamente",
+      "deleted": "Medicamento eliminado exitosamente"
     }
   },
   "allergies": {
@@ -1016,10 +1380,14 @@
     "emptyState": {
       "title": "No hay alergias registradas",
       "description": "Comienza agregando tu primera alergia para llevar un mejor control de tu historial médico",
-      "addFirst": "Agregar primera alergia"
+      "addFirst": "Agregar primera alergia",
+      "action": "Agregar alergia"
     },
     "errors": {
-      "loadFailed": "Error al cargar alergias"
+      "loadFailed": "Error al cargar alergias",
+      "addFailed": "Error al agregar alergia",
+      "updateFailed": "Error al actualizar alergia",
+      "deleteFailed": "Error al eliminar alergia"
     },
     "form": {
       "title": {
@@ -1074,6 +1442,43 @@
         "invalidDate": "Fecha inválida",
         "noDetails": "Sin detalles adicionales"
       }
+    },
+    "description": "Registra tus alergias para mejor atención médica",
+    "viewAllergy": "Ver Alergia",
+    "allergyNamePlaceholder": "Ej: Polen, Maní, Penicilina",
+    "allergyTypePlaceholder": "Selecciona el tipo de alergia",
+    "severityPlaceholder": "Selecciona la severidad",
+    "reactionPlaceholder": "Describe los síntomas o reacciones...",
+    "diagnosedDatePlaceholder": "Fecha de diagnóstico",
+    "diagnosedByPlaceholder": "Ej: Dr. Juan Pérez",
+    "notesPlaceholder": "Información adicional, tratamientos, precauciones...",
+    "types": {
+      "medication": "Medicamento",
+      "food": "Alimento",
+      "environmental": "Ambiental",
+      "insect": "Insecto",
+      "other": "Otro"
+    },
+    "validation": {
+      "nameRequired": "El nombre de la alergia es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "typeRequired": "El tipo de alergia es obligatorio",
+      "severityRequired": "La severidad es obligatoria",
+      "reactionRequired": "La descripción de la reacción es obligatoria",
+      "reactionMinLength": "La descripción debe tener al menos 10 caracteres",
+      "diagnosedDateInvalid": "Fecha de diagnóstico inválida"
+    },
+    "filters": {
+      "all": "Todas",
+      "medication": "Medicamentos",
+      "food": "Alimentos",
+      "environmental": "Ambientales",
+      "search": "Buscar alergias..."
+    },
+    "success": {
+      "added": "Alergia agregada exitosamente",
+      "updated": "Alergia actualizada exitosamente",
+      "deleted": "Alergia eliminada exitosamente"
     }
   },
   "illnesses": {
@@ -1152,7 +1557,8 @@
       "markAsCured": "Marcar como curada",
       "markAsActive": "Marcar como activa",
       "cured": "Curada",
-      "active": "Activa"
+      "active": "Activa",
+      "activate": "Activar"
     },
     "confirmations": {
       "deleteTitle": "¿Eliminar enfermedad?",
@@ -1163,10 +1569,14 @@
     "emptyState": {
       "title": "No hay enfermedades registradas",
       "description": "Comienza agregando tu primera enfermedad para llevar un mejor control de tu historial médico",
-      "addFirst": "Agregar primera enfermedad"
+      "addFirst": "Agregar primera enfermedad",
+      "action": "Agregar enfermedad"
     },
     "errors": {
-      "loadFailed": "Error al cargar enfermedades"
+      "loadFailed": "Error al cargar enfermedades",
+      "addFailed": "Error al agregar enfermedad",
+      "updateFailed": "Error al actualizar enfermedad",
+      "deleteFailed": "Error al eliminar enfermedad"
     },
     "form": {
       "title": {
@@ -1224,6 +1634,54 @@
         "invalidDate": "Fecha inválida",
         "noDetails": "Sin detalles adicionales"
       }
+    },
+    "description": "Historial de enfermedades y condiciones médicas",
+    "viewIllness": "Ver Enfermedad",
+    "illnessType": "Tipo de Enfermedad",
+    "illnessNamePlaceholder": "Ej: Hipertensión arterial",
+    "illnessTypePlaceholder": "Selecciona el tipo",
+    "diagnosisDatePlaceholder": "Fecha de diagnóstico",
+    "diagnosedByPlaceholder": "Ej: Dr. Juan Pérez",
+    "statusPlaceholder": "Selecciona el estado",
+    "severityPlaceholder": "Selecciona la severidad",
+    "treatmentPlaceholder": "Descripción del tratamiento actual...",
+    "notesPlaceholder": "Notas adicionales sobre la enfermedad...",
+    "types": {
+      "chronic": "Crónica",
+      "acute": "Aguda",
+      "genetic": "Genética",
+      "infectious": "Infecciosa",
+      "autoimmune": "Autoinmune",
+      "other": "Otra"
+    },
+    "statuses": {
+      "active": "Activa",
+      "controlled": "Controlada",
+      "inRemission": "En Remisión",
+      "cured": "Curada",
+      "monitoring": "En Monitoreo"
+    },
+    "validation": {
+      "nameRequired": "El nombre de la enfermedad es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "typeRequired": "El tipo de enfermedad es obligatorio",
+      "dateRequired": "La fecha de diagnóstico es obligatoria",
+      "dateInvalid": "Fecha de diagnóstico inválida",
+      "dateFuture": "La fecha no puede ser futura",
+      "statusRequired": "El estado es obligatorio",
+      "severityRequired": "La severidad es obligatoria"
+    },
+    "filters": {
+      "all": "Todas",
+      "active": "Activas",
+      "controlled": "Controladas",
+      "chronic": "Crónicas",
+      "search": "Buscar enfermedades..."
+    },
+    "success": {
+      "added": "Enfermedad agregada exitosamente",
+      "updated": "Enfermedad actualizada exitosamente",
+      "deleted": "Enfermedad eliminada exitosamente"
     }
   },
   "surgeries": {
@@ -1303,10 +1761,14 @@
     "emptyState": {
       "title": "No hay cirugías registradas",
       "description": "Comienza agregando tu primera cirugía para llevar un mejor control de tu historial médico",
-      "addFirst": "Agregar primera cirugía"
+      "addFirst": "Agregar primera cirugía",
+      "action": "Agregar cirugía"
     },
     "errors": {
-      "loadFailed": "Error al cargar cirugías"
+      "loadFailed": "Error al cargar cirugías",
+      "addFailed": "Error al agregar cirugía",
+      "updateFailed": "Error al actualizar cirugía",
+      "deleteFailed": "Error al eliminar cirugía"
     },
     "form": {
       "title": {
@@ -1374,6 +1836,50 @@
         "invalidDate": "Fecha inválida",
         "noDetails": "Sin detalles adicionales"
       }
+    },
+    "description": "Historial de procedimientos quirúrgicos",
+    "viewSurgery": "Ver Cirugía",
+    "surgeryNamePlaceholder": "Ej: Apendicectomía",
+    "surgeryTypePlaceholder": "Selecciona el tipo de cirugía",
+    "surgeryDatePlaceholder": "Fecha de la cirugía",
+    "hospitalPlaceholder": "Ej: Hospital Central",
+    "surgeonPlaceholder": "Ej: Dr. Juan Pérez",
+    "complicationsPlaceholder": "Describe cualquier complicación...",
+    "outcomePlaceholder": "Selecciona el resultado",
+    "notesPlaceholder": "Información adicional sobre la cirugía...",
+    "types": {
+      "emergency": "Emergencia",
+      "elective": "Electiva",
+      "diagnostic": "Diagnóstica",
+      "cosmetic": "Cosmética",
+      "other": "Otra"
+    },
+    "outcomes": {
+      "successful": "Exitosa",
+      "complications": "Con Complicaciones",
+      "partial": "Éxito Parcial",
+      "failed": "Fallida"
+    },
+    "validation": {
+      "nameRequired": "El nombre de la cirugía es obligatorio",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "typeRequired": "El tipo de cirugía es obligatorio",
+      "dateRequired": "La fecha de la cirugía es obligatoria",
+      "dateInvalid": "Fecha de cirugía inválida",
+      "dateFuture": "La fecha no puede ser futura",
+      "hospitalRequired": "El hospital es obligatorio",
+      "surgeonRequired": "El cirujano es obligatorio"
+    },
+    "filters": {
+      "all": "Todas",
+      "emergency": "Emergencia",
+      "elective": "Electivas",
+      "search": "Buscar cirugías..."
+    },
+    "success": {
+      "added": "Cirugía agregada exitosamente",
+      "updated": "Cirugía actualizada exitosamente",
+      "deleted": "Cirugía eliminada exitosamente"
     }
   },
   "qr": {
@@ -1464,6 +1970,64 @@
     "error": {
       "title": "Error al cargar QR",
       "retry": "Reintentar"
+    },
+    "pageTitle": "Mi Código QR",
+    "pageSubtitle": "Comparte tu información médica de emergencia",
+    "downloading": "Descargando...",
+    "printing": "Imprimiendo...",
+    "sharing": "Compartiendo...",
+    "whatIsThis": "¿Qué es esto?",
+    "instructions": {
+      "title": "Instrucciones de uso",
+      "step1": "Descarga o imprime tu código QR",
+      "step2": "Llévalo siempre contigo",
+      "step3": "En emergencias, el personal médico puede escanearlo",
+      "step4": "Accederán a tu información médica crítica"
+    },
+    "contains": {
+      "title": "Este código contiene",
+      "personalInfo": "Información personal básica",
+      "allergies": "Alergias críticas",
+      "medications": "Medicamentos actuales",
+      "conditions": "Condiciones médicas importantes",
+      "bloodType": "Tipo de sangre",
+      "emergencyContact": "Contactos de emergencia"
+    },
+    "tips": {
+      "title": "Consejos",
+      "keepUpdated": "Mantén tu información actualizada",
+      "multipleLocations": "Guárdalo en múltiples lugares",
+      "informFamily": "Informa a tu familia sobre tu QR",
+      "regularCheck": "Revísalo regularmente"
+    },
+    "formats": {
+      "title": "Formatos de descarga",
+      "png": "Imagen PNG",
+      "pdf": "Documento PDF",
+      "svg": "Vector SVG"
+    },
+    "size": {
+      "title": "Tamaño",
+      "small": "Pequeño",
+      "medium": "Mediano",
+      "large": "Grande"
+    },
+    "actions": {
+      "regenerate": "Regenerar",
+      "regenerating": "Regenerando...",
+      "viewData": "Ver datos incluidos",
+      "customize": "Personalizar"
+    },
+    "success": {
+      "downloaded": "QR descargado exitosamente",
+      "shared": "QR compartido exitosamente",
+      "regenerated": "QR regenerado exitosamente"
+    },
+    "errors": {
+      "downloadFailed": "Error al descargar QR",
+      "shareFailed": "Error al compartir QR",
+      "generateFailed": "Error al generar QR",
+      "loadFailed": "Error al cargar QR"
     }
   },
   "emergencyAccess": {
@@ -1571,7 +2135,65 @@
     "ambulance": "Ambulancia",
     "lastUpdate": "Última Actualización",
     "printInfo": "Imprimir Información",
-    "exportPDF": "Exportar a PDF"
+    "exportPDF": "Exportar a PDF",
+    "messages": {
+      "loading": "Cargando información de emergencia...",
+      "verifying": "Verificando acceso...",
+      "noData": "No se encontró información",
+      "redirectingLogin": "Redirigiendo al inicio de sesión...",
+      "userType": "Tu tipo de usuario actual:",
+      "subtitle": "Información médica del paciente • Solo para uso de paramédicos",
+      "confidentiality": "Esta información es confidencial y solo debe ser utilizada en situaciones de emergencia. El acceso no autorizado está prohibido y puede tener consecuencias legales.",
+      "weeks": "SEMANAS"
+    },
+    "errors": {
+      "qrNotFound": "El código QR no corresponde a ningún paciente registrado.",
+      "paramedicOnly": "Solo usuarios paramédicos pueden acceder a esta información.",
+      "paramedicOnlyPage": "Solo usuarios paramédicos pueden acceder a esta página.",
+      "accessDenied": "Acceso Denegado",
+      "accessRestricted": "Acceso Restringido",
+      "requiresAuth": "Esta información requiere autenticación como paramédico."
+    },
+    "titles": {
+      "access": "Acceso de Emergencia"
+    },
+    "alerts": {
+      "pregnant": "PACIENTE EMBARAZADA",
+      "allergies": "ALERGIAS REGISTRADAS"
+    },
+    "actions": {
+      "retry": "Reintentar",
+      "refresh": "Actualizar",
+      "goToDashboard": "Ir al Panel de Control",
+      "loginAsParamedic": "Iniciar sesión como paramédico",
+      "print": "Imprimir",
+      "export": "Exportar",
+      "close": "Cerrar"
+    },
+    "labels": {
+      "badge": "Acceso de Emergencia"
+    },
+    "subtitle": "Información médica de emergencia del paciente",
+    "accessTitle": "Acceso de Emergencia",
+    "accessSubtitle": "Información médica del paciente",
+    "emergencyContact": "Contacto de Emergencia",
+    "bloodTypeUnknown": "Tipo de sangre desconocido",
+    "noEmergencyContact": "Sin contacto de emergencia registrado",
+    "lastUpdated": "Última actualización",
+    "accessLog": {
+      "title": "Registro de Accesos",
+      "accessedBy": "Accedido por",
+      "accessTime": "Hora de acceso",
+      "location": "Ubicación",
+      "viewLog": "Ver registro completo"
+    },
+    "verification": {
+      "title": "Verificación Requerida",
+      "enterCode": "Ingrese el código de verificación",
+      "verify": "Verificar",
+      "invalidCode": "Código inválido",
+      "accessDenied": "Acceso denegado"
+    }
   },
   "forms": {
     "title": "Formularios",
@@ -1606,7 +2228,24 @@
       "invalidDocument": "Número de documento inválido",
       "futureDate": "La fecha no puede ser futura",
       "pastDate": "La fecha no puede ser pasada",
-      "invalidAge": "Edad inválida"
+      "invalidAge": "Edad inválida",
+      "invalid": "Valor inválido",
+      "email": "Correo electrónico inválido",
+      "min": "Mínimo {min}",
+      "max": "Máximo {max}",
+      "pattern": "Formato inválido",
+      "date": "Fecha inválida",
+      "dateFuture": "La fecha no puede ser futura",
+      "datePast": "La fecha no puede ser pasada",
+      "fileSize": "El archivo excede el tamaño máximo",
+      "fileType": "Tipo de archivo no permitido",
+      "phone": "Teléfono inválido",
+      "url": "URL inválida",
+      "number": "Debe ser un número",
+      "integer": "Debe ser un número entero",
+      "decimal": "Debe ser un número decimal",
+      "positive": "Debe ser un número positivo",
+      "negative": "Debe ser un número negativo"
     },
     "success": "Formulario enviado exitosamente",
     "error": "Error al enviar el formulario",
@@ -1615,7 +2254,76 @@
     "unsavedChanges": "Tienes cambios sin guardar",
     "confirmDiscard": "¿Deseas descartar los cambios?",
     "discard": "Descartar",
-    "keepEditing": "Seguir Editando"
+    "keepEditing": "Seguir Editando",
+    "common": {
+      "required": "Obligatorio",
+      "optional": "Opcional",
+      "requiredFields": "Campos obligatorios",
+      "optionalFields": "Campos opcionales",
+      "allFieldsRequired": "Todos los campos son obligatorios"
+    },
+    "fieldTypes": {
+      "text": "Texto",
+      "number": "Número",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "date": "Fecha",
+      "select": "Selección",
+      "multiselect": "Selección múltiple",
+      "checkbox": "Casilla",
+      "radio": "Opción única",
+      "textarea": "Área de texto",
+      "file": "Archivo"
+    },
+    "labels": {
+      "search": "Buscar",
+      "filter": "Filtrar",
+      "sort": "Ordenar",
+      "from": "Desde",
+      "to": "Hasta",
+      "selectAll": "Seleccionar todo",
+      "deselectAll": "Deseleccionar todo",
+      "selected": "Seleccionado",
+      "noResults": "Sin resultados",
+      "loading": "Cargando...",
+      "selectOption": "Selecciona una opción",
+      "selectDate": "Selecciona una fecha",
+      "uploadFile": "Subir archivo",
+      "dragDropFile": "Arrastra y suelta el archivo aquí"
+    },
+    "actions": {
+      "submit": "Enviar",
+      "submitting": "Enviando...",
+      "save": "Guardar",
+      "saving": "Guardando...",
+      "cancel": "Cancelar",
+      "reset": "Restablecer",
+      "clear": "Limpiar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando...",
+      "edit": "Editar",
+      "update": "Actualizar",
+      "updating": "Actualizando...",
+      "create": "Crear",
+      "creating": "Creando...",
+      "add": "Agregar",
+      "remove": "Quitar",
+      "upload": "Subir",
+      "uploading": "Subiendo...",
+      "download": "Descargar",
+      "downloading": "Descargando..."
+    },
+    "messages": {
+      "unsavedChanges": "Tienes cambios sin guardar",
+      "confirmDelete": "¿Estás seguro de que deseas eliminar?",
+      "confirmCancel": "¿Estás seguro de que deseas cancelar?",
+      "success": "Operación exitosa",
+      "error": "Ocurrió un error",
+      "noChanges": "No hay cambios para guardar",
+      "saveFirst": "Guarda los cambios primero",
+      "fillRequired": "Completa los campos obligatorios",
+      "invalidForm": "Please fix the errors in the form"
+    }
   },
   "language": {
     "selector": "Idioma",
@@ -1643,9 +2351,124 @@
     "maxLength": "Máximo {max} caracteres",
     "invalidFormat": "Formato inválido"
   },
+  "help": {
+    "title": "Centro de Ayuda",
+    "subtitle": "Estamos aquí para ayudarte a aprovechar al máximo VitalGo",
+    "support": {
+      "email": {
+        "title": "Email de Soporte",
+        "description": "Envíanos tu consulta y te responderemos en 24 horas",
+        "contact": "soporte@vitalgo.co",
+        "action": "Enviar Email"
+      },
+      "phone": {
+        "title": "Línea de Atención",
+        "description": "Llámanos de lunes a viernes de 8:00 AM a 6:00 PM",
+        "contact": "+57 (1) 800-VITALGO",
+        "action": "Llamar Ahora"
+      },
+      "chat": {
+        "title": "Chat en Vivo",
+        "description": "Próximamente disponible para soporte inmediato",
+        "contact": "Chat disponible próximamente",
+        "action": "Próximamente"
+      }
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "Primeros Pasos",
+        "items": {
+          "createAccount": "Cómo crear mi cuenta en VitalGo",
+          "completeProfile": "Completar mi perfil médico",
+          "setupQR": "Configurar mi QR de emergencia",
+          "verifyIdentity": "Verificar mi identidad"
+        }
+      },
+      "dataManagement": {
+        "title": "Gestión de Datos",
+        "items": {
+          "updateMedical": "Actualizar mi información médica",
+          "addMedications": "Añadir medicamentos y alergias",
+          "uploadDocuments": "Subir documentos médicos",
+          "shareInfo": "Compartir información con médicos"
+        }
+      },
+      "emergencies": {
+        "title": "Emergencias",
+        "items": {
+          "useQR": "Usar mi QR en emergencias",
+          "emergencyContact": "Información de contacto de emergencia",
+          "quickAccess": "Acceso rápido a mi historial",
+          "protocols": "Protocolos de emergencia"
+        }
+      },
+      "privacySecurity": {
+        "title": "Privacidad y Seguridad",
+        "items": {
+          "howProtect": "Cómo protegemos tu información",
+          "controlAccess": "Controlar quién ve mis datos",
+          "reportIssues": "Reportar problemas de seguridad",
+          "privacyPolicies": "Políticas de privacidad"
+        }
+      }
+    },
+    "hours": {
+      "title": "Horarios de Atención",
+      "weekdays": "Lunes a Viernes: 8:00 AM - 6:00 PM",
+      "saturdays": "Sábados: 9:00 AM - 2:00 PM",
+      "emergencyNote": "Para emergencias médicas, dirígete al centro de salud más cercano"
+    },
+    "quickLinks": {
+      "title": "Enlaces Rápidos",
+      "faq": "Preguntas Frecuentes",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio"
+    }
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre VitalGo",
+    "questions": {
+      "whatIs": {
+        "question": "¿Qué es VitalGo?",
+        "answer": "VitalGo es una plataforma digital de salud que unifica tu historial médico y reduce los tiempos de espera en urgencias hasta en un 70% mediante inteligencia artificial."
+      },
+      "howRegister": {
+        "question": "¿Cómo registro mi información médica?",
+        "answer": "Puedes registrar tu información médica completando tu perfil después del registro. Incluye datos personales, antecedentes médicos, medicamentos y alergias."
+      },
+      "isSafe": {
+        "question": "¿Es segura mi información médica?",
+        "answer": "Sí, toda tu información está protegida con encriptación de grado bancario y cumple con estándares internacionales de seguridad médica."
+      },
+      "howQR": {
+        "question": "¿Cómo funciona el QR de emergencia?",
+        "answer": "El QR de emergencia permite que el personal médico acceda instantáneamente a tu información crítica durante una emergencia médica."
+      },
+      "anyCenter": {
+        "question": "¿Puedo usar VitalGo en cualquier centro de salud?",
+        "answer": "VitalGo está conectado con más de 500 centros de salud en Colombia. Consulta la lista de centros afiliados en nuestra plataforma."
+      },
+      "cost": {
+        "question": "¿VitalGo tiene costo?",
+        "answer": "VitalGo es gratuito para pacientes. Nuestro modelo se basa en mejorar la eficiencia de los centros de salud."
+      }
+    },
+    "notFound": {
+      "title": "¿No encontraste lo que buscabas?",
+      "subtitle": "Nuestro equipo de soporte está aquí para ayudarte",
+      "action": "Ir al Centro de Ayuda"
+    }
+  },
   "home": {
     "nav": {
       "login": "Ingresar al Sistema"
+    },
+    "stats": {
+      "activePatients": "Pacientes Activos",
+      "healthCenters": "Centros de Salud",
+      "timeReduction": "Reducción Tiempos",
+      "availability": "Disponibilidad"
     },
     "hero": {
       "badge": "Líder en Salud Digital Colombia",
@@ -1716,9 +2539,8 @@
     "pricing": {
       "badge": "Precios",
       "title": "Comienza gratis, crece cuando quieras",
-      "description": "Accede a todas las funciones esenciales sin costo. Tu salud digital empieza hoy.",
-      "subtitle": "Accede a todas las funciones esenciales sin costo. Tu salud digital empieza hoy.",
       "description": "Acceso completo a todas las funcionalidades sin costos ocultos",
+      "subtitle": "Accede a todas las funciones esenciales sin costo. Tu salud digital empieza hoy.",
       "freePlan": {
         "title": "Plan Gratuito",
         "price": "Gratis",
@@ -1746,6 +2568,13 @@
     "title": "Planes y Precios",
     "subtitle": "Comienza gratis y mantén tu información médica segura",
     "backToHome": "Volver al inicio",
+    "loading": "Cargando planes...",
+    "plan": {
+      "free": "Gratis",
+      "forever": "Para siempre",
+      "limitedTime": "Por tiempo limitado",
+      "startPlan": "Iniciar Plan"
+    },
     "free": {
       "title": "Plan Gratuito",
       "price": "Gratis",
@@ -1769,7 +2598,9 @@
       "placeholder": "Ingresa tu código",
       "apply": "Aplicar Código",
       "applied": "Código aplicado",
-      "invalid": "Código inválido",
+      "invalid": "Código no válido",
+      "error": "Error al validar el código",
+      "validating": "Validando...",
       "partners": "Empresas Asociadas",
       "partnersDescription": "Accede a beneficios exclusivos si trabajas o eres miembro de:",
       "companies": {

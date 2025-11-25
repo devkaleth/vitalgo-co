@@ -1,27 +1,32 @@
+'use client'
+
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { StatCard } from '../atoms/StatCard'
 import { Users, HeartHandshake, Clock, Activity } from 'lucide-react'
 
 export function HealthcareStats() {
+  const t = useTranslations('home.stats')
+
   const stats = [
     {
       number: "10K+",
-      label: "Pacientes Activos",
+      label: t('activePatients'),
       icon: <Users className="h-5 w-5 text-vitalgo-green" />
     },
     {
       number: "500+",
-      label: "Centros de Salud",
+      label: t('healthCenters'),
       icon: <HeartHandshake className="h-5 w-5 text-vitalgo-green" />
     },
     {
       number: "70%",
-      label: "Reducción Tiempos",
+      label: t('timeReduction'),
       icon: <Clock className="h-5 w-5 text-vitalgo-green" />
     },
     {
       number: "99.9%",
-      label: "Disponibilidad",
+      label: t('availability'),
       icon: <Activity className="h-5 w-5 text-vitalgo-green" />
     }
   ]

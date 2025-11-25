@@ -17,6 +17,7 @@ import { formatCountryWithFlag } from '../../utils/personalInfoUtils';
 export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) {
   const t = useTranslations('profile.basic');
   const tCommon = useTranslations('common');
+  const tPhone = useTranslations('phone.countryCode');
   const locale = useLocale();
   const { basicInfo, loading, error, updateBasicInfo, refetch } = useBasicPatientInfo();
   const { personalInfo, loading: personalLoading } = usePersonalPatientInfo();
@@ -317,7 +318,7 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
                       <span
                         className="text-lg flex-shrink-0"
                         role="img"
-                        aria-label={`Bandera de ${getCountryByCode(basicInfo.countryCode)?.name || 'país'}`}
+                        aria-label={tPhone('flagOf', { country: getCountryByCode(basicInfo.countryCode)?.name || '' })}
                       >
                         {getCountryByCode(basicInfo.countryCode)?.flag || '🏳️'}
                       </span>

@@ -1,68 +1,75 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { PublicNavbar, PublicFooter } from '@/shared/components/organisms';
 import { Mail, Phone, MessageCircle, Clock } from 'lucide-react';
 
 export default function HelpCenterPage() {
+  const t = useTranslations('help');
+  const tCommon = useTranslations('common');
+
   const supportOptions = [
     {
       icon: <Mail className="h-6 w-6" />,
-      title: "Email de Soporte",
-      description: "Envíanos tu consulta y te responderemos en 24 horas",
-      contact: "soporte@vitalgo.co",
-      action: "Enviar Email"
+      title: t('support.email.title'),
+      description: t('support.email.description'),
+      contact: t('support.email.contact'),
+      action: t('support.email.action'),
+      disabled: false
     },
     {
       icon: <Phone className="h-6 w-6" />,
-      title: "Línea de Atención",
-      description: "Llámanos de lunes a viernes de 8:00 AM a 6:00 PM",
-      contact: "+57 (1) 800-VITALGO",
-      action: "Llamar Ahora"
+      title: t('support.phone.title'),
+      description: t('support.phone.description'),
+      contact: t('support.phone.contact'),
+      action: t('support.phone.action'),
+      disabled: false
     },
     {
       icon: <MessageCircle className="h-6 w-6" />,
-      title: "Chat en Vivo",
-      description: "Próximamente disponible para soporte inmediato",
-      contact: "Chat disponible próximamente",
-      action: "Próximamente"
+      title: t('support.chat.title'),
+      description: t('support.chat.description'),
+      contact: t('support.chat.contact'),
+      action: t('support.chat.action'),
+      disabled: true
     }
   ];
 
   const helpCategories = [
     {
-      title: "Primeros Pasos",
+      title: t('categories.gettingStarted.title'),
       items: [
-        "Cómo crear mi cuenta en VitalGo",
-        "Completar mi perfil médico",
-        "Configurar mi QR de emergencia",
-        "Verificar mi identidad"
+        t('categories.gettingStarted.items.createAccount'),
+        t('categories.gettingStarted.items.completeProfile'),
+        t('categories.gettingStarted.items.setupQR'),
+        t('categories.gettingStarted.items.verifyIdentity')
       ]
     },
     {
-      title: "Gestión de Datos",
+      title: t('categories.dataManagement.title'),
       items: [
-        "Actualizar mi información médica",
-        "Añadir medicamentos y alergias",
-        "Subir documentos médicos",
-        "Compartir información con médicos"
+        t('categories.dataManagement.items.updateMedical'),
+        t('categories.dataManagement.items.addMedications'),
+        t('categories.dataManagement.items.uploadDocuments'),
+        t('categories.dataManagement.items.shareInfo')
       ]
     },
     {
-      title: "Emergencias",
+      title: t('categories.emergencies.title'),
       items: [
-        "Usar mi QR en emergencias",
-        "Información de contacto de emergencia",
-        "Acceso rápido a mi historial",
-        "Protocolos de emergencia"
+        t('categories.emergencies.items.useQR'),
+        t('categories.emergencies.items.emergencyContact'),
+        t('categories.emergencies.items.quickAccess'),
+        t('categories.emergencies.items.protocols')
       ]
     },
     {
-      title: "Privacidad y Seguridad",
+      title: t('categories.privacySecurity.title'),
       items: [
-        "Cómo protegemos tu información",
-        "Controlar quién ve mis datos",
-        "Reportar problemas de seguridad",
-        "Políticas de privacidad"
+        t('categories.privacySecurity.items.howProtect'),
+        t('categories.privacySecurity.items.controlAccess'),
+        t('categories.privacySecurity.items.reportIssues'),
+        t('categories.privacySecurity.items.privacyPolicies')
       ]
     }
   ];
@@ -75,10 +82,10 @@ export default function HelpCenterPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Centro de Ayuda
+              {t('title')}
             </h1>
             <p className="text-xl text-gray-600">
-              Estamos aquí para ayudarte a aprovechar al máximo VitalGo
+              {t('subtitle')}
             </p>
           </div>
 
@@ -106,7 +113,7 @@ export default function HelpCenterPage() {
                 </p>
                 <button
                   className="w-full bg-vitalgo-green text-white px-4 py-2 rounded-lg font-medium hover:bg-vitalgo-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={option.action === "Próximamente"}
+                  disabled={option.disabled}
                   data-testid={`help-support-action-${index}`}
                 >
                   {option.action}
@@ -148,23 +155,23 @@ export default function HelpCenterPage() {
               <Clock className="h-8 w-8 text-blue-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Horarios de Atención
+              {t('hours.title')}
             </h3>
             <p className="text-gray-600 mb-2">
-              Lunes a Viernes: 8:00 AM - 6:00 PM
+              {t('hours.weekdays')}
             </p>
             <p className="text-gray-600 mb-4">
-              Sábados: 9:00 AM - 2:00 PM
+              {t('hours.saturdays')}
             </p>
             <p className="text-sm text-gray-500">
-              Para emergencias médicas, dirígete al centro de salud más cercano
+              {t('hours.emergencyNote')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="mt-12 text-center">
             <h3 className="text-xl font-semibold text-gray-900 mb-6">
-              Enlaces Rápidos
+              {t('quickLinks.title')}
             </h3>
             <div className="flex flex-wrap justify-center gap-4">
               <a
@@ -172,21 +179,21 @@ export default function HelpCenterPage() {
                 className="bg-white border border-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                 data-testid="help-faq-link"
               >
-                Preguntas Frecuentes
+                {t('quickLinks.faq')}
               </a>
               <a
                 href="/legal/privacy"
                 className="bg-white border border-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                 data-testid="help-privacy-link"
               >
-                Política de Privacidad
+                {t('quickLinks.privacy')}
               </a>
               <a
                 href="/legal/terms"
                 className="bg-white border border-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
                 data-testid="help-terms-link"
               >
-                Términos de Servicio
+                {t('quickLinks.terms')}
               </a>
             </div>
           </div>

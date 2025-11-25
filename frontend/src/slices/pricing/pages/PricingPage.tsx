@@ -105,12 +105,12 @@ export const PricingPage: React.FC<PricingPageProps> = ({
         localStorage.setItem('discountCode', discountCode.toUpperCase());
       } else {
         setCodeStatus('invalid');
-        setDiscountMessage(data.message || 'Código de descuento no válido');
+        setDiscountMessage(data.message || t('discount.invalid'));
       }
     } catch (error) {
       console.error('Error validating discount code:', error);
       setCodeStatus('invalid');
-      setDiscountMessage('Error al validar el código');
+      setDiscountMessage(t('discount.error'));
     } finally {
       setValidatingCode(false);
     }
@@ -213,7 +213,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-gray-600">Cargando planes...</div>
+        <div className="text-xl text-gray-600">{t('loading')}</div>
       </div>
     );
   }
@@ -273,15 +273,15 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                 </h2>
                 <div className="flex items-baseline justify-center gap-2 mb-2">
                   <span className="text-5xl font-bold text-vitalgo-green">
-                    Gratis
+                    {t('plan.free')}
                   </span>
                   <span className="text-gray-600 text-lg">
-                    /Para siempre
+                    /{t('plan.forever')}
                   </span>
                 </div>
                 <div className="mb-3">
                   <span className="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">
-                    ⚡ Por tiempo limitado
+                    ⚡ {t('plan.limitedTime')}
                   </span>
                 </div>
                 <p className="text-gray-600">
@@ -307,7 +307,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   onClick={() => handleSelectPlan(freePlan.id)}
                   className="w-full py-4 px-6 rounded-lg font-semibold text-lg transition-colors bg-vitalgo-green text-white hover:bg-vitalgo-green/90"
                 >
-                  Iniciar Plan
+                  {t('plan.startPlan')}
                 </button>
               </div>
             </div>
@@ -349,7 +349,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   disabled={!discountCode || validatingCode}
                   className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
-                  {validatingCode ? 'Validando...' : t('discount.apply')}
+                  {validatingCode ? t('discount.validating') : t('discount.apply')}
                 </button>
               </div>
 

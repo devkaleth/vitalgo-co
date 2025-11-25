@@ -118,10 +118,10 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              ¡Perfil Completado!
+              {t('completedTitle')}
             </h2>
             <p className="text-gray-600 mb-4">
-              Has completado tu información médica. Redirigiendo a tu panel de control...
+              {t('completedMessage')}
             </p>
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-vitalgo-green mx-auto"></div>
           </div>
@@ -136,10 +136,10 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
       <div className="border-b border-gray-200 pb-6">
         <div className="mb-4">
           <h2 className="text-2xl font-bold text-gray-900">
-            Completa tu Perfil
+            {t('title')}
           </h2>
           <p className="text-sm text-gray-600 mt-1">
-            Ayúdanos a conocerte mejor completando tu información médica
+            {t('subtitle')}
           </p>
         </div>
 
@@ -151,10 +151,10 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
 
         <div className="flex justify-between mt-2 text-xs text-gray-500">
           <span className={currentStep === 'personal' ? 'text-vitalgo-green font-medium' : ''}>
-            Información Personal
+            {t('step2')}
           </span>
           <span className={currentStep === 'medical' ? 'text-vitalgo-green font-medium' : ''}>
-            Información Médica
+            {t('step3')}
           </span>
         </div>
       </div>
@@ -212,7 +212,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Atrás
+            {t('back')}
           </button>
         )}
 
@@ -227,7 +227,7 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
             className="inline-flex items-center px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-vitalgo-green disabled:opacity-50 disabled:cursor-not-allowed"
             data-testid="onboarding-skip-button"
           >
-            Saltar
+            {t('skip')}
           </button>
           <button
             type="submit"
@@ -239,11 +239,11 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Guardando...
+                {t('saving')}
               </>
             ) : (
               <>
-                {currentStep === 'medical' ? 'Guardar y Finalizar' : 'Guardar y Continuar'}
+                {currentStep === 'medical' ? t('saveAndFinish') : t('saveAndContinue')}
                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>

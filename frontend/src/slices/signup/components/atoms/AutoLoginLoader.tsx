@@ -4,6 +4,7 @@
  * Used during registration success to indicate automatic login is happening
  */
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface AutoLoginLoaderProps {
   /** Duration in seconds for the countdown */
@@ -17,8 +18,10 @@ interface AutoLoginLoaderProps {
 export const AutoLoginLoader: React.FC<AutoLoginLoaderProps> = ({
   duration = 3,
   onComplete,
-  message = "Te estamos iniciando sesión automáticamente..."
+  message
 }) => {
+  const t = useTranslations('signup');
+  const displayMessage = message || t('messages.autoLogin');
   const [countdown, setCountdown] = useState(duration);
   const [progress, setProgress] = useState(0);
 
@@ -49,10 +52,10 @@ export const AutoLoginLoader: React.FC<AutoLoginLoaderProps> = ({
       {/* Message */}
       <div className="text-center space-y-2">
         <p className="text-lg font-medium text-gray-900">
-          {message}
+          {displayMessage}
         </p>
         <p className="text-sm text-gray-600">
-          Redirigiendo al panel en {countdown} segundo{countdown !== 1 ? 's' : ''}...
+          {t('messages.redirectingPanel', { countdown })}
         </p>
       </div>
 

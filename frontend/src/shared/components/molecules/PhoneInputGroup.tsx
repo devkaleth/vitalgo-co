@@ -5,6 +5,7 @@
  * Shared component for use across multiple slices
  */
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { CountryCodeSelect } from '../atoms/CountryCodeSelect';
 import { PhoneNumberInput } from '../atoms/PhoneNumberInput';
 import { Country, getCountryByCode } from '../../../slices/signup/data/countries';
@@ -35,15 +36,18 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
   'data-testid': testId = 'phone-input-group',
   countries
 }) => {
+  const t = useTranslations('phone.group');
+  const tCountry = useTranslations('phone.countryCode');
+
   return (
     <div className="space-y-4" data-testid={testId}>
       {/* Section header */}
       <div className="space-y-1">
         <h4 className="text-sm font-medium text-gray-900">
-          Información de Contacto
+          {t('title')}
         </h4>
         <p className="text-xs text-gray-600">
-          Selecciona tu país e ingresa tu número de teléfono
+          {t('subtitle')}
         </p>
       </div>
 
@@ -84,7 +88,7 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
         <div className="mt-3 p-3 bg-gray-50 rounded-lg" data-testid="phone-preview">
           <div className="flex items-center space-x-3">
             <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-              Número completo:
+              {t('fullNumber')}
             </span>
             <div className="flex items-center space-x-2">
               {/* Country flag */}
@@ -92,7 +96,7 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
                 <span
                   className="text-lg flex-shrink-0"
                   role="img"
-                  aria-label={`Bandera de ${getCountryByCode(countryCode)?.name || 'país'}`}
+                  aria-label={tCountry('flagOf', { country: getCountryByCode(countryCode)?.name || '' })}
                 >
                   {getCountryByCode(countryCode)?.flag || '🏳️'}
                 </span>
@@ -129,7 +133,7 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
                 />
               </svg>
               <span className="text-vitalgo-green">
-                Número de teléfono válido y disponible
+                {t('validAndAvailable')}
               </span>
             </>
           ) : validation.isValid === false && (validation.error || error) ? (
@@ -153,7 +157,7 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
       {validation?.isValidating && (
         <div className="flex items-center space-x-2 text-sm text-gray-600" data-testid="phone-validation-loading">
           <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-300 border-t-blue-600"></div>
-          <span>Validando número de teléfono...</span>
+          <span>{t('validating')}</span>
         </div>
       )}
     </div>

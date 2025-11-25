@@ -2,7 +2,10 @@
  * Medical Data List organism component
  * Displays and manages lists of medical data with CRUD operations
  */
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { MedicalDataCard } from '../atoms/MedicalDataCard';
 import { MedicalDataForm } from '../molecules/MedicalDataForm';
 import {
@@ -30,6 +33,8 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
   emptyStateMessage,
   'data-testid': testId
 }) => {
+  const t = useTranslations('dashboard');
+  const tCommon = useTranslations('common');
   const [data, setData] = useState<MedicalDataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -140,7 +145,7 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este elemento?')) {
+    if (!confirm(t('confirmations.deleteItem'))) {
       return;
     }
 
@@ -267,14 +272,14 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
           <svg className="h-5 w-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.866-.833-2.464 0L4.348 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
-          <h3 className="text-red-800 font-medium">Error al cargar {title.toLowerCase()}</h3>
+          <h3 className="text-red-800 font-medium">{t('messages.loadingError', { title: title.toLowerCase() })}</h3>
         </div>
         <p className="text-red-600 mt-1">{error}</p>
         <button
           onClick={fetchData}
           className="mt-3 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
         >
-          Reintentar
+          {tCommon('retry')}
         </button>
       </div>
     );
@@ -293,7 +298,7 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          <span>Agregar</span>
+          <span>{tCommon('add')}</span>
         </button>
       </div>
 
@@ -336,7 +341,7 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
           {getEmptyStateIcon()}
           <h3 className="mt-4 text-lg font-medium text-gray-900">
-            No hay {title.toLowerCase()} registrados
+            {t('messages.noItems', { title: title.toLowerCase() })}
           </h3>
           <p className="mt-2 text-gray-600 max-w-sm mx-auto">
             {emptyStateMessage}
@@ -345,7 +350,7 @@ export const MedicalDataList: React.FC<MedicalDataListProps> = ({
             onClick={() => setShowForm(true)}
             className="mt-4 bg-vitalgo-green text-white px-4 py-2 rounded-lg hover:bg-vitalgo-green/90 transition-colors"
           >
-            Agregar {title.toLowerCase().slice(0, -1)}
+            {t('actions.addItem', { item: title.toLowerCase().slice(0, -1) })}
           </button>
         </div>
       ) : (

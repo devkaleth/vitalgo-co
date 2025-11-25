@@ -491,8 +491,8 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     value={formData.birthCountry || ''}
                     onChange={handleBirthCountryChange}
                     countries={convertedCountries}
-                    label="País de Nacimiento"
-                    placeholder="Selecciona país de nacimiento"
+                    label={t('labels.birthCountry')}
+                    placeholder={t('placeholders.selectBirthCountry')}
                     isLoading={countriesLoading}
                     data-testid={`${testId}-birth-country`}
                   />
@@ -504,8 +504,8 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     value={formData.residenceCountry || ''}
                     onChange={handleResidenceCountryChange}
                     countries={convertedCountries}
-                    label="País de Residencia"
-                    placeholder="Selecciona país de residencia"
+                    label={t('labels.residenceCountry')}
+                    placeholder={t('placeholders.selectResidenceCountry')}
                     isLoading={countriesLoading}
                     data-testid={`${testId}-residence-country`}
                   />
@@ -764,8 +764,8 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     value={formData.birthCountry || ''}
                     onChange={handleBirthCountryChange}
                     countries={convertedCountries}
-                    label="País de Nacimiento"
-                    placeholder="Selecciona país de nacimiento"
+                    label={t('labels.birthCountry')}
+                    placeholder={t('placeholders.selectBirthCountry')}
                     isLoading={countriesLoading}
                     data-testid={`${testId}-birth-country`}
                   />
@@ -777,8 +777,8 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     value={formData.residenceCountry || ''}
                     onChange={handleResidenceCountryChange}
                     countries={convertedCountries}
-                    label="País de Residencia"
-                    placeholder="Selecciona país de residencia"
+                    label={t('labels.residenceCountry')}
+                    placeholder={t('placeholders.selectResidenceCountry')}
                     isLoading={countriesLoading}
                     data-testid={`${testId}-residence-country`}
                   />

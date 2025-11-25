@@ -77,6 +77,7 @@ export function MedicalInfoFormContent({
   testId = 'medical-info-form'
 }: MedicalInfoFormContentProps) {
   const t = useTranslations('profile.forms');
+  const tPhone = useTranslations('phone.group');
 
   return (
     <div className="space-y-6">
@@ -308,7 +309,7 @@ export function MedicalInfoFormContent({
                 <div className="mt-3 p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      Número completo:
+                      {tPhone('fullNumber')}
                     </span>
                     <div className="flex items-center space-x-2">
                       <span className="text-lg flex-shrink-0" role="img">
