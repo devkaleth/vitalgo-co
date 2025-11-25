@@ -32,7 +32,23 @@
     "termsAndConditions": "Términos y Condiciones",
     "privacyPolicy": "Política de Privacidad",
     "allRightsReserved": "Todos los derechos reservados.",
-    "support": "Soporte"
+    "support": "Soporte",
+    "actions": {
+      "retry": "Reintentar",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "add": "Agregar",
+      "close": "Cerrar",
+      "confirm": "Confirmar"
+    },
+    "footer": {
+      "copyright": "© {year} VitalGo. Todos los derechos reservados.",
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "support": "Soporte"
+    }
   },
   "nav": {
     "home": "Inicio",
@@ -1292,12 +1308,36 @@
       "all": "Todos",
       "active": "Activos",
       "inactive": "Inactivos",
-      "search": "Buscar medicamentos..."
+      "search": "Buscar medicamentos...",
+      "label": "Filtrar por estado"
     },
     "success": {
       "added": "Medicamento agregado exitosamente",
       "updated": "Medicamento actualizado exitosamente",
       "deleted": "Medicamento eliminado exitosamente"
+    },
+    "addButton": "Agregar Medicamento",
+    "stats": {
+      "total": "Total de medicamentos",
+      "active": "Medicamentos activos",
+      "inactive": "Medicamentos inactivos"
+    },
+    "error": {
+      "title": "Error al cargar medicamentos"
+    },
+    "empty": {
+      "all": {
+        "title": "No hay medicamentos registrados",
+        "description": "Registra tus medicamentos para llevar un mejor control de tu tratamiento"
+      },
+      "filtered": {
+        "title": "No se encontraron medicamentos",
+        "description": "No hay medicamentos que coincidan con el filtro seleccionado"
+      }
+    },
+    "results": {
+      "showing": "Mostrando {count} de {total} medicamentos",
+      "withFilter": "Mostrando {count} medicamentos ({filter})"
     }
   },
   "allergies": {
@@ -1473,12 +1513,42 @@
       "medication": "Medicamentos",
       "food": "Alimentos",
       "environmental": "Ambientales",
-      "search": "Buscar alergias..."
+      "search": "Buscar alergias...",
+      "label": "Filtrar por severidad",
+      "critical": "Críticas",
+      "severe": "Severas",
+      "moderate": "Moderadas",
+      "mild": "Leves"
     },
     "success": {
       "added": "Alergia agregada exitosamente",
       "updated": "Alergia actualizada exitosamente",
       "deleted": "Alergia eliminada exitosamente"
+    },
+    "addButton": "Agregar Alergia",
+    "stats": {
+      "total": "Total de alergias",
+      "critical": "Alergias críticas",
+      "severe": "Severas",
+      "moderate": "Moderadas",
+      "mild": "Leves"
+    },
+    "error": {
+      "title": "Error al cargar alergias"
+    },
+    "empty": {
+      "all": {
+        "title": "No hay alergias registradas",
+        "description": "Registra tus alergias para que los profesionales de salud puedan brindarte una mejor atención"
+      },
+      "filtered": {
+        "title": "No se encontraron alergias",
+        "description": "No hay alergias que coincidan con el filtro seleccionado"
+      }
+    },
+    "results": {
+      "showing": "Mostrando {count} de {total} alergias",
+      "withFilter": "Mostrando {count} alergias ({filter})"
     }
   },
   "illnesses": {
@@ -1676,12 +1746,38 @@
       "active": "Activas",
       "controlled": "Controladas",
       "chronic": "Crónicas",
-      "search": "Buscar enfermedades..."
+      "search": "Buscar enfermedades...",
+      "label": "Filtrar por estado",
+      "cured": "Curadas"
     },
     "success": {
       "added": "Enfermedad agregada exitosamente",
       "updated": "Enfermedad actualizada exitosamente",
       "deleted": "Enfermedad eliminada exitosamente"
+    },
+    "addButton": "Agregar Enfermedad",
+    "stats": {
+      "total": "Total de enfermedades",
+      "active": "Enfermedades activas",
+      "chronic": "Enfermedades crónicas",
+      "cured": "Enfermedades curadas"
+    },
+    "error": {
+      "title": "Error al cargar enfermedades"
+    },
+    "empty": {
+      "all": {
+        "title": "No hay enfermedades registradas",
+        "description": "Registra tu historial de enfermedades para un mejor seguimiento médico"
+      },
+      "filtered": {
+        "title": "No se encontraron enfermedades",
+        "description": "No hay enfermedades que coincidan con el filtro seleccionado"
+      }
+    },
+    "results": {
+      "showing": "Mostrando {count} de {total} enfermedades",
+      "withFilter": "Mostrando {count} enfermedades ({filter})"
     }
   },
   "surgeries": {
@@ -1874,12 +1970,38 @@
       "all": "Todas",
       "emergency": "Emergencia",
       "elective": "Electivas",
-      "search": "Buscar cirugías..."
+      "search": "Buscar cirugías...",
+      "label": "Filtrar por tipo",
+      "recent": "Recientes",
+      "withComplications": "Con complicaciones"
     },
     "success": {
       "added": "Cirugía agregada exitosamente",
       "updated": "Cirugía actualizada exitosamente",
       "deleted": "Cirugía eliminada exitosamente"
+    },
+    "addButton": "Agregar Cirugía",
+    "stats": {
+      "total": "Total de cirugías",
+      "recent": "Cirugías recientes",
+      "withComplications": "Con complicaciones"
+    },
+    "error": {
+      "title": "Error al cargar cirugías"
+    },
+    "empty": {
+      "all": {
+        "title": "No hay cirugías registradas",
+        "description": "Registra tu historial quirúrgico para un expediente médico completo"
+      },
+      "filtered": {
+        "title": "No se encontraron cirugías",
+        "description": "No hay cirugías que coincidan con el filtro seleccionado"
+      }
+    },
+    "results": {
+      "showing": "Mostrando {count} de {total} cirugías",
+      "withFilter": "Mostrando {count} cirugías ({filter})"
     }
   },
   "qr": {

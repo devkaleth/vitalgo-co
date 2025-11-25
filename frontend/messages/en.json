@@ -32,7 +32,23 @@
     "privacyPolicy": "Privacy Policy",
     "allRightsReserved": "All rights reserved.",
     "support": "Support",
-    "retry": "Retry"
+    "retry": "Retry",
+    "actions": {
+      "retry": "Retry",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "add": "Add",
+      "close": "Close",
+      "confirm": "Confirm"
+    },
+    "footer": {
+      "copyright": "© {year} VitalGo. All rights reserved.",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "support": "Support"
+    }
   },
   "nav": {
     "home": "Home",
@@ -1163,7 +1179,8 @@
       "all": "All Medications",
       "active": "Active",
       "inactive": "Inactive",
-      "search": "Search medications..."
+      "search": "Search medications...",
+      "label": "Filter by status"
     },
     "success": {
       "added": "Medication added successfully",
@@ -1298,7 +1315,30 @@
     "deleteSuccess": "Medication deleted successfully",
     "reminders": "Reminders",
     "setReminder": "Set Reminder",
-    "reminderTime": "Reminder Time"
+    "reminderTime": "Reminder Time",
+    "addButton": "Add Medication",
+    "stats": {
+      "total": "Total medications",
+      "active": "Active medications",
+      "inactive": "Inactive medications"
+    },
+    "error": {
+      "title": "Error loading medications"
+    },
+    "empty": {
+      "all": {
+        "title": "No medications registered",
+        "description": "Register your medications to better track your treatment"
+      },
+      "filtered": {
+        "title": "No medications found",
+        "description": "No medications match the selected filter"
+      }
+    },
+    "results": {
+      "showing": "Showing {count} of {total} medications",
+      "withFilter": "Showing {count} medications ({filter})"
+    }
   },
   "allergies": {
     "title": "Allergies",
@@ -1379,7 +1419,12 @@
       "medication": "Medication",
       "food": "Food",
       "environmental": "Environmental",
-      "search": "Search allergies..."
+      "search": "Search allergies...",
+      "label": "Filter by severity",
+      "critical": "Critical",
+      "severe": "Severe",
+      "moderate": "Moderate",
+      "mild": "Mild"
     },
     "success": {
       "added": "Allergy added successfully",
@@ -1479,7 +1524,32 @@
     "updateSuccess": "Allergy updated successfully",
     "deleteSuccess": "Allergy deleted successfully",
     "criticalAlert": "Critical Alert",
-    "showInEmergency": "Show in Emergency Information"
+    "showInEmergency": "Show in Emergency Information",
+    "addButton": "Add Allergy",
+    "stats": {
+      "total": "Total allergies",
+      "critical": "Critical allergies",
+      "severe": "Severe",
+      "moderate": "Moderate",
+      "mild": "Mild"
+    },
+    "error": {
+      "title": "Error loading allergies"
+    },
+    "empty": {
+      "all": {
+        "title": "No allergies registered",
+        "description": "Register your allergies so healthcare professionals can provide you with better care"
+      },
+      "filtered": {
+        "title": "No allergies found",
+        "description": "No allergies match the selected filter"
+      }
+    },
+    "results": {
+      "showing": "Showing {count} of {total} allergies",
+      "withFilter": "Showing {count} allergies ({filter})"
+    }
   },
   "surgeries": {
     "title": "Surgeries",
@@ -1553,10 +1623,13 @@
       "addFirst": "Add first surgery"
     },
     "filters": {
-      "all": "All Surgeries",
+      "all": "All",
       "emergency": "Emergency",
       "elective": "Elective",
-      "search": "Search surgeries..."
+      "search": "Search surgeries...",
+      "label": "Filter by type",
+      "recent": "Recent",
+      "withComplications": "With complications"
     },
     "success": {
       "added": "Surgery added successfully",
@@ -1677,7 +1750,30 @@
     "updateSuccess": "Surgery updated successfully",
     "deleteSuccess": "Surgery deleted successfully",
     "uploadDocuments": "Upload Documents",
-    "documents": "Related Documents"
+    "documents": "Related Documents",
+    "addButton": "Add Surgery",
+    "stats": {
+      "total": "Total surgeries",
+      "recent": "Recent surgeries",
+      "withComplications": "With complications"
+    },
+    "error": {
+      "title": "Error loading surgeries"
+    },
+    "empty": {
+      "all": {
+        "title": "No surgeries registered",
+        "description": "Register your surgical history for a complete medical record"
+      },
+      "filtered": {
+        "title": "No surgeries found",
+        "description": "No surgeries match the selected filter"
+      }
+    },
+    "results": {
+      "showing": "Showing {count} of {total} surgeries",
+      "withFilter": "Showing {count} surgeries ({filter})"
+    }
   },
   "illnesses": {
     "title": "Illnesses",
@@ -1770,7 +1866,9 @@
       "active": "Active",
       "controlled": "Controlled",
       "chronic": "Chronic",
-      "search": "Search illnesses..."
+      "search": "Search illnesses...",
+      "label": "Filter by status",
+      "cured": "Cured"
     },
     "confirmations": {
       "deleteTitle": "Delete Illness",
@@ -1880,7 +1978,31 @@
     "deleteConfirm": "Are you sure you want to delete this illness?",
     "addSuccess": "Illness added successfully",
     "updateSuccess": "Illness updated successfully",
-    "deleteSuccess": "Illness deleted successfully"
+    "deleteSuccess": "Illness deleted successfully",
+    "addButton": "Add Illness",
+    "stats": {
+      "total": "Total illnesses",
+      "active": "Active illnesses",
+      "chronic": "Chronic illnesses",
+      "cured": "Cured illnesses"
+    },
+    "error": {
+      "title": "Error loading illnesses"
+    },
+    "empty": {
+      "all": {
+        "title": "No illnesses registered",
+        "description": "Register your illness history for better medical follow-up"
+      },
+      "filtered": {
+        "title": "No illnesses found",
+        "description": "No illnesses match the selected filter"
+      }
+    },
+    "results": {
+      "showing": "Showing {count} of {total} illnesses",
+      "withFilter": "Showing {count} illnesses ({filter})"
+    }
   },
   "qr": {
     "title": "My QR Code",
