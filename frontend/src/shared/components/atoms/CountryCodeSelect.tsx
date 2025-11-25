@@ -7,6 +7,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { countries as defaultCountries, Country, searchCountries, getDefaultCountry } from '../../../slices/signup/data/countries';
+import { CountryFlag } from './CountryFlag';
 
 interface CountryCodeSelectProps {
   id: string;
@@ -126,14 +127,12 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
         aria-label={t('selectedCountry', { country: selectedCountry.name })}
       >
         <div className="flex items-center space-x-3 min-w-0 flex-1">
-          {/* Flag emoji */}
-          <span
-            className="text-2xl flex-shrink-0"
-            role="img"
-            aria-label={t('flagOf', { country: selectedCountry.name })}
-          >
-            {selectedCountry.flag}
-          </span>
+          {/* Country flag */}
+          <CountryFlag
+            countryCode={selectedCountry.code}
+            size="lg"
+            className="flex-shrink-0"
+          />
 
           {/* Country info */}
           <div className="flex flex-col min-w-0 flex-1">
@@ -208,14 +207,12 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
                       `}
                       aria-label={t('selectCountry', { country: country.name, dialCode: country.dialCode })}
                     >
-                      {/* Flag emoji */}
-                      <span
-                        className="text-xl flex-shrink-0"
-                        role="img"
-                        aria-label={t('flagOf', { country: country.name })}
-                      >
-                        {country.flag}
-                      </span>
+                      {/* Country flag */}
+                      <CountryFlag
+                        countryCode={country.code}
+                        size="md"
+                        className="flex-shrink-0"
+                      />
 
                       {/* Country info */}
                       <div className="flex-1 min-w-0">

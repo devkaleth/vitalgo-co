@@ -6,6 +6,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Country } from '../../data/countries';
 import { ChevronDown, Search } from 'lucide-react';
+import { CountryFlag } from '../../../../shared/components/atoms/CountryFlag';
 
 interface CountrySelectProps {
   value: string; // Country code (e.g., "CO")
@@ -136,7 +137,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                 <span className="text-gray-500">{t('messages.loadingCountries')}</span>
               ) : selectedCountry ? (
                 <>
-                  <span className="text-xl">{selectedCountry.flag}</span>
+                  <CountryFlag countryCode={selectedCountry.code} size="lg" />
                   <span className="text-gray-900">{selectedCountry.name}</span>
                 </>
               ) : (
@@ -189,7 +190,7 @@ export const CountrySelect: React.FC<CountrySelectProps> = ({
                     `}
                     data-testid={`${testId}-option-${country.code}`}
                   >
-                    <span className="text-lg">{country.flag}</span>
+                    <CountryFlag countryCode={country.code} size="md" />
                     <span>{country.name}</span>
                     {value === country.code && (
                       <span className="ml-auto text-blue-600">✓</span>

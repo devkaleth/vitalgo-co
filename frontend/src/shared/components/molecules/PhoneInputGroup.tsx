@@ -8,6 +8,7 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { CountryCodeSelect } from '../atoms/CountryCodeSelect';
 import { PhoneNumberInput } from '../atoms/PhoneNumberInput';
+import { CountryFlag } from '../atoms/CountryFlag';
 import { Country, getCountryByCode } from '../../../slices/signup/data/countries';
 import { FieldValidationState } from '../../../slices/signup/types';
 
@@ -93,13 +94,7 @@ export const PhoneInputGroup: React.FC<PhoneInputGroupProps> = ({
             <div className="flex items-center space-x-2">
               {/* Country flag */}
               {countryCode && (
-                <span
-                  className="text-lg flex-shrink-0"
-                  role="img"
-                  aria-label={tCountry('flagOf', { country: getCountryByCode(countryCode)?.name || '' })}
-                >
-                  {getCountryByCode(countryCode)?.flag || '🏳️'}
-                </span>
+                <CountryFlag countryCode={countryCode} size="md" className="flex-shrink-0" />
               )}
 
               {/* Dial code and phone number */}

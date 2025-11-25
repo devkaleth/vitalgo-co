@@ -11,6 +11,7 @@ import { SelectField } from '../atoms/SelectField';
 import { TextAreaField } from '../atoms/TextAreaField';
 import { RadioButtonField } from '../atoms/RadioButtonField';
 import { PhoneInputGroup } from '../../../../shared/components/molecules/PhoneInputGroup';
+import { CountryFlag } from '../../../../shared/components/atoms/CountryFlag';
 import { Country, getCountryByCode } from '../../../signup/data/countries';
 import {
   epsOptions,
@@ -312,9 +313,7 @@ export function MedicalInfoFormContent({
                       {tPhone('fullNumber')}
                     </span>
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg flex-shrink-0" role="img">
-                        {getCountryByCode(emergencyPhoneAltCountryCode)?.flag || '🏳️'}
-                      </span>
+                      <CountryFlag countryCode={emergencyPhoneAltCountryCode} size="md" className="flex-shrink-0" />
                       <span className="font-mono text-sm text-gray-900 flex items-center">
                         <span className="text-blue-600 font-medium">
                           {getCountryByCode(emergencyPhoneAltCountryCode)?.dialCode || ''}
