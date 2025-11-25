@@ -15,17 +15,43 @@ export interface Country {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 /**
+ * Fetch with retry logic for resilience
+ */
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit = {},
+  maxRetries = 3,
+  delay = 1000
+): Promise<Response> {
+  let lastError: Error | null = null;
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      console.warn(`Fetch attempt ${attempt + 1}/${maxRetries} failed:`, lastError.message);
+
+      if (attempt < maxRetries - 1) {
+        await new Promise(resolve => setTimeout(resolve, delay * (attempt + 1)));
+      }
+    }
+  }
+
+  throw lastError || new Error('Fetch failed after retries');
+}
+
+/**
  * Fetch all active countries from the API
  * Countries are returned ordered by ID (Colombia first, then by proximity)
  */
 export async function fetchCountries(): Promise<Country[]> {
   try {
-    const response = await fetch(`${API_URL}/api/countries`, {
+    // Simple GET request without Content-Type to avoid CORS preflight
+    const response = await fetchWithRetry(`${API_URL}/api/countries`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'force-cache', // Cache countries data as it rarely changes
+      // No Content-Type header for GET - avoids unnecessary CORS preflight
     });
 
     if (!response.ok) {
@@ -45,12 +71,8 @@ export async function fetchCountries(): Promise<Country[]> {
  */
 export async function fetchCountryByCode(code: string): Promise<Country | null> {
   try {
-    const response = await fetch(`${API_URL}/api/countries/${code}`, {
+    const response = await fetchWithRetry(`${API_URL}/api/countries/${code}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      cache: 'force-cache',
     });
 
     if (!response.ok) {
