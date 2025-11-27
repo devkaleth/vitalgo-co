@@ -2,6 +2,7 @@
  * Document Type Select atom component
  */
 import React from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { DocumentType } from '../../types';
 
 interface DocumentTypeSelectProps {
@@ -27,6 +28,12 @@ export const DocumentTypeSelect: React.FC<DocumentTypeSelectProps> = ({
   required = false,
   'data-testid': testId
 }) => {
+  const locale = useLocale();
+  const t = useTranslations('signup.documentType');
+
+  const getLocalizedName = (docType: DocumentType) =>
+    locale === 'en' && docType.name_en ? docType.name_en : docType.name;
+
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
@@ -44,10 +51,10 @@ export const DocumentTypeSelect: React.FC<DocumentTypeSelectProps> = ({
         data-testid={testId}
         required={required}
       >
-        <option value="">Seleccione tipo de documento</option>
+        <option value="">{t('selectType')}</option>
         {documentTypes.map((docType) => (
           <option key={docType.id} value={docType.code}>
-            {docType.code} - {docType.name}
+            {docType.code} - {getLocalizedName(docType)}
           </option>
         ))}
       </select>

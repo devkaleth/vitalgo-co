@@ -167,7 +167,10 @@
     "professional": "Profesional de la Salud",
     "firstName": "Nombre",
     "lastName": "Apellido",
-    "documentType": "Tipo de Documento",
+    "documentType": {
+      "label": "Tipo de Documento",
+      "selectType": "Seleccione tipo"
+    },
     "documentNumber": "Número de Documento",
     "birthDate": "Fecha de Nacimiento",
     "gender": "Género",

@@ -6,6 +6,7 @@ export interface DocumentType {
   id: number;
   code: string;
   name: string;
+  name_en: string | null;
   description: string;
 }
 

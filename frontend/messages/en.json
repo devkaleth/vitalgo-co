@@ -160,7 +160,10 @@
     "legalSectionSubtitle": "Please read and accept our terms",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "documentType": "Document Type",
+    "documentType": {
+      "label": "Document Type",
+      "selectType": "Select type"
+    },
     "documentNumber": "Document Number",
     "birthDate": "Birth Date",
     "originCountry": "Country of Origin",

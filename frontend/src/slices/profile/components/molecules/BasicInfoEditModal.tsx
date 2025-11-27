@@ -5,7 +5,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { BasicPatientInfo, BasicPatientUpdate } from '../../types';
 import { PhoneInputGroup } from '../../../../shared/components/molecules/PhoneInputGroup';
 import { Country, getCountryByCode, countries as staticCountries } from '../../../signup/data/countries';
@@ -39,7 +39,12 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
 }) => {
   const t = useTranslations('profile.forms');
   const tCommon = useTranslations('common');
+  const locale = useLocale();
   const [formData, setFormData] = useState<BasicPatientUpdate>({});
+
+  // Helper function for localized document type names
+  const getLocalizedDocTypeName = (docType: DocumentType) =>
+    locale === 'en' && docType.name_en ? docType.name_en : docType.name;
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -389,7 +394,7 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     <option value="">{t('placeholders.selectDocumentType')}</option>
                     {documentTypes.map((docType) => (
                       <option key={docType.id} value={docType.code}>
-                        {docType.code} - {docType.name}
+                        {docType.code} - {getLocalizedDocTypeName(docType)}
                       </option>
                     ))}
                   </select>
@@ -662,7 +667,7 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
                     <option value="">{t('placeholders.selectDocumentType')}</option>
                     {documentTypes.map((docType) => (
                       <option key={docType.id} value={docType.code}>
-                        {docType.code} - {docType.name}
+                        {docType.code} - {getLocalizedDocTypeName(docType)}
                       </option>
                     ))}
                   </select>

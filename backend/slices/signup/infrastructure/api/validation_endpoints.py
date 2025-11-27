@@ -74,6 +74,7 @@ async def get_document_types(db: Session = Depends(get_db)) -> List[Dict[str, An
             "id": dt.id,
             "code": dt.code,
             "name": dt.name,
+            "name_en": dt.name_en,
             "description": dt.description
         }
         for dt in document_types
