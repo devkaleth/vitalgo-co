@@ -101,6 +101,10 @@ class SubscriptionPlan(Base):
     is_popular = Column(Boolean, nullable=False, default=False)
     features = Column(JSON, nullable=True)
     max_records = Column(Integer, nullable=True)  # NULL = unlimited
+    # English translations
+    display_name_en = Column(String(100), nullable=True)
+    description_en = Column(Text, nullable=True)
+    features_en = Column(JSON, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
@@ -121,6 +125,9 @@ class SubscriptionPlan(Base):
             "is_popular": self.is_popular,
             "features": self.features,
             "max_records": self.max_records,
+            "display_name_en": self.display_name_en,
+            "description_en": self.description_en,
+            "features_en": self.features_en,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }

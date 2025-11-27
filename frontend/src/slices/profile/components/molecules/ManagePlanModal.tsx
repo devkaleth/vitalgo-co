@@ -5,7 +5,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { X, Check, Crown } from 'lucide-react';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -22,6 +22,10 @@ interface SubscriptionPlan {
   is_popular: boolean;
   features: string[];
   max_records: number | null;
+  // English translations
+  display_name_en: string | null;
+  description_en: string | null;
+  features_en: string[] | null;
 }
 
 interface UserSubscription {
@@ -50,8 +54,24 @@ export const ManagePlanModal: React.FC<ManagePlanModalProps> = ({
   'data-testid': testId,
 }) => {
   const t = useTranslations('profile.managePlanModal');
+  const locale = useLocale();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Helper functions for localized plan data
+  const getLocalizedPlanName = (plan: SubscriptionPlan) =>
+    locale === 'en' && plan.display_name_en ? plan.display_name_en : plan.display_name;
+
+  const getLocalizedDescription = (plan: SubscriptionPlan) =>
+    locale === 'en' && plan.description_en ? plan.description_en : plan.description;
+
+  const getLocalizedFeatures = (plan: SubscriptionPlan) =>
+    locale === 'en' && plan.features_en ? plan.features_en : plan.features;
+
+  const getLocalizedDuration = (durationDays: number | null) => {
+    if (durationDays === null) return t('lifetime');
+    return t('duration.days', { days: durationDays });
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -110,23 +130,23 @@ export const ManagePlanModal: React.FC<ManagePlanModalProps> = ({
                 <Crown className="w-5 h-5 text-vitalgo-green" />
                 {t('currentPlan')}
               </h3>
-              <div className="bg-gradient-to-br from-vitalgo-green to-green-600 rounded-xl p-6 text-white shadow-lg">
+              <div className="bg-vitalgo-dark rounded-xl p-6 text-white shadow-lg">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h4 className="text-2xl font-bold mb-1">{currentPlan.display_name}</h4>
-                    <p className="text-green-100 text-sm">{currentPlan.description}</p>
+                    <h4 className="text-2xl font-bold mb-1">{getLocalizedPlanName(currentPlan)}</h4>
+                    <p className="text-vitalgo-dark-lightest text-sm">{getLocalizedDescription(currentPlan)}</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-bold">
+                    <div className="text-3xl font-bold text-vitalgo-green">
                       ${currentPlan.price.toLocaleString()}
                     </div>
-                    <div className="text-green-100 text-sm">
-                      {currentPlan.currency} / {currentPlan.duration_days ? `${currentPlan.duration_days} días` : t('lifetime')}
+                    <div className="text-vitalgo-dark-lightest text-sm">
+                      {currentPlan.currency} / {getLocalizedDuration(currentPlan.duration_days)}
                     </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {currentPlan.features.map((feature, index) => (
+                  {getLocalizedFeatures(currentPlan).map((feature, index) => (
                     <div key={index} className="flex items-center gap-2 text-sm">
                       <Check className="w-4 h-4 flex-shrink-0" />
                       <span>{feature}</span>
@@ -160,15 +180,15 @@ export const ManagePlanModal: React.FC<ManagePlanModalProps> = ({
                       }`}
                     >
                       <div className="mb-3">
-                        <h4 className="text-lg font-bold text-gray-900">{plan.display_name}</h4>
-                        <p className="text-sm text-gray-600 line-clamp-2">{plan.description}</p>
+                        <h4 className="text-lg font-bold text-gray-900">{getLocalizedPlanName(plan)}</h4>
+                        <p className="text-sm text-gray-600 line-clamp-2">{getLocalizedDescription(plan)}</p>
                       </div>
                       <div className="mb-3">
                         <div className="text-2xl font-bold text-gray-900">
                           ${plan.price.toLocaleString()}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {plan.currency} / {plan.duration_days ? `${plan.duration_days} días` : t('lifetime')}
+                          {plan.currency} / {getLocalizedDuration(plan.duration_days)}
                         </div>
                       </div>
                       {isCurrent && (

@@ -481,7 +481,10 @@
       "lifetime": "Lifetime",
       "active": "Active",
       "cancelWarning": "By canceling your plan, you will lose access to all premium features. Your data will be saved for 8 days.",
-      "cancelButton": "Cancel Subscription"
+      "cancelButton": "Cancel Subscription",
+      "duration": {
+        "days": "{days} days"
+      }
     },
     "cancelSubscription": {
       "warning": {

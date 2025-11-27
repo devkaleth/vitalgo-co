@@ -35,6 +35,10 @@ class PlanResponse(BaseModel):
     is_popular: bool
     features: Optional[List[str]]
     max_records: Optional[int]
+    # English translations
+    display_name_en: Optional[str] = None
+    description_en: Optional[str] = None
+    features_en: Optional[List[str]] = None
 
 
 class SubscriptionResponse(BaseModel):
