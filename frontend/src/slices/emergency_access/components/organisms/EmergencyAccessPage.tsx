@@ -5,7 +5,9 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useAuth } from '@/shared/contexts/AuthContext';
 import { useEmergencyData } from '../../hooks/useEmergencyData';
 import {
   BasicInfoCard,
@@ -23,7 +25,15 @@ interface EmergencyAccessPageProps {
 
 export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode }) => {
   const t = useTranslations('emergency');
+  const tCommon = useTranslations('common');
+  const router = useRouter();
+  const { logout } = useAuth();
   const { data, loading, error, refetch } = useEmergencyData(qrCode);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/login');
+  };
 
   if (loading) {
     return (
@@ -81,7 +91,15 @@ export const EmergencyAccessPage: React.FC<EmergencyAccessPageProps> = ({ qrCode
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Logo isAuthenticated={false} />
-            <EmergencyLanguageSelector />
+            <div className="flex items-center gap-3">
+              <EmergencyLanguageSelector />
+              <button
+                onClick={handleLogout}
+                className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 hover:border-gray-400 rounded-lg transition-colors"
+              >
+                {tCommon('logout')}
+              </button>
+            </div>
           </div>
         </div>
       </nav>

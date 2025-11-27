@@ -33,6 +33,7 @@
     "allRightsReserved": "All rights reserved.",
     "support": "Support",
     "retry": "Retry",
+    "logout": "Log Out",
     "actions": {
       "retry": "Retry",
       "save": "Save",

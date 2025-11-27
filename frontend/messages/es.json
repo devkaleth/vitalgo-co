@@ -33,6 +33,7 @@
     "privacyPolicy": "Política de Privacidad",
     "allRightsReserved": "Todos los derechos reservados.",
     "support": "Soporte",
+    "logout": "Cerrar Sesión",
     "actions": {
       "retry": "Reintentar",
       "save": "Guardar",
