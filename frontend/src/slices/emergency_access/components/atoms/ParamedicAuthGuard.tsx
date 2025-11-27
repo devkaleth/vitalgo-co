@@ -20,10 +20,11 @@ export const ParamedicAuthGuard: React.FC<ParamedicAuthGuardProps> = ({ children
 
   useEffect(() => {
     if (!isLoading) {
-      // Not authenticated - redirect to login
+      // Not authenticated - redirect to login with returnUrl
       if (!isAuthenticated || !user) {
         console.warn('🚫 ParamedicAuthGuard: User not authenticated, redirecting to login');
-        router.push('/login');
+        const returnUrl = encodeURIComponent(window.location.pathname);
+        router.push(`/login?returnUrl=${returnUrl}`);
         return;
       }
 
