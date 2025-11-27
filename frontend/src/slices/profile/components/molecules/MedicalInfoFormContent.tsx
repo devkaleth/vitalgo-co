@@ -12,7 +12,7 @@ import { TextAreaField } from '../atoms/TextAreaField';
 import { RadioButtonField } from '../atoms/RadioButtonField';
 import { PhoneInputGroup } from '../../../../shared/components/molecules/PhoneInputGroup';
 import { CountryFlag } from '../../../../shared/components/atoms/CountryFlag';
-import { Country, getCountryByCode } from '../../../signup/data/countries';
+import { Country } from '../../../signup/data/countries';
 import {
   epsOptions,
   bloodTypeOptions,
@@ -121,10 +121,10 @@ export function MedicalInfoFormContent({
           ) : (
             <div className="md:col-span-2">
               <TextAreaField
-                label="Escribe aquí la entidad que se encarga de administrar tus servicios de salud en tu país de residencia"
+                label={t('labels.healthService')}
                 value={formData.health_service || ''}
                 onChange={(value) => handleFieldChange('health_service', value)}
-                placeholder="Ej: National Health Service (NHS), Medicare, etc."
+                placeholder={t('placeholders.healthService')}
                 error={errors.health_service}
                 rows={2}
               />
@@ -148,10 +148,7 @@ export function MedicalInfoFormContent({
                   <svg className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <p className="text-xs text-blue-800">
-                    El <strong>seguro adicional</strong> es una cobertura complementaria que algunas personas tienen además del seguro de salud principal.
-                    Por ejemplo: seguros privados, seguros de viaje, o pólizas de salud complementarias. Si no tienes ninguno, puedes dejar este campo vacío.
-                  </p>
+                  <p className="text-xs text-blue-800" dangerouslySetInnerHTML={{ __html: t.raw('infoBoxes.additionalInsurance') }} />
                 </div>
               </div>
               <TextAreaField
@@ -268,7 +265,7 @@ export function MedicalInfoFormContent({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="lg:col-span-1">
                   <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                    Indicativo <span className="text-red-500">*</span>
+                    {t('labels.dialCode')} <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={emergencyPhoneAltCountryCode}
@@ -288,7 +285,7 @@ export function MedicalInfoFormContent({
                 </div>
                 <div className="lg:col-span-1">
                   <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                    Número de teléfono
+                    {t('labels.phoneNumber')}
                   </label>
                   <input
                     type="tel"
@@ -316,7 +313,7 @@ export function MedicalInfoFormContent({
                       <CountryFlag countryCode={emergencyPhoneAltCountryCode} size="md" className="flex-shrink-0" />
                       <span className="font-mono text-sm text-gray-900 flex items-center">
                         <span className="text-blue-600 font-medium">
-                          {getCountryByCode(emergencyPhoneAltCountryCode)?.dialCode || ''}
+                          {convertedCountries.find(c => c.code === emergencyPhoneAltCountryCode)?.dialCode || ''}
                         </span>
                         <span className="ml-1">
                           {emergencyPhoneAltNumber.replace(/\D/g, '')}

@@ -10,7 +10,7 @@ export function CTASection() {
 
   return (
     <section
-      className="py-16 lg:py-24 bg-gradient-to-r from-vitalgo-green to-vitalgo-green/90"
+      className="py-16 lg:py-24 bg-vitalgo-dark"
       data-testid="home-cta-section"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +32,7 @@ export function CTASection() {
             <Link href="/precios">
               <Button
                 size="lg"
-                className="bg-white text-vitalgo-green hover:bg-gray-100 px-8 py-4 text-lg"
+                className="bg-vitalgo-green text-white hover:bg-vitalgo-green-light px-8 py-4 text-lg"
                 data-testid="home-cta-patient-button"
               >
                 {t('cta.patientButton')}
@@ -42,7 +42,7 @@ export function CTASection() {
             <Link href="/precios">
               <Button
                 size="lg"
-                className="bg-white/20 text-white border-2 border-white hover:bg-white hover:text-vitalgo-green transition-colors px-8 py-4 text-lg"
+                className="bg-transparent text-white border-2 border-vitalgo-green hover:bg-vitalgo-green hover:text-white transition-colors px-8 py-4 text-lg"
                 data-testid="home-cta-pricing-button"
               >
                 {t('cta.pricingButton')}

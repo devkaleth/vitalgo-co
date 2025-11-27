@@ -5,6 +5,7 @@
 "use client"
 
 import { useAuth } from "../contexts/AuthContext"
+import { useTranslations } from "next-intl"
 
 interface AuthUser {
   name: string
@@ -21,23 +22,25 @@ interface UseAuthUserResult {
   error: string | null
 }
 
-const translateRole = (role: string): string => {
-  const roleTranslations: Record<string, string> = {
-    'patient': 'Paciente',
-    'doctor': 'Doctor',
-    'admin': 'Administrador'
-  }
-  return roleTranslations[role] || role
-}
-
 export function useAuthUser(): UseAuthUserResult {
   const { user: authUser, isLoading, logout, error } = useAuth()
+  const t = useTranslations('common.roles')
+
+  // Translate role using i18n
+  const translateRole = (role: string): string => {
+    const roleKey = role as 'patient' | 'doctor' | 'admin'
+    try {
+      return t(roleKey)
+    } catch {
+      return role
+    }
+  }
 
   // Transform AuthContext user data for UI display
   const user: AuthUser | null = authUser ? {
     name: authUser.firstName && authUser.lastName
       ? `${authUser.firstName} ${authUser.lastName}`.trim()
-      : 'Usuario',
+      : t('defaultUser'),
     role: translateRole(authUser.userType || 'patient'),
     avatar: undefined, // No avatar in current implementation
     id: authUser.id,

@@ -4,42 +4,85 @@
 import { PersonalPatientInfo } from '../types/personalInfo';
 
 /**
- * Format biological sex for display
+ * Display translations interface for profile values
  */
-export const formatBiologicalSex = (sex?: string): string => {
-  if (!sex) return 'No especificado';
+export interface DisplayTranslations {
+  notSpecified: string;
+  notSpecifiedFemale: string;
+  biologicalSex: Record<string, string>;
+  gender: Record<string, string>;
+}
 
-  const sexMap: Record<string, string> = {
+/**
+ * Missing fields translations interface
+ */
+export interface MissingFieldsTranslations {
+  biologicalSex: string;
+  gender: string;
+  birthCountry: string;
+  residenceAddress: string;
+  birthDepartment: string;
+  birthCity: string;
+  residenceDepartment: string;
+  residenceCity: string;
+}
+
+/**
+ * Default Spanish translations for backwards compatibility
+ */
+const defaultDisplayTranslations: DisplayTranslations = {
+  notSpecified: 'No especificado',
+  notSpecifiedFemale: 'No especificada',
+  biologicalSex: {
     'M': 'Masculino',
     'F': 'Femenino',
     'I': 'Intersexual'
-  };
-
-  return sexMap[sex] || sex;
-};
-
-/**
- * Format gender for display
- */
-export const formatGender = (gender?: string): string => {
-  if (!gender) return 'No especificado';
-
-  const genderMap: Record<string, string> = {
+  },
+  gender: {
     'MASCULINO': 'Masculino',
     'FEMENINO': 'Femenino',
     'NO_BINARIO': 'No binario',
     'OTRO': 'Otro',
     'PREFIERO_NO_DECIR': 'Prefiero no decir'
-  };
+  }
+};
 
-  return genderMap[gender] || gender;
+const defaultMissingFieldsTranslations: MissingFieldsTranslations = {
+  biologicalSex: 'Sexo biológico',
+  gender: 'Género',
+  birthCountry: 'País de nacimiento',
+  residenceAddress: 'Dirección de residencia',
+  birthDepartment: 'Departamento de nacimiento',
+  birthCity: 'Ciudad de nacimiento',
+  residenceDepartment: 'Departamento de residencia',
+  residenceCity: 'Ciudad de residencia'
+};
+
+/**
+ * Format biological sex for display
+ */
+export const formatBiologicalSex = (sex?: string, translations?: DisplayTranslations): string => {
+  const t = translations || defaultDisplayTranslations;
+  if (!sex) return t.notSpecified;
+
+  return t.biologicalSex[sex] || sex;
+};
+
+/**
+ * Format gender for display
+ */
+export const formatGender = (gender?: string, translations?: DisplayTranslations): string => {
+  const t = translations || defaultDisplayTranslations;
+  if (!gender) return t.notSpecified;
+
+  return t.gender[gender] || gender;
 };
 
 /**
  * Format country with flag emoji
  */
-export const formatCountryWithFlag = (country?: string): string => {
-  if (!country) return 'No especificado';
+export const formatCountryWithFlag = (country?: string, notSpecified: string = 'No especificado'): string => {
+  if (!country) return notSpecified;
 
   const countryFlags: Record<string, string> = {
     'Colombia': '🇨🇴',
@@ -69,8 +112,8 @@ export const formatCountryWithFlag = (country?: string): string => {
 /**
  * Format birth location (country + department + city if Colombia)
  */
-export const formatBirthLocation = (info: PersonalPatientInfo): string => {
-  if (!info.birth_country) return 'No especificado';
+export const formatBirthLocation = (info: PersonalPatientInfo, notSpecified: string = 'No especificado'): string => {
+  if (!info.birth_country) return notSpecified;
 
   // Check if birth country is Colombia (either code 'CO' or full name 'Colombia')
   const isColombia = info.birth_country === 'CO' || info.birth_country === 'Colombia';
@@ -110,9 +153,9 @@ export const formatBirthLocation = (info: PersonalPatientInfo): string => {
 /**
  * Format residence location
  */
-export const formatResidenceLocation = (info: PersonalPatientInfo): string => {
-  // If residence country is not specified, return "No especificado"
-  if (!info.residence_country) return 'No especificado';
+export const formatResidenceLocation = (info: PersonalPatientInfo, notSpecified: string = 'No especificado'): string => {
+  // If residence country is not specified, return "Not specified"
+  if (!info.residence_country) return notSpecified;
 
   // For Colombia, show department and city if available
   if (info.residence_country === 'CO' || info.residence_country === 'Colombia') {
@@ -151,8 +194,8 @@ export const formatResidenceLocation = (info: PersonalPatientInfo): string => {
 /**
  * Format residence address for display
  */
-export const formatResidenceAddress = (address?: string): string => {
-  if (!address) return 'No especificada';
+export const formatResidenceAddress = (address?: string, notSpecified: string = 'No especificada'): string => {
+  if (!address) return notSpecified;
 
   // Truncate long addresses for card display
   if (address.length > 50) {
@@ -202,24 +245,25 @@ export const isPersonalInfoComplete = (info: PersonalPatientInfo): boolean => {
 /**
  * Get missing required fields
  */
-export const getMissingPersonalInfoFields = (info: PersonalPatientInfo): string[] => {
+export const getMissingPersonalInfoFields = (info: PersonalPatientInfo, translations?: MissingFieldsTranslations): string[] => {
+  const t = translations || defaultMissingFieldsTranslations;
   const missing: string[] = [];
 
-  if (!info.biological_sex) missing.push('Sexo biológico');
-  if (!info.gender) missing.push('Género');
-  if (!info.birth_country) missing.push('País de nacimiento');
-  if (!info.residence_address) missing.push('Dirección de residencia');
+  if (!info.biological_sex) missing.push(t.biologicalSex);
+  if (!info.gender) missing.push(t.gender);
+  if (!info.birth_country) missing.push(t.birthCountry);
+  if (!info.residence_address) missing.push(t.residenceAddress);
 
   // Add birth location fields if Colombia is selected
   if (info.birth_country === 'Colombia') {
-    if (!info.birth_department) missing.push('Departamento de nacimiento');
-    if (!info.birth_city) missing.push('Ciudad de nacimiento');
+    if (!info.birth_department) missing.push(t.birthDepartment);
+    if (!info.birth_city) missing.push(t.birthCity);
   }
 
   // Add residence location fields only if Colombia is selected
   if (info.residence_country === 'CO' || info.residence_country === 'Colombia') {
-    if (!info.residence_department) missing.push('Departamento de residencia');
-    if (!info.residence_city) missing.push('Ciudad de residencia');
+    if (!info.residence_department) missing.push(t.residenceDepartment);
+    if (!info.residence_city) missing.push(t.residenceCity);
   }
 
   return missing;
@@ -228,21 +272,23 @@ export const getMissingPersonalInfoFields = (info: PersonalPatientInfo): string[
 /**
  * Format demographic data for display cards
  */
-export const formatDemographicData = (info: PersonalPatientInfo) => {
+export const formatDemographicData = (info: PersonalPatientInfo, translations?: DisplayTranslations) => {
+  const t = translations || defaultDisplayTranslations;
   return {
-    biologicalSex: formatBiologicalSex(info.biological_sex),
-    gender: formatGender(info.gender),
-    birthLocation: formatBirthLocation(info)
+    biologicalSex: formatBiologicalSex(info.biological_sex, translations),
+    gender: formatGender(info.gender, translations),
+    birthLocation: formatBirthLocation(info, t.notSpecified)
   };
 };
 
 /**
  * Format residence data for display cards
  */
-export const formatResidenceData = (info: PersonalPatientInfo) => {
+export const formatResidenceData = (info: PersonalPatientInfo, translations?: DisplayTranslations) => {
+  const t = translations || defaultDisplayTranslations;
   return {
-    address: formatResidenceAddress(info.residence_address),
-    location: formatResidenceLocation(info),
-    fullAddress: info.residence_address || 'No especificada'
+    address: formatResidenceAddress(info.residence_address, t.notSpecifiedFemale),
+    location: formatResidenceLocation(info, t.notSpecified),
+    fullAddress: info.residence_address || t.notSpecifiedFemale
   };
 };

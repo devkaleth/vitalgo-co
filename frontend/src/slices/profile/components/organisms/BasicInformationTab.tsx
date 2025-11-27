@@ -11,8 +11,7 @@ import { TabContentProps } from '../../types';
 import { useBasicPatientInfo } from '../../hooks/useBasicPatientInfo';
 import { usePersonalPatientInfo } from '../../hooks/usePersonalPatientInfo';
 import { BasicInfoEditModal } from '../molecules/BasicInfoEditModal';
-import { getCountryByCode } from '../../../signup/data/countries';
-import { formatCountryWithFlag } from '../../utils/personalInfoUtils';
+import { useCountries } from '../../../../hooks/useCountries';
 
 export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) {
   const t = useTranslations('profile.basic');
@@ -21,6 +20,7 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
   const locale = useLocale();
   const { basicInfo, loading, error, updateBasicInfo, refetch } = useBasicPatientInfo();
   const { personalInfo, loading: personalLoading } = usePersonalPatientInfo();
+  const { countries } = useCountries();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -65,64 +65,19 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
   };
 
   const getCountryDisplay = (countryCode: string) => {
-    // Country mapping with flag emojis
-    const countries: Record<string, { name: string; flag: string }> = {
-      'CO': { name: t('countries.colombia'), flag: '🇨🇴' },
-      'US': { name: t('countries.usa'), flag: '🇺🇸' },
-      'CA': { name: t('countries.canada'), flag: '🇨🇦' },
-      'MX': { name: t('countries.mexico'), flag: '🇲🇽' },
-      'AR': { name: t('countries.argentina'), flag: '🇦🇷' },
-      'BR': { name: t('countries.brazil'), flag: '🇧🇷' },
-      'CL': { name: t('countries.chile'), flag: '🇨🇱' },
-      'PE': { name: t('countries.peru'), flag: '🇵🇪' },
-      'EC': { name: t('countries.ecuador'), flag: '🇪🇨' },
-      'VE': { name: t('countries.venezuela'), flag: '🇻🇪' },
-      'UY': { name: t('countries.uruguay'), flag: '🇺🇾' },
-      'PY': { name: t('countries.paraguay'), flag: '🇵🇾' },
-      'BO': { name: t('countries.bolivia'), flag: '🇧🇴' },
-      'CR': { name: t('countries.costaRica'), flag: '🇨🇷' },
-      'PA': { name: t('countries.panama'), flag: '🇵🇦' },
-      'GT': { name: t('countries.guatemala'), flag: '🇬🇹' },
-      'HN': { name: t('countries.honduras'), flag: '🇭🇳' },
-      'SV': { name: t('countries.elSalvador'), flag: '🇸🇻' },
-      'NI': { name: t('countries.nicaragua'), flag: '🇳🇮' },
-      'CU': { name: t('countries.cuba'), flag: '🇨🇺' },
-      'DO': { name: t('countries.dominicanRepublic'), flag: '🇩🇴' },
-      'ES': { name: t('countries.spain'), flag: '🇪🇸' }
-    };
-    const country = countries[countryCode] || { name: countryCode, flag: '🏳️' };
-    return `${country.flag} ${country.name}`;
+    // Find country from API countries with i18n support
+    const country = countries.find(c => c.code === countryCode);
+    if (country) {
+      const name = locale === 'en' && country.name_en ? country.name_en : country.name;
+      return `${country.flag_emoji || '🏳️'} ${name}`;
+    }
+    return `🏳️ ${countryCode}`;
   };
 
   // Get birth country from personalInfo, fallback to origin_country
   const getBirthCountryDisplay = () => {
-    if (personalInfo?.birth_country) {
-      // Map country code to name if needed
-      const countryMap: Record<string, string> = {
-        'CO': 'Colombia',
-        'US': 'Estados Unidos',
-        'AR': 'Argentina',
-        'MX': 'México',
-        'BR': 'Brasil',
-        'CL': 'Chile',
-        'PE': 'Perú',
-        'EC': 'Ecuador',
-        'VE': 'Venezuela',
-        'UY': 'Uruguay',
-        'PY': 'Paraguay',
-        'BO': 'Bolivia',
-        'CA': 'Canadá',
-        'ES': 'España',
-        'FR': 'Francia',
-        'IT': 'Italia',
-        'DE': 'Alemania',
-        'GB': 'Reino Unido'
-      };
-      const countryName = countryMap[personalInfo.birth_country] || personalInfo.birth_country;
-      return formatCountryWithFlag(countryName);
-    }
-    // Fallback to origin_country from basic info
-    return getCountryDisplay(basicInfo?.originCountry || 'CO');
+    const countryCode = personalInfo?.birth_country || basicInfo?.originCountry || 'CO';
+    return getCountryDisplay(countryCode);
   };
 
   if (loading || personalLoading) {
@@ -318,9 +273,9 @@ export function BasicInformationTab({ 'data-testid': testId }: TabContentProps) 
                       <span
                         className="text-lg flex-shrink-0"
                         role="img"
-                        aria-label={tPhone('flagOf', { country: getCountryByCode(basicInfo.countryCode)?.name || '' })}
+                        aria-label={tPhone('flagOf', { country: countries.find(c => c.code === basicInfo.countryCode)?.name || '' })}
                       >
-                        {getCountryByCode(basicInfo.countryCode)?.flag || '🏳️'}
+                        {countries.find(c => c.code === basicInfo.countryCode)?.flag_emoji || '🏳️'}
                       </span>
                     )}
                     <span className="text-sm font-medium text-vitalgo-dark font-mono">

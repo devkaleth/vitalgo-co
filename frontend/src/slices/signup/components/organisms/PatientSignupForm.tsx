@@ -96,10 +96,10 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         setIsLoadingCountries(true);
         const countriesData = await fetchCountries();
 
-        // Transform API countries to match the local Country interface
+        // Transform API countries to match the local Country interface with i18n
         const transformedCountries: Country[] = countriesData.map(c => ({
           code: c.code,
-          name: c.name,
+          name: locale === 'en' && c.name_en ? c.name_en : c.name,
           dialCode: c.phone_code,
           flag: c.flag_emoji || '',
         }));
@@ -145,9 +145,11 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
       try {
         const types = await SignupApiService.getDocumentTypes();
 
-        // Filter document types based on selected country
+        // Filter document types based on selected country and sort by allowed order
         const allowedTypes = getAllowedDocumentTypes(formData.originCountry);
-        const filteredTypes = types.filter(type => allowedTypes.includes(type.code));
+        const filteredTypes = types
+          .filter(type => allowedTypes.includes(type.code))
+          .sort((a, b) => allowedTypes.indexOf(a.code) - allowedTypes.indexOf(b.code));
 
         setDocumentTypes(filteredTypes);
 
@@ -561,15 +563,17 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
                 ✓
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-medium">Plan Seleccionado</p>
-                <h3 className="text-xl font-bold text-gray-900">{selectedPlan.display_name}</h3>
+                <p className="text-sm text-gray-600 font-medium">{tSignup('plan.selectedPlan')}</p>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {locale === 'en' && selectedPlan.display_name_en ? selectedPlan.display_name_en : selectedPlan.display_name}
+                </h3>
                 <p className="text-sm text-gray-600 mt-1">
                   {selectedPlan.price === 0 ? (
-                    <span className="font-semibold text-vitalgo-green">Gratis - Para siempre</span>
+                    <span className="font-semibold text-vitalgo-green">{tSignup('plan.freeForever')}</span>
                   ) : (
                     <span>
                       <span className="font-semibold text-gray-900">${selectedPlan.price}</span>
-                      {selectedPlan.duration_days && <span className="text-gray-500"> / {selectedPlan.duration_days} días</span>}
+                      {selectedPlan.duration_days && <span className="text-gray-500"> / {selectedPlan.duration_days} {tSignup('plan.days')}</span>}
                     </span>
                   )}
                 </p>
@@ -579,7 +583,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
               href={`/${locale}/precios`}
               className="text-vitalgo-green hover:text-vitalgo-green/80 font-medium text-sm underline"
             >
-              Cambiar plan
+              {tSignup('plan.changePlan')}
             </a>
           </div>
         </div>

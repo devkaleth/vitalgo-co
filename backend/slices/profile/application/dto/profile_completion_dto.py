@@ -86,6 +86,7 @@ class ExtendedPatientProfileDTO(BaseModel):
     # Physical Measurements
     height: Optional[int] = Field(None, ge=50, le=250, description="Height in centimeters (50-250 cm)")
     weight: Optional[int] = Field(None, ge=10, le=300, description="Weight in kilograms (10-300 kg)")
+    preferred_unit_system: Optional[str] = Field(None, max_length=10, description="Preferred unit system: metric or imperial")
 
     class Config:
         str_strip_whitespace = True

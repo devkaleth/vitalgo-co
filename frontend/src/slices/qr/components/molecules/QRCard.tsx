@@ -66,6 +66,7 @@ export function QRCard({
         <DownloadButton
           onClick={onDownload}
           disabled={(!qrData?.qrImageBase64 && !qrData?.emergencyUrl) || isLoading}
+          label={t('download')}
           data-testid="download-qr-button"
         />
       </div>
@@ -79,7 +80,7 @@ export function QRCard({
             </svg>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-900 mb-1">Importante</p>
+            <p className="text-sm font-medium text-gray-900 mb-1">{t('important')}</p>
             <p className="text-sm text-gray-700">{t('keepAccessible')}</p>
           </div>
         </div>

@@ -137,11 +137,12 @@ All VitalGo API endpoints return consistent, standardized error responses for im
 **Status:** 200 available, 409 document exists
 
 ### GET /api/signup/document-types
-**Description:** Get list of available document types
+**Description:** Get list of available document types with i18n support
 **In:** No parameters
 **Out:** `{document_types: DocumentTypeObject[]}`
-**DocumentType:** `{id: number, code: string, name: string, description: string, is_active: boolean}`
+**DocumentType:** `{id: number, code: string, name: string, name_en: string | null, description: string}`
 **Status:** 200 success
+**Notes:** `name` contains Spanish name, `name_en` contains English translation for i18n support. Frontend uses locale to display appropriate name.
 
 ## Dashboard Endpoints (/api/dashboard)
 
@@ -349,7 +350,10 @@ All VitalGo API endpoints return consistent, standardized error responses for im
   "births_count": "number|null",
   "cesareans_count": "number|null",
   "abortions_count": "number|null",
-  "contraceptive_method": "string|null"
+  "contraceptive_method": "string|null",
+  "height": "number|null",
+  "weight": "number|null",
+  "preferred_unit_system": "string|null"
 }
 ```
 
@@ -399,7 +403,10 @@ All VitalGo API endpoints return consistent, standardized error responses for im
   "births_count": "number",
   "cesareans_count": "number",
   "abortions_count": "number",
-  "contraceptive_method": "string"
+  "contraceptive_method": "string",
+  "height": "number",
+  "weight": "number",
+  "preferred_unit_system": "string"
 }
 ```
 
@@ -849,5 +856,5 @@ From `emergency_qrs` table:
 - Old `/api/v1/emergency` endpoints - replaced by `/api/emergency`
 - Complex QR router with emergency_qrs table - replaced by simple router using patients.qr_code
 
-**Last Updated:** October 2025
+**Last Updated:** November 2025
 **Review Status:** ✅ Verified against production codebase

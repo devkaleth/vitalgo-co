@@ -60,8 +60,12 @@ const DEFAULT_OPTIONS: Required<GeolocationOptions> = {
   cacheDuration: 60 * 60 * 1000, // 1 hour
 };
 
-// Cache key for localStorage
+// Cache keys for localStorage
 const CACHE_KEY = 'vitalgo_geolocation_cache';
+const RATE_LIMIT_KEY = 'vitalgo_geolocation_rate_limited';
+
+// Rate limit backoff duration (1 hour)
+const RATE_LIMIT_DURATION = 60 * 60 * 1000;
 
 interface CachedGeolocation {
   data: GeolocationData;
@@ -87,6 +91,11 @@ export class GeolocationService {
         return cached.data;
       }
 
+      // Check if rate limited - skip API call silently
+      if (this.isRateLimited()) {
+        return cached?.data || null;
+      }
+
       // Fetch from API with timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), opts.timeout);
@@ -96,6 +105,12 @@ export class GeolocationService {
       });
 
       clearTimeout(timeoutId);
+
+      // Handle rate limiting (429) silently
+      if (response.status === 429) {
+        this.setRateLimited();
+        return cached?.data || null;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -108,12 +123,22 @@ export class GeolocationService {
 
       return data;
     } catch (error) {
-      console.warn('Geolocation API error:', error);
+      // Suppress expected errors (CORS, network failures during development)
+      // Only log unexpected errors
+      const isExpectedError =
+        error instanceof TypeError || // CORS/network errors
+        (error instanceof DOMException && error.name === 'AbortError'); // Timeout
+
+      if (!isExpectedError) {
+        console.warn('Geolocation API error:', error);
+      }
+
+      // Set rate limit on any failure to avoid repeated failed requests
+      this.setRateLimited();
 
       // Try to return cached data even if expired
       const cached = this.getFromCache();
       if (cached) {
-        console.info('Using expired cached geolocation data');
         return cached.data;
       }
 
@@ -214,5 +239,40 @@ export class GeolocationService {
       }
     }
     return null;
+  }
+
+  /**
+   * Check if we're currently rate limited
+   */
+  private static isRateLimited(): boolean {
+    if (typeof window !== 'undefined') {
+      try {
+        const rateLimitedAt = localStorage.getItem(RATE_LIMIT_KEY);
+        if (rateLimitedAt) {
+          const timestamp = parseInt(rateLimitedAt, 10);
+          if (Date.now() - timestamp < RATE_LIMIT_DURATION) {
+            return true;
+          }
+          // Rate limit expired, clear it
+          localStorage.removeItem(RATE_LIMIT_KEY);
+        }
+      } catch {
+        // Ignore storage errors
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Set rate limited flag
+   */
+  private static setRateLimited(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(RATE_LIMIT_KEY, Date.now().toString());
+      } catch {
+        // Ignore storage errors
+      }
+    }
   }
 }

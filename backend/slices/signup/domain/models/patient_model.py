@@ -99,6 +99,7 @@ class Patient(Base):
     # Physical Measurements
     height = Column(Integer, nullable=True)  # Height in centimeters
     weight = Column(Integer, nullable=True)  # Weight in kilograms
+    preferred_unit_system = Column(String(10), nullable=True, server_default='metric')  # 'metric' or 'imperial'
 
     # Relationships
     user = relationship("User", backref="patient")

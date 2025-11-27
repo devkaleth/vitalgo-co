@@ -5,9 +5,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { PersonalPatientInfo, PersonalPatientUpdate } from '../../types/personalInfo';
-import { Country, getCountryByCode } from '../../../signup/data/countries';
+import { Country } from '../../../signup/data/countries';
 import { splitPhoneInternational, combinePhoneInternational } from '../../utils/phoneUtils';
 import { useCountries } from '@/hooks/useCountries';
 import type { Country as APICountry } from '@/services/countriesService';
@@ -60,6 +60,7 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
 }) => {
   const t = useTranslations('profile.forms');
   const tCommon = useTranslations('common');
+  const locale = useLocale();
   const [formData, setFormData] = useState<MedicalFormData>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,9 +69,10 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
   const { countries: apiCountries, isLoading: countriesLoading, error: countriesError } = useCountries();
 
   // Convert API countries to format expected by PhoneInputGroup
+  // Include i18n support for country names
   const convertedCountries: Country[] = apiCountries.map((country: APICountry) => ({
     code: country.code,
-    name: country.name,
+    name: locale === 'en' && country.name_en ? country.name_en : country.name,
     dialCode: country.phone_code,
     flag: country.flag_emoji || '',
   }));

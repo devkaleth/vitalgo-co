@@ -15,6 +15,7 @@ import type { Country as APICountry } from '@/services/countriesService';
 import { SignupApiService } from '../../../signup/services/signupApi';
 import type { DocumentType } from '../../../signup/types';
 import { CountrySelect } from '../../../signup/components/atoms/CountrySelect';
+import { validateDocumentNumber } from '../../../signup/utils/documentValidation';
 
 interface BasicInfoEditModalProps {
   isOpen: boolean;
@@ -53,10 +54,11 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
 
   // Convert API countries to format expected by PhoneInputGroup and CountrySelect
   // Use static countries as fallback if API hasn't loaded yet
+  // Include name_en for i18n support
   const convertedCountries: Country[] = apiCountries.length > 0
     ? apiCountries.map((country: APICountry) => ({
         code: country.code,
-        name: country.name,
+        name: locale === 'en' && country.name_en ? country.name_en : country.name,
         dialCode: country.phone_code,
         flag: country.flag_emoji || '',
       }))
@@ -236,8 +238,11 @@ export const BasicInfoEditModal: React.FC<BasicInfoEditModalProps> = ({
 
     if (!formData.documentNumber?.trim()) {
       newErrors.documentNumber = t('validation.documentNumberRequired');
-    } else if (!/^[0-9]+$/.test(formData.documentNumber.trim())) {
-      newErrors.documentNumber = t('validation.documentNumberInvalid');
+    } else {
+      const docValidation = validateDocumentNumber(formData.documentNumber, formData.documentType || '');
+      if (!docValidation.isValid) {
+        newErrors.documentNumber = t('validation.documentNumberInvalid');
+      }
     }
 
     if (!formData.phoneInternational?.trim()) {

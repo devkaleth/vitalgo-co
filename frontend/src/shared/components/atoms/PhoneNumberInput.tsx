@@ -5,6 +5,7 @@
  * Shared component for use across multiple slices
  */
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { getCountryByCode } from '../../../slices/signup/data/countries';
 import { FieldValidationState } from '../../../slices/signup/types';
 
@@ -33,6 +34,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   disabled = false,
   error
 }) => {
+  const t = useTranslations('phone.number');
   const country = getCountryByCode(countryCode);
 
   // Validate phone number length
@@ -45,10 +47,10 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
 
     if (country?.maxLength) {
       if (digits.length < country.maxLength) {
-        return `El número debe tener ${country.maxLength} dígitos (tiene ${digits.length})`;
+        return t('mustHaveDigits', { maxLength: country.maxLength, currentLength: digits.length });
       }
       if (digits.length > country.maxLength) {
-        return `El número excede los ${country.maxLength} dígitos permitidos`;
+        return t('exceedsMaxDigits', { maxLength: country.maxLength });
       }
     }
 
@@ -97,7 +99,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
     if (country?.phoneFormat) {
       return country.phoneFormat.replace(/#/g, '0');
     }
-    return 'Número de teléfono';
+    return t('placeholder');
   };
 
   const getValidationIcon = () => {
@@ -149,7 +151,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-        Número de teléfono
+        {t('label')}
         <span className="text-red-500 ml-1">*</span>
       </label>
 
@@ -207,10 +209,10 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
           className="text-xs text-gray-500"
           data-testid={`${testId}-format-hint`}
         >
-          Formato: {country.phoneFormat.replace(/#/g, '0')}
+          {t('format', { format: country.phoneFormat.replace(/#/g, '0') })}
           {country.maxLength && (
             <span className="ml-2">
-              ({value.replace(/\D/g, '').length}/{country.maxLength} dígitos)
+              ({value.replace(/\D/g, '').length}/{country.maxLength} {t('digits')})
             </span>
           )}
         </p>
@@ -219,7 +221,7 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
       {/* Validation success message */}
       {validation?.isValid === true && !finalError && !lengthError && (
         <p className="text-sm text-vitalgo-green" data-testid={`${testId}-success`}>
-          ✓ Número válido
+          {t('validNumber')}
         </p>
       )}
     </div>

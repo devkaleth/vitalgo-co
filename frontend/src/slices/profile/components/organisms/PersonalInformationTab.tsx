@@ -15,7 +15,9 @@ import {
   formatResidenceData,
   isPersonalInfoComplete,
   getMissingPersonalInfoFields,
-  formatCountryWithFlag
+  formatCountryWithFlag,
+  DisplayTranslations,
+  MissingFieldsTranslations
 } from '../../utils/personalInfoUtils';
 
 export function PersonalInformationTab({ 'data-testid': testId }: TabContentProps) {
@@ -124,10 +126,39 @@ export function PersonalInformationTab({ 'data-testid': testId }: TabContentProp
     );
   }
 
-  const demographicData = formatDemographicData(personalInfo);
-  const residenceData = formatResidenceData(personalInfo);
+  // Build translation objects for utility functions
+  const displayTranslations: DisplayTranslations = {
+    notSpecified: t('display.notSpecified'),
+    notSpecifiedFemale: t('display.notSpecifiedFemale'),
+    biologicalSex: {
+      'M': t('display.biologicalSex.M'),
+      'F': t('display.biologicalSex.F'),
+      'I': t('display.biologicalSex.I')
+    },
+    gender: {
+      'MASCULINO': t('display.gender.MASCULINO'),
+      'FEMENINO': t('display.gender.FEMENINO'),
+      'NO_BINARIO': t('display.gender.NO_BINARIO'),
+      'OTRO': t('display.gender.OTRO'),
+      'PREFIERO_NO_DECIR': t('display.gender.PREFIERO_NO_DECIR')
+    }
+  };
+
+  const missingFieldsTranslations: MissingFieldsTranslations = {
+    biologicalSex: t('missingFields.biologicalSex'),
+    gender: t('missingFields.gender'),
+    birthCountry: t('missingFields.birthCountry'),
+    residenceAddress: t('missingFields.residenceAddress'),
+    birthDepartment: t('missingFields.birthDepartment'),
+    birthCity: t('missingFields.birthCity'),
+    residenceDepartment: t('missingFields.residenceDepartment'),
+    residenceCity: t('missingFields.residenceCity')
+  };
+
+  const demographicData = formatDemographicData(personalInfo, displayTranslations);
+  const residenceData = formatResidenceData(personalInfo, displayTranslations);
   const isComplete = isPersonalInfoComplete(personalInfo);
-  const missingFields = getMissingPersonalInfoFields(personalInfo);
+  const missingFields = getMissingPersonalInfoFields(personalInfo, missingFieldsTranslations);
 
   return (
     <>

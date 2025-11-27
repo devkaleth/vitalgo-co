@@ -2,12 +2,12 @@
  * ResidenceInfoSection Molecule Component
  * Handles residence address and location information
  */
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { SelectField } from '../atoms/SelectField';
 import { TextAreaField } from '../atoms/TextAreaField';
 import { SearchableSelect } from '../atoms/SearchableSelect';
 import { COLOMBIA_DEPARTMENTS, getCitiesForDepartment } from '../../../../shared/data/locations';
-import { residenceCountries } from '../../data/countries';
+import { useCountries } from '../../../../hooks/useCountries';
 import { PersonalInfoFormData } from '../../types/personalInfo';
 
 interface ResidenceInfoSectionProps {
@@ -22,6 +22,15 @@ export function ResidenceInfoSection({
   errors = {}
 }: ResidenceInfoSectionProps) {
   const t = useTranslations('profile.forms');
+  const locale = useLocale();
+  const { countries } = useCountries();
+
+  // Transform API countries to SearchableSelect format
+  const countryOptions = countries.map(country => ({
+    value: country.code,
+    label: locale === 'en' && country.name_en ? country.name_en : country.name,
+    flag: country.flag_emoji || ''
+  }));
 
   const handleCountryChange = (country: string) => {
     onChange('residence_country', country);
@@ -69,7 +78,7 @@ export function ResidenceInfoSection({
           label={t('labels.residenceCountry')}
           value={data.residence_country || ''}
           onChange={handleCountryChange}
-          options={residenceCountries}
+          options={countryOptions}
           required
           error={errors.residence_country}
           hasOtherOption={true}

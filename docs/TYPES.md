@@ -62,7 +62,8 @@ interface AuthApiClient {
 interface DocumentType {
   id: number;
   code: string;
-  name: string;
+  name: string;           // Spanish name
+  name_en: string | null; // English translation (i18n support)
   description: string;
 }
 
@@ -170,6 +171,10 @@ interface PersonalPatientInfo {
   cesareans_count?: number | null;
   abortions_count?: number | null;
   contraceptive_method?: string | null;
+  // Physical Measurements - ✅ IMPLEMENTED
+  height?: number | null;  // Height in centimeters (50-250 cm)
+  weight?: number | null;  // Weight in kilograms (10-300 kg)
+  preferred_unit_system?: string | null;  // 'metric' or 'imperial'
 }
 
 // Personal information update interface
@@ -207,6 +212,10 @@ interface PersonalPatientUpdate {
   cesareans_count?: number | null;
   abortions_count?: number | null;
   contraceptive_method?: string | null;
+  // Physical Measurements - ✅ IMPLEMENTED
+  height?: number | null;  // Height in centimeters (50-250 cm)
+  weight?: number | null;  // Weight in kilograms (10-300 kg)
+  preferred_unit_system?: string | null;  // 'metric' or 'imperial'
 }
 
 // Hook result interfaces
@@ -1066,7 +1075,7 @@ type UserType = 'patient' | 'doctor' | 'admin';
 
 ### Document Types (from database)
 ```typescript
-type DocumentTypeCode = 'CC' | 'TI' | 'CE' | 'PA' | 'RC' | 'AS' | 'MS' | 'NU' | 'CD' | 'SC';
+type DocumentTypeCode = 'CC' | 'TI' | 'CE' | 'PA' | 'RC' | 'AS' | 'MS' | 'NU' | 'CD' | 'SC' | 'DNI';
 ```
 
 ### Medical Enums
@@ -1509,5 +1518,5 @@ class QR(Base):
 4. **API Requests**: Frontend sends `camelCase`, backend auto-converts to `snake_case`
 5. **DTOs**: All DTOs with UUID fields must include field serializers
 
-**Last Updated:** October 2025
+**Last Updated:** November 2025
 **Review Status:** ✅ Verified against codebase

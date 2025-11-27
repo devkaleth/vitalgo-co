@@ -1,15 +1,10 @@
 /**
  * DemographicInfoSection Molecule Component
- * Handles biological sex, gender, and birth location information
+ * Handles biological sex, gender, organ donor preference, and physical measurements
  */
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { SelectField } from '../atoms/SelectField';
 import { RadioButtonField } from '../atoms/RadioButtonField';
-import { SearchableSelect } from '../atoms/SearchableSelect';
-import { BIOLOGICAL_SEX_OPTIONS, GENDER_OPTIONS } from '../../../../shared/data/demographics';
-import { COLOMBIA_DEPARTMENTS, getCitiesForDepartment } from '../../../../shared/data/locations';
-import { birthplaceCountries } from '../../data/countries';
 import { PersonalInfoFormData } from '../../types/personalInfo';
 
 interface DemographicInfoSectionProps {
@@ -45,12 +40,36 @@ export function DemographicInfoSection({
 }: DemographicInfoSectionProps) {
   const t = useTranslations('profile.forms');
 
-  // Unit system state (metric or imperial)
-  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
+  // Build options using translations
+  const BIOLOGICAL_SEX_OPTIONS = [
+    { value: 'M', label: t('options.biologicalSex.male') },
+    { value: 'F', label: t('options.biologicalSex.female') },
+    { value: 'I', label: t('options.biologicalSex.intersex') }
+  ];
+
+  const GENDER_OPTIONS = [
+    { value: 'MASCULINO', label: t('options.gender.male') },
+    { value: 'FEMENINO', label: t('options.gender.female') },
+    { value: 'NO_BINARIO', label: t('options.gender.nonBinary') },
+    { value: 'OTRO', label: t('options.gender.other') },
+    { value: 'PREFIERO_NO_DECIR', label: t('options.gender.preferNotToSay') }
+  ];
+
+  // Unit system state (metric or imperial) - initialized from data or defaults to metric
+  const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>(
+    (data.preferred_unit_system as 'metric' | 'imperial') || 'metric'
+  );
   const [displayHeight, setDisplayHeight] = useState({ feet: 0, inches: 0 });
   const [displayWeight, setDisplayWeight] = useState(0);
 
-  // Initialize display values from data
+  // Initialize display values from data and sync unit system from props
+  useEffect(() => {
+    // Sync unit system from data when it changes (e.g., on initial load from API)
+    if (data.preferred_unit_system && data.preferred_unit_system !== unitSystem) {
+      setUnitSystem(data.preferred_unit_system as 'metric' | 'imperial');
+    }
+  }, [data.preferred_unit_system]);
+
   useEffect(() => {
     if (data.height && unitSystem === 'imperial') {
       setDisplayHeight(cmToFeet(data.height));
@@ -71,6 +90,8 @@ export function DemographicInfoSection({
       }
     }
     setUnitSystem(newSystem);
+    // Save the preference to the database
+    onChange('preferred_unit_system', newSystem);
   };
 
   const handleHeightChange = (value: number | undefined, unit: 'cm' | 'feet' | 'inches' = 'cm') => {
@@ -111,19 +132,6 @@ export function DemographicInfoSection({
     }
   };
 
-  const handleCountryChange = (country: string) => {
-    onChange('birth_country', country);
-    // Reset department and city when country changes
-    if (country !== 'CO') {
-      onChange('birth_department', '');
-      onChange('birth_city', '');
-    }
-    // Reset other field when not OTHER
-    if (country !== 'OTHER') {
-      onChange('birth_country_other', '');
-    }
-  };
-
   const handleGenderChange = (gender: string) => {
     onChange('gender', gender);
     // Reset other field when not OTRO
@@ -131,17 +139,6 @@ export function DemographicInfoSection({
       onChange('gender_other', '');
     }
   };
-
-  const handleDepartmentChange = (department: string) => {
-    onChange('birth_department', department);
-    // Reset city when department changes
-    onChange('birth_city', '');
-  };
-
-  const showColombianFields = data.birth_country === 'CO';
-  const departmentCities = data.birth_department
-    ? getCitiesForDepartment(data.birth_department)
-    : [];
 
   return (
     <div className="space-y-6">
@@ -197,20 +194,20 @@ export function DemographicInfoSection({
             layout="vertical"
           />
 
-          {/* Mostrar campo adicional cuando selecciona "Prefiero no responder" */}
+          {/* Show additional field when "Prefer not to say" is selected */}
           {data.organ_donor_preference === 'PREFIERO_NO_RESPONDER' && (
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <label className="block text-sm font-medium text-gray-900 mb-2">
-                En caso de emergencia, ¿quién puede decidir por ti? <span className="text-red-500">*</span>
+                {t('authorizedDecisionMaker.label')} <span className="text-red-500">*</span>
               </label>
               <p className="text-xs text-gray-600 mb-3">
-                Indica el nombre completo de la persona autorizada para tomar decisiones médicas en tu nombre
+                {t('authorizedDecisionMaker.description')}
               </p>
               <textarea
                 value={data.authorized_decision_maker || ''}
                 onChange={(e) => onChange('authorized_decision_maker', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                placeholder="Ej: María García López (Madre)"
+                placeholder={t('authorizedDecisionMaker.placeholder')}
                 rows={2}
               />
               {errors.authorized_decision_maker && (
@@ -239,7 +236,7 @@ export function DemographicInfoSection({
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Métrico (cm/kg)
+              {t('unitSystem.metric')}
             </button>
             <button
               type="button"
@@ -250,7 +247,7 @@ export function DemographicInfoSection({
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              Imperial (ft/lbs)
+              {t('unitSystem.imperial')}
             </button>
           </div>
         </div>
@@ -260,7 +257,7 @@ export function DemographicInfoSection({
           {unitSystem === 'metric' ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Talla (cm)
+                {t('measurements.heightCm')}
               </label>
               <input
                 type="number"
@@ -269,7 +266,7 @@ export function DemographicInfoSection({
                 value={data.height || ''}
                 onChange={(e) => handleHeightChange(e.target.value ? parseInt(e.target.value) : undefined)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                placeholder="Ej: 170"
+                placeholder={t('measurements.placeholderCm')}
               />
               {errors.height && (
                 <p className="mt-1 text-sm text-red-600">{errors.height}</p>
@@ -278,30 +275,36 @@ export function DemographicInfoSection({
           ) : (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Talla (ft/in)
+                {t('measurements.heightFtIn')}
               </label>
               <div className="grid grid-cols-2 gap-2">
-                <div>
+                <div className="relative">
                   <input
                     type="number"
                     min="3"
                     max="8"
                     value={displayHeight.feet || ''}
                     onChange={(e) => handleHeightChange(e.target.value ? parseInt(e.target.value) : 0, 'feet')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                    placeholder="Pies"
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
+                    placeholder={t('measurements.feet')}
                   />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
+                    ft
+                  </span>
                 </div>
-                <div>
+                <div className="relative">
                   <input
                     type="number"
                     min="0"
                     max="11"
                     value={displayHeight.inches || ''}
                     onChange={(e) => handleHeightChange(e.target.value ? parseInt(e.target.value) : 0, 'inches')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                    placeholder="Pulgadas"
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
+                    placeholder={t('measurements.inches')}
                   />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium">
+                    in
+                  </span>
                 </div>
               </div>
               {errors.height && (
@@ -314,7 +317,7 @@ export function DemographicInfoSection({
           {unitSystem === 'metric' ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Peso (kg)
+                {t('measurements.weightKg')}
               </label>
               <input
                 type="number"
@@ -323,7 +326,7 @@ export function DemographicInfoSection({
                 value={data.weight || ''}
                 onChange={(e) => handleWeightChange(e.target.value ? parseInt(e.target.value) : undefined)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                placeholder="Ej: 70"
+                placeholder={t('measurements.placeholderKg')}
               />
               {errors.weight && (
                 <p className="mt-1 text-sm text-red-600">{errors.weight}</p>
@@ -332,7 +335,7 @@ export function DemographicInfoSection({
           ) : (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Peso (lbs)
+                {t('measurements.weightLbs')}
               </label>
               <input
                 type="number"
@@ -341,7 +344,7 @@ export function DemographicInfoSection({
                 value={displayWeight || ''}
                 onChange={(e) => handleWeightChange(e.target.value ? parseInt(e.target.value) : undefined)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-vitalgo-green focus:border-transparent"
-                placeholder="Ej: 154"
+                placeholder={t('measurements.placeholderLbs')}
               />
               {errors.weight && (
                 <p className="mt-1 text-sm text-red-600">{errors.weight}</p>

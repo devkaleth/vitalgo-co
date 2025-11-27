@@ -143,6 +143,7 @@ class CompleteProfileUseCase:
             # Physical measurements fields (Medidas Físicas)
             height=patient.height,
             weight=patient.weight,
+            preferred_unit_system=patient.preferred_unit_system,
         )
 
     def update_extended_profile(self, user_id: str, profile_data: PatientProfileUpdateDTO) -> Dict[str, Any]:
@@ -265,12 +266,16 @@ class CompleteProfileUseCase:
             # Update physical measurements fields (Medidas Físicas)
             logger.info(f"🔍 PHYSICAL MEASUREMENTS - height: {profile_data.height}")
             logger.info(f"🔍 PHYSICAL MEASUREMENTS - weight: {profile_data.weight}")
+            logger.info(f"🔍 PHYSICAL MEASUREMENTS - preferred_unit_system: {profile_data.preferred_unit_system}")
             if profile_data.height is not None:
                 logger.info(f"✅ Setting height to: {profile_data.height}")
                 patient.height = profile_data.height
             if profile_data.weight is not None:
                 logger.info(f"✅ Setting weight to: {profile_data.weight}")
                 patient.weight = profile_data.weight
+            if profile_data.preferred_unit_system is not None:
+                logger.info(f"✅ Setting preferred_unit_system to: {profile_data.preferred_unit_system}")
+                patient.preferred_unit_system = profile_data.preferred_unit_system
 
             self.db.commit()
 

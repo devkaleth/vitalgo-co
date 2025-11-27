@@ -57,6 +57,7 @@ export interface PersonalPatientInfo {
   // Physical Measurements
   height?: number | null; // Height in centimeters
   weight?: number | null; // Weight in kilograms
+  preferred_unit_system?: string | null; // 'metric' or 'imperial'
 }
 
 export interface PersonalPatientUpdate {
@@ -114,6 +115,7 @@ export interface PersonalPatientUpdate {
   // Physical Measurements
   height?: number | null; // Height in centimeters
   weight?: number | null; // Weight in kilograms
+  preferred_unit_system?: string | null; // 'metric' or 'imperial'
 }
 
 export interface UsePersonalPatientInfoResult {

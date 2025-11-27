@@ -275,6 +275,12 @@
       "privacyLink": "Política de Privacidad",
       "fullText": "He leído y acepto los"
     },
+    "plan": {
+      "selectedPlan": "Plan Seleccionado",
+      "freeForever": "Gratis - Para siempre",
+      "days": "días",
+      "changePlan": "Cambiar plan"
+    },
     "createAccountButton": "Siguiente",
     "alreadyHaveAccount": "¿Ya tienes cuenta?",
     "loginLink": "Inicia sesión aquí",
@@ -616,6 +622,9 @@
         "emergencyRelationship": "Parentesco",
         "emergencyPhone": "Teléfono Principal",
         "emergencyPhoneAlt": "Teléfono Alternativo (opcional)",
+        "healthService": "Escribe aquí la entidad que se encarga de administrar tus servicios de salud en tu país de residencia",
+        "dialCode": "Indicativo",
+        "phoneNumber": "Número de teléfono",
         "isPregnant": "¿Estás embarazada?",
         "pregnancyWeeks": "Semanas de embarazo",
         "menstrualStatus": "Estado menstrual",
@@ -647,6 +656,7 @@
         "epsOther": "Ingrese el nombre de su EPS",
         "occupation": "Ingrese su ocupación",
         "additionalInsurance": "Seguro adicional (opcional)",
+        "healthService": "Ej: National Health Service (NHS), Medicare, etc.",
         "complementaryPlan": "Seleccione plan complementario",
         "complementaryPlanOther": "Especifique el plan complementario",
         "emergencyName": "Nombre completo del contacto de emergencia",
@@ -692,6 +702,9 @@
         "placeholderFeet": "Pies",
         "placeholderInches": "Pulgadas",
         "placeholderLbs": "Ej: 154"
+      },
+      "infoBoxes": {
+        "additionalInsurance": "El <strong>seguro adicional</strong> es una cobertura complementaria que algunas personas tienen además del seguro de salud principal. Por ejemplo: seguros privados, seguros de viaje, o pólizas de salud complementarias. Si no tienes ninguno, puedes dejar este campo vacío."
       },
       "authorizedDecisionMaker": {
         "label": "En caso de emergencia, ¿quién puede decidir por ti?",

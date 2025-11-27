@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
-import { Check, Shield, Globe, Infinity, Tag, Building2, Dumbbell, Store } from 'lucide-react';
+import { Check, Shield, Globe, Infinity, Tag, Building2, Languages, Store } from 'lucide-react';
 import { LocalStorageService } from '../../../shared/services/local-storage-service';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -264,12 +264,12 @@ export const PricingPage: React.FC<PricingPageProps> = ({
             <div className="bg-white rounded-2xl shadow-xl p-8 relative overflow-hidden flex flex-col border-2 border-vitalgo-green">
               {/* Popular Badge */}
               <div className="absolute top-0 right-0 bg-vitalgo-green text-white px-6 py-2 rounded-bl-xl font-semibold">
-                Popular
+                {t('plan.popular')}
               </div>
 
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {freePlan.display_name}
+                  {t('free.title')}
                 </h2>
                 <div className="flex items-baseline justify-center gap-2 mb-2">
                   <span className="text-5xl font-bold text-vitalgo-green">
@@ -285,18 +285,18 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   </span>
                 </div>
                 <p className="text-gray-600">
-                  {freePlan.description}
+                  {t('free.description')}
                 </p>
               </div>
 
               {/* Features List */}
               <div className="space-y-4 mb-8 flex-grow">
-                {freePlan.features && freePlan.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
+                {['qr', 'unlimited', 'medications', 'allergies', 'illnesses', 'surgeries'].map((featureKey) => (
+                  <div key={featureKey} className="flex items-start gap-3">
                     <div className="bg-vitalgo-green/10 p-1 rounded-full flex-shrink-0 mt-0.5">
                       <Check className="w-5 h-5 text-vitalgo-green" />
                     </div>
-                    <span className="text-gray-700">{feature}</span>
+                    <span className="text-gray-700">{t(`free.features.${featureKey}`)}</span>
                   </div>
                 ))}
               </div>
@@ -380,7 +380,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   <div className="bg-blue-100 p-2 rounded-full">
                     <Building2 className="w-6 h-6 text-blue-600" />
                   </div>
-                  <span className="font-medium text-gray-900">{t('discount.companies.windstar')}</span>
+                  <span className="font-medium text-gray-900">{t('discount.companies.rqtech')}</span>
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center gap-3">
                   <div className="bg-green-100 p-2 rounded-full">
@@ -390,9 +390,9 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                 </div>
                 <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center gap-3">
                   <div className="bg-orange-100 p-2 rounded-full">
-                    <Dumbbell className="w-6 h-6 text-orange-600" />
+                    <Languages className="w-6 h-6 text-orange-600" />
                   </div>
-                  <span className="font-medium text-gray-900">{t('discount.companies.gymx')}</span>
+                  <span className="font-medium text-gray-900">{t('discount.companies.convoesl')}</span>
                 </div>
               </div>
             </div>
@@ -467,17 +467,17 @@ export const PricingPage: React.FC<PricingPageProps> = ({
         </div>
 
         {/* Final CTA */}
-        <div className="bg-gradient-to-r from-vitalgo-green to-green-600 rounded-2xl p-12 text-center text-white">
+        <div className="bg-vitalgo-dark rounded-2xl p-12 text-center text-white">
           <h3 className="text-3xl font-bold mb-4">
             {t('cta.title')}
           </h3>
-          <p className="text-xl mb-8 text-green-50">
+          <p className="text-xl mb-8 text-vitalgo-dark-lightest">
             {t('cta.description')}
           </p>
           <button
             onClick={() => freePlan && handleSelectPlan(freePlan.id)}
             disabled={!freePlan}
-            className="bg-white text-vitalgo-green py-4 px-8 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="bg-vitalgo-green text-white py-4 px-8 rounded-lg font-semibold text-lg hover:bg-vitalgo-green-light transition-colors inline-flex items-center gap-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             {t('cta.button')}
           </button>

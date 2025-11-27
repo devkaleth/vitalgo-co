@@ -223,6 +223,12 @@
       "privacyLink": "Privacy Policy",
       "fullText": "By creating an account, you accept our {terms} and {privacy}"
     },
+    "plan": {
+      "selectedPlan": "Selected Plan",
+      "freeForever": "Free - Forever",
+      "days": "days",
+      "changePlan": "Change plan"
+    },
     "alreadyHaveAccount": "Already have an account?",
     "loginLink": "Log in here",
     "createAccountButton": "Next",
@@ -627,7 +633,10 @@
         "emergencyName": "Full Name",
         "emergencyRelationship": "Relationship",
         "emergencyPhone": "Primary Phone",
-        "emergencyPhoneAlt": "Alternative Phone (optional)"
+        "emergencyPhoneAlt": "Alternative Phone (optional)",
+        "healthService": "Enter the entity that manages your health services in your country of residence",
+        "dialCode": "Dial Code",
+        "phoneNumber": "Phone Number"
       },
       "placeholders": {
         "firstName": "e.g., John Michael",
@@ -658,6 +667,7 @@
         "epsOther": "Enter the name of your EPS",
         "occupation": "Enter your occupation",
         "additionalInsurance": "Additional insurance (optional)",
+        "healthService": "E.g.: National Health Service (NHS), Medicare, etc.",
         "complementaryPlan": "Select complementary plan",
         "complementaryPlanOther": "Specify the complementary plan",
         "emergencyName": "Emergency contact full name",
@@ -686,6 +696,9 @@
         "placeholderFeet": "Feet",
         "placeholderInches": "Inches",
         "placeholderLbs": "E.g.: 154"
+      },
+      "infoBoxes": {
+        "additionalInsurance": "<strong>Additional insurance</strong> is supplementary coverage that some people have in addition to their main health insurance. For example: private insurance, travel insurance, or supplementary health policies. If you don't have any, you can leave this field empty."
       },
       "authorizedDecisionMaker": {
         "label": "In case of emergency, who can decide for you?",

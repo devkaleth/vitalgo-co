@@ -29,7 +29,7 @@ export const DocumentTypeSelect: React.FC<DocumentTypeSelectProps> = ({
   'data-testid': testId
 }) => {
   const locale = useLocale();
-  const t = useTranslations('signup.documentType');
+  const t = useTranslations('signup');
 
   const getLocalizedName = (docType: DocumentType) =>
     locale === 'en' && docType.name_en ? docType.name_en : docType.name;
@@ -51,7 +51,7 @@ export const DocumentTypeSelect: React.FC<DocumentTypeSelectProps> = ({
         data-testid={testId}
         required={required}
       >
-        <option value="">{t('selectType')}</option>
+        <option value="">{t('documentType.selectType')}</option>
         {documentTypes.map((docType) => (
           <option key={docType.id} value={docType.code}>
             {docType.code} - {getLocalizedName(docType)}

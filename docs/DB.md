@@ -69,20 +69,40 @@
 - `cesareans_count`: Integer(nullable) - Number of cesarean sections (0 or greater) - ✅ IMPLEMENTED
 - `abortions_count`: Integer(nullable) - Number of abortions (0 or greater) - ✅ IMPLEMENTED
 - `contraceptive_method`: String(100, nullable) - Current contraceptive method - ✅ IMPLEMENTED
+- `height`: Integer(nullable) - Height in centimeters (50-250 cm) - ✅ IMPLEMENTED
+- `weight`: Integer(nullable) - Weight in kilograms (10-300 kg) - ✅ IMPLEMENTED
+- `preferred_unit_system`: String(10, nullable) - Preferred measurement unit system ('metric' or 'imperial') (default: 'metric') - ✅ IMPLEMENTED
 - `personal_info_completed`: Boolean - Whether personal information section is complete (default: false)
 - `created_at`: DateTime(timezone) - Patient record creation (auto-generated)
 - `updated_at`: DateTime(timezone) - Last patient data update (auto-updated)
 
 ### document_types
 - `id`: Integer (PK) - Document type identifier
-- `code`: String (unique) - Short code (CC, TI, CE, PA, RC, AS, MS, etc.)
-- `name`: String - Full document type name
+- `code`: String (unique) - Short code (CC, TI, CE, PA, RC, AS, MS, NU, CD, SC, DNI)
+- `name`: String - Full document type name (Spanish)
+- `name_en`: String (nullable) - English translation of document type name (i18n support)
 - `description`: Text - Purpose and usage details
 - `is_active`: Boolean - Available for selection flag
 
+**Document Type Codes:**
+| Code | Spanish Name | English Name |
+|------|-------------|--------------|
+| CC | Cédula de Ciudadanía | Citizenship ID |
+| CE | Cédula de Extranjería | Foreigner ID |
+| PA | Pasaporte | Passport |
+| TI | Tarjeta de Identidad | Identity Card |
+| RC | Registro Civil | Birth Certificate |
+| AS | Adulto sin Identificar | Adult without ID |
+| MS | Menor sin Identificar | Minor without ID |
+| NU | Número Único de Identificación Personal | Personal ID Number (NUIP) |
+| CD | Carnet Diplomático | Diplomatic ID |
+| SC | Salvoconducto | Safe Conduct |
+| DNI | Documento Nacional de Identidad | National ID (DNI) |
+
 ### countries
 - `id`: Integer (PK) - Country identifier (auto-increment)
-- `name`: String(100) - Full country name (e.g., "Colombia", "Nicaragua", "Estados Unidos")
+- `name`: String(100) - Full country name in Spanish (e.g., "Colombia", "Nicaragua", "Estados Unidos")
+- `name_en`: String(100, nullable) - English translation of country name (i18n support)
 - `code`: String(2, unique, indexed) - ISO 3166-1 alpha-2 country code (e.g., "CO", "NI", "US")
 - `flag_emoji`: String(10, nullable) - Country flag emoji (e.g., "🇨🇴", "🇳🇮", "🇺🇸")
 - `phone_code`: String(10) - International phone dialing code (e.g., "+57", "+505", "+1")
@@ -311,14 +331,17 @@ Uses BigInteger PKs for optimal performance in high-volume operations.
 ### subscription_plans
 - `id`: Integer (PK) - Plan identifier (auto-increment)
 - `name`: String(50, unique) - Internal plan name (e.g., "free", "premium", "enterprise")
-- `display_name`: String(100) - User-facing plan name for UI
-- `description`: Text (nullable) - Detailed plan description
+- `display_name`: String(100) - User-facing plan name for UI (Spanish)
+- `display_name_en`: String(100, nullable) - English translation of display name (i18n support)
+- `description`: Text (nullable) - Detailed plan description (Spanish)
+- `description_en`: Text (nullable) - English translation of description (i18n support)
 - `price`: Numeric(10, 2) - Plan price (e.g., 0.00 for free, 9.99 for premium)
 - `currency`: String(3) - Currency code (default: "USD")
 - `duration_days`: Integer (nullable) - Plan duration in days (NULL = lifetime/unlimited)
 - `is_active`: Boolean - Whether plan is available for purchase (default: true)
 - `is_popular`: Boolean - Highlight as popular plan in UI (default: false)
-- `features`: JSON (nullable) - List of plan features as JSON array
+- `features`: JSON (nullable) - List of plan features as JSON array (Spanish)
+- `features_en`: JSON (nullable) - English translation of features as JSON array (i18n support)
 - `max_records`: Integer (nullable) - Maximum medical records allowed (NULL = unlimited)
 - `created_at`: DateTime(timezone) - Plan creation timestamp (auto-generated)
 - `updated_at`: DateTime(timezone) - Last modification timestamp (auto-updated)
@@ -443,7 +466,7 @@ Uses BigInteger PKs for optimal performance in high-volume operations.
 **User Management:**
 - `users` - User accounts (19 records as of Oct 2025)
 - `patients` - Patient profiles (18 records)
-- `document_types` - Government ID types (7 types)
+- `document_types` - Government ID types (11 types including DNI)
 - `countries` - Global country reference data (218 countries and territories)
 
 **Authentication & Security:**
@@ -485,5 +508,10 @@ Uses BigInteger PKs for optimal performance in high-volume operations.
 - **Active Sessions**: 58
 - **Database Size**: ~1.2 MB (user_sessions table is largest at 344 KB)
 
-**Last Updated:** October 2025
+**Last Updated:** November 2025
 **Review Status:** ✅ Verified against production database schema
+
+### Recent Migrations (November 2025)
+- `d8f3a2e51c6b_add_dni_document_type.py` - Added DNI (Documento Nacional de Identidad) as international document type
+- `e9b4c7f82d3a_add_document_types_i18n.py` - Added `name_en` column to document_types for English translations
+- `f0a1b2c3d4e5_add_preferred_unit_system_to_patients.py` - Added `preferred_unit_system` column to patients table for storing metric/imperial preference

@@ -292,7 +292,7 @@ export default function MedicationsPage({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
                 <p className="text-gray-500 text-sm">
-                  {tCommon('footer.copyright')}
+                  {tCommon('footer.copyright', { year: new Date().getFullYear() })}
                 </p>
               </div>
               <div className="flex items-center space-x-6">
