@@ -48,6 +48,12 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "support": "Support"
+    },
+    "roles": {
+      "patient": "Patient",
+      "doctor": "Doctor",
+      "admin": "Administrator",
+      "defaultUser": "User"
     }
   },
   "nav": {
@@ -658,6 +664,28 @@
         "specifyOther": "Specify...",
         "selectDefault": "Select..."
       },
+      "unitSystem": {
+        "metric": "Metric (cm/kg)",
+        "imperial": "Imperial (ft/lbs)"
+      },
+      "measurements": {
+        "heightCm": "Height (cm)",
+        "heightFtIn": "Height (ft/in)",
+        "weightKg": "Weight (kg)",
+        "weightLbs": "Weight (lbs)",
+        "feet": "Feet",
+        "inches": "Inches",
+        "placeholderCm": "E.g.: 170",
+        "placeholderKg": "E.g.: 70",
+        "placeholderFeet": "Feet",
+        "placeholderInches": "Inches",
+        "placeholderLbs": "E.g.: 154"
+      },
+      "authorizedDecisionMaker": {
+        "label": "In case of emergency, who can decide for you?",
+        "description": "Enter the full name of the person authorized to make medical decisions on your behalf",
+        "placeholder": "E.g.: Maria Garcia Lopez (Mother)"
+      },
       "options": {
         "documentTypes": {
           "cc": "Citizenship Card",
@@ -767,6 +795,7 @@
         "updateMedicalInfo": "Update your general medical information",
         "updateGynecologicalInfo": "Update your gynecological and reproductive health information",
         "notSpecified": "Not specified",
+        "notSpecifiedFemale": "Not specified",
         "optional": "Optional",
         "successUpdate": "Information updated successfully",
         "errorUpdate": "Error updating information. Please try again.",
@@ -921,7 +950,31 @@
         "location": "Location"
       },
       "missingFields": {
-        "message": "Incomplete information"
+        "message": "Incomplete information",
+        "biologicalSex": "Biological sex",
+        "gender": "Gender",
+        "birthCountry": "Birth country",
+        "residenceAddress": "Residence address",
+        "birthDepartment": "Birth department",
+        "birthCity": "Birth city",
+        "residenceDepartment": "Residence department",
+        "residenceCity": "Residence city"
+      },
+      "display": {
+        "notSpecified": "Not specified",
+        "notSpecifiedFemale": "Not specified",
+        "biologicalSex": {
+          "M": "Male",
+          "F": "Female",
+          "I": "Intersex"
+        },
+        "gender": {
+          "MASCULINO": "Male",
+          "FEMENINO": "Female",
+          "NO_BINARIO": "Non-binary",
+          "OTRO": "Other",
+          "PREFIERO_NO_DECIR": "Prefer not to say"
+        }
       },
       "status": {
         "complete": "Information complete",
@@ -1306,13 +1359,6 @@
       "discontinued": "Discontinued",
       "paused": "Paused"
     },
-    "noMedications": "No medications registered",
-    "activeMedications": "Active Medications",
-    "pastMedications": "Past Medications",
-    "deleteConfirm": "Are you sure you want to delete this medication?",
-    "addSuccess": "Medication added successfully",
-    "updateSuccess": "Medication updated successfully",
-    "deleteSuccess": "Medication deleted successfully",
     "reminders": "Reminders",
     "setReminder": "Set Reminder",
     "reminderTime": "Reminder Time",
@@ -1328,7 +1374,14 @@
     "empty": {
       "all": {
         "title": "No medications registered",
-        "description": "Register your medications to better track your treatment"
+        "description": "Register your medications to better track your treatment",
+        "action": "Add First Medication"
+      },
+      "active": {
+        "title": "No active medications"
+      },
+      "inactive": {
+        "title": "No inactive medications"
       },
       "filtered": {
         "title": "No medications found",
@@ -1516,13 +1569,6 @@
     },
     "treatment": "Treatment Administered",
     "hasEpipen": "Has Epinephrine Auto-Injector?",
-    "noAllergies": "No allergies registered",
-    "activeAllergies": "Active Allergies",
-    "resolvedAllergies": "Resolved Allergies",
-    "deleteConfirm": "Are you sure you want to delete this allergy?",
-    "addSuccess": "Allergy added successfully",
-    "updateSuccess": "Allergy updated successfully",
-    "deleteSuccess": "Allergy deleted successfully",
     "criticalAlert": "Critical Alert",
     "showInEmergency": "Show in Emergency Information",
     "addButton": "Add Allergy",
@@ -1539,16 +1585,17 @@
     "empty": {
       "all": {
         "title": "No allergies registered",
-        "description": "Register your allergies so healthcare professionals can provide you with better care"
+        "description": "Register your allergies so healthcare professionals can provide you with better care",
+        "action": "Add First Allergy"
       },
       "filtered": {
-        "title": "No allergies found",
+        "title": "No allergies found with severity {severity}",
         "description": "No allergies match the selected filter"
       }
     },
     "results": {
-      "showing": "Showing {count} of {total} allergies",
-      "withFilter": "Showing {count} allergies ({filter})"
+      "showing": "Showing {shown} of {total} allergies",
+      "withFilter": "with severity filter {severity}"
     }
   },
   "surgeries": {
@@ -1742,13 +1789,6 @@
     "hospitalizationDays": "Hospitalization Days",
     "followUp": "Follow-up",
     "pathologyReport": "Pathology Report",
-    "noSurgeries": "No surgeries registered",
-    "recentSurgeries": "Recent Surgeries",
-    "pastSurgeries": "Past Surgeries",
-    "deleteConfirm": "Are you sure you want to delete this surgery?",
-    "addSuccess": "Surgery added successfully",
-    "updateSuccess": "Surgery updated successfully",
-    "deleteSuccess": "Surgery deleted successfully",
     "uploadDocuments": "Upload Documents",
     "documents": "Related Documents",
     "addButton": "Add Surgery",
@@ -1763,7 +1803,14 @@
     "empty": {
       "all": {
         "title": "No surgeries registered",
-        "description": "Register your surgical history for a complete medical record"
+        "description": "Register your surgical history for a complete medical record",
+        "action": "Add First Surgery"
+      },
+      "recent": {
+        "title": "No recent surgeries"
+      },
+      "withComplications": {
+        "title": "No surgeries with complications"
       },
       "filtered": {
         "title": "No surgeries found",
@@ -1771,8 +1818,8 @@
       }
     },
     "results": {
-      "showing": "Showing {count} of {total} surgeries",
-      "withFilter": "Showing {count} surgeries ({filter})"
+      "showing": "Showing {shown} of {total} surgeries",
+      "withFilter": "with filter applied"
     }
   },
   "illnesses": {
@@ -1971,14 +2018,6 @@
     "specialistPhone": "Specialist Phone",
     "complications": "Complications",
     "familyHistory": "Family History",
-    "noIllnesses": "No illnesses registered",
-    "activeIllnesses": "Active Illnesses",
-    "chronicIllnesses": "Chronic Illnesses",
-    "pastIllnesses": "Past Illnesses",
-    "deleteConfirm": "Are you sure you want to delete this illness?",
-    "addSuccess": "Illness added successfully",
-    "updateSuccess": "Illness updated successfully",
-    "deleteSuccess": "Illness deleted successfully",
     "addButton": "Add Illness",
     "stats": {
       "total": "Total illnesses",
@@ -1992,7 +2031,17 @@
     "empty": {
       "all": {
         "title": "No illnesses registered",
-        "description": "Register your illness history for better medical follow-up"
+        "description": "Register your illness history for better medical follow-up",
+        "action": "Add First Illness"
+      },
+      "active": {
+        "title": "No active illnesses"
+      },
+      "chronic": {
+        "title": "No chronic illnesses"
+      },
+      "cured": {
+        "title": "No cured illnesses"
       },
       "filtered": {
         "title": "No illnesses found",
@@ -2017,6 +2066,7 @@
     "emergencyCardTitle": "My Emergency QR Code",
     "emergencyUrl": "Emergency URL:",
     "keepAccessible": "Keep this code accessible for medical emergencies",
+    "important": "Important",
     "printing": "Preparing to print...",
     "share": "Share QR",
     "sharing": "Sharing...",
@@ -2453,19 +2503,6 @@
     "english": "English",
     "changeLanguage": "Change Language"
   },
-  "errors": {
-    "generic": "An error has occurred",
-    "networkError": "Connection error",
-    "unauthorized": "Unauthorized",
-    "notFound": "Not found",
-    "serverError": "Server error",
-    "validationError": "Validation error",
-    "sessionExpired": "Session expired",
-    "accessDenied": "Access denied",
-    "invalidCredentials": "Invalid credentials",
-    "tryAgain": "Try again",
-    "contactSupport": "Contact support"
-  },
   "validation": {
     "required": "This field is required",
     "email": "Invalid email",
@@ -2666,15 +2703,22 @@
         "title": "Free Plan",
         "price": "Free",
         "subtitle": "Forever",
+        "description": "For patients who need to manage their basic medical information",
+        "recommended": "Recommended",
+        "includes": "Includes:",
         "features": [
+          "Complete medical profile",
+          "Medication management",
+          "Allergy tracking",
+          "Surgery history",
           "Emergency QR code",
-          "Unlimited medical records",
-          "Medication and allergy management",
-          "Complete medical profile"
+          "Access from any device"
         ],
         "cta": "Start Free"
       },
       "viewFullPricing": "View all plans and benefits",
+      "enterpriseQuestion": "Need enterprise features?",
+      "contactUs": "Contact us",
       "description": "Full access to all features at no hidden cost"
     },
     "cta": {
@@ -2695,7 +2739,8 @@
       "free": "Free",
       "forever": "Forever",
       "limitedTime": "Limited time",
-      "startPlan": "Start Plan"
+      "startPlan": "Start Plan",
+      "popular": "Popular"
     },
     "free": {
       "title": "Free Plan",
@@ -2726,9 +2771,9 @@
       "partners": "Partner Companies",
       "partnersDescription": "Access exclusive benefits if you work at or are a member of:",
       "companies": {
-        "windstar": "Windstar",
+        "rqtech": "RQ Tech",
         "almart": "Almart",
-        "gymx": "Gym X"
+        "convoesl": "Convo ESL"
       }
     },
     "benefits": {

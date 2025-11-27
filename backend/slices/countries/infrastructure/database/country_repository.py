@@ -46,6 +46,7 @@ class CountryRepository:
             flag_emoji=model.flag_emoji,
             phone_code=model.phone_code,
             is_active=model.is_active,
+            name_en=model.name_en,
             created_at=model.created_at,
             updated_at=model.updated_at
         )

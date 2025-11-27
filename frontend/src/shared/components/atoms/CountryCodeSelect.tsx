@@ -45,11 +45,14 @@ export const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
 
   // Search in the countries list (custom or default)
   const filteredCountries = searchTerm
-    ? countries.filter(country =>
-        country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        country.dialCode.includes(searchTerm) ||
-        country.code.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    ? countries.filter(country => {
+        const term = searchTerm.toLowerCase();
+        return (
+          country.name.toLowerCase().includes(term) ||
+          country.dialCode.includes(searchTerm) ||
+          country.code.toLowerCase().includes(term)
+        );
+      })
     : countries;
 
   useEffect(() => {

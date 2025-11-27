@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useLocale } from 'next-intl';
 import { fetchCountries, Country, countryToPhoneInputFormat } from '@/services/countriesService';
 
 interface UseCountriesResult {
@@ -20,6 +21,7 @@ interface UseCountriesResult {
 }
 
 export function useCountries(): UseCountriesResult {
+  const locale = useLocale();
   const [countries, setCountries] = useState<Country[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -56,7 +58,7 @@ export function useCountries(): UseCountriesResult {
     return countries.find(country => country.code === code);
   };
 
-  const countriesForPhoneInput = countries.map(countryToPhoneInputFormat);
+  const countriesForPhoneInput = countries.map(c => countryToPhoneInputFormat(c, locale));
 
   return {
     countries,

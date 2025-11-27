@@ -6,6 +6,7 @@
 export interface Country {
   id: number;
   name: string;
+  name_en: string | null;
   code: string;
   flag_emoji: string | null;
   phone_code: string;
@@ -91,12 +92,25 @@ export async function fetchCountryByCode(code: string): Promise<Country | null> 
 }
 
 /**
- * Convert API country to the format expected by PhoneInputGroup
+ * Get localized country name based on locale
+ * Falls back to Spanish name if English is not available
  */
-export function countryToPhoneInputFormat(country: Country) {
+export function getLocalizedCountryName(country: Country, locale: string): string {
+  if (locale === 'en' && country.name_en) {
+    return country.name_en;
+  }
+  return country.name;
+}
+
+/**
+ * Convert API country to the format expected by PhoneInputGroup
+ * @param country - Country data from API
+ * @param locale - Current locale ('en' or 'es'), defaults to 'es'
+ */
+export function countryToPhoneInputFormat(country: Country, locale: string = 'es') {
   return {
     code: country.code,
-    name: country.name,
+    name: getLocalizedCountryName(country, locale),
     dialCode: country.phone_code,
     flag: country.flag_emoji || '',
   };

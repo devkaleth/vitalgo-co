@@ -17,6 +17,7 @@ class CountryResponse(BaseModel):
     """Country response model."""
     id: int
     name: str
+    name_en: str | None = None
     code: str
     flag_emoji: str | None
     phone_code: str

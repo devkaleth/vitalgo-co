@@ -11,6 +11,7 @@ class CountryModel(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    name_en = Column(String(100), nullable=True)  # English translation
     code = Column(String(2), unique=True, nullable=False, index=True)
     flag_emoji = Column(String(10), nullable=True)
     phone_code = Column(String(10), nullable=False)
