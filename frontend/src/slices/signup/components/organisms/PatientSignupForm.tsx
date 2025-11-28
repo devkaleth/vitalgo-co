@@ -2,7 +2,7 @@
 /**
  * Patient Signup Form organism component
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { PersonalInfoSection } from '../molecules/PersonalInfoSection';
@@ -89,6 +89,10 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [loadingPlan, setLoadingPlan] = useState(false);
 
+  // Refs to track if user has manually changed country selections
+  const hasUserChangedOriginCountry = useRef(false);
+  const hasUserChangedPhoneCountry = useRef(false);
+
   // Load countries on mount
   useEffect(() => {
     const loadCountries = async () => {
@@ -166,29 +170,34 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
   }, [formData.originCountry, onError, tSignup]);
 
   // Update country and phone dial code when geolocation is detected
+  // Only applies if user hasn't manually changed the values
   useEffect(() => {
     if (detectedCountryCode && !isDetectingLocation && countries.length > 0) {
-      // Update origin country in form data
-      setFormData(prev => ({
-        ...prev,
-        originCountry: detectedCountryCode
-      }));
+      // Only update origin country if user hasn't manually changed it
+      if (!hasUserChangedOriginCountry.current) {
+        setFormData(prev => ({
+          ...prev,
+          originCountry: detectedCountryCode
+        }));
+      }
 
-      // Update phone country code and dial code from loaded countries
-      const detectedCountry = countries.find(c => c.code === detectedCountryCode);
-      if (detectedCountry) {
-        setPhoneState(prev => ({
-          ...prev,
-          countryCode: detectedCountry.code,
-          dialCode: detectedCountry.dialCode
-        }));
-      } else if (detectedDialCode) {
-        // Fallback to dial code from geolocation hook
-        setPhoneState(prev => ({
-          ...prev,
-          countryCode: detectedCountryCode,
-          dialCode: detectedDialCode
-        }));
+      // Only update phone country if user hasn't manually changed it
+      if (!hasUserChangedPhoneCountry.current) {
+        const detectedCountry = countries.find(c => c.code === detectedCountryCode);
+        if (detectedCountry) {
+          setPhoneState(prev => ({
+            ...prev,
+            countryCode: detectedCountry.code,
+            dialCode: detectedCountry.dialCode
+          }));
+        } else if (detectedDialCode) {
+          // Fallback to dial code from geolocation hook
+          setPhoneState(prev => ({
+            ...prev,
+            countryCode: detectedCountryCode,
+            dialCode: detectedDialCode
+          }));
+        }
       }
     }
   }, [detectedCountryCode, detectedDialCode, isDetectingLocation, countries]);
@@ -239,8 +248,11 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     }
   };
 
-  // Handle country change
+  // Handle country change (phone country code)
   const handleCountryChange = (country: Country) => {
+    // Mark that user has manually changed the phone country
+    hasUserChangedPhoneCountry.current = true;
+
     setPhoneState(prev => {
       const newState = {
         ...prev,
@@ -259,8 +271,11 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     });
   };
 
-  // Handle origin country change
+  // Handle origin country change (birth country)
   const handleOriginCountryChange = (country: Country) => {
+    // Mark that user has manually changed the origin country
+    hasUserChangedOriginCountry.current = true;
+
     setFormData(prev => ({ ...prev, originCountry: country.code }));
   };
 
