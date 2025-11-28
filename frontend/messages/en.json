@@ -167,6 +167,7 @@
     },
     "documentNumber": "Document Number",
     "birthDate": "Birth Date",
+    "ageRequirement": "You must be at least 18 years old to register",
     "originCountry": "Country of Origin",
     "phone": "Phone Number",
     "email": "Email",
@@ -743,6 +744,19 @@
           "sibling": "Sibling",
           "friend": "Friend",
           "other": "Other"
+        },
+        "emergencyRelationships": {
+          "MADRE": "Mother",
+          "PADRE": "Father",
+          "ESPOSO": "Spouse",
+          "HERMANO": "Sibling",
+          "HIJO": "Child",
+          "ABUELO": "Grandparent",
+          "TIO": "Uncle/Aunt",
+          "PRIMO": "Cousin",
+          "AMIGO": "Friend",
+          "PAREJA": "Partner",
+          "OTRO": "Other family member"
         },
         "pregnancyStatus": {
           "yes": "Yes",
@@ -2528,7 +2542,41 @@
     "email": "Invalid email",
     "minLength": "Minimum {min} characters",
     "maxLength": "Maximum {max} characters",
-    "invalidFormat": "Invalid format"
+    "invalidFormat": "Invalid format",
+    "valid": "Valid",
+    "document": {
+      "document_already_registered": "This document number is already registered",
+      "document_available": "Document number available",
+      "cc_invalid_length": "ID card must have between 6 and 10 digits",
+      "ti_invalid_length": "Identity card must have between 8 and 11 digits",
+      "ce_invalid_length": "Foreign ID must have between 6 and 9 digits",
+      "passport_invalid_length": "Passport must have between 6 and 12 alphanumeric characters",
+      "document_invalid_length": "Document number must have between 6 and 20 characters",
+      "documentInvalid": "Invalid document number",
+      "documentValidationError": "Error validating document"
+    },
+    "email": {
+      "email_invalid_format": "Invalid email format",
+      "email_already_registered": "This email is already registered",
+      "email_available": "Email available",
+      "emailInvalid": "Invalid email",
+      "emailValidationError": "Error validating email"
+    }
+  },
+  "password": {
+    "strength": {
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong"
+    },
+    "requirements": {
+      "title": "Password must have:",
+      "minLength": "Minimum 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "One number",
+      "special": "One special character (e.g.: !@#$%&*)"
+    }
   },
   "help": {
     "title": "Help Center",
@@ -2746,7 +2794,7 @@
       "description": "Join thousands of people who already have their secure and always accessible digital medical record. Quick registration with medical identity verification.",
       "patientButton": "Create Personal Account",
       "professionalButton": "Sign Up as Professional",
-      "pricingButton": "View Plans & Pricing",
+      "loginButton": "Sign In",
       "note": "Medical data protection • Identity verification • Authorized access only"
     }
   },

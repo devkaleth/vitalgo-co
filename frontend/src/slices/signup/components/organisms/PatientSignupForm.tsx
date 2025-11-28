@@ -114,7 +114,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     };
 
     loadCountries();
-  }, [onError, tSignup]);
+  }, [locale, onError, tSignup]);
 
   // Load selected plan from localStorage
   useEffect(() => {
@@ -231,7 +231,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
               isValidating: false,
               isValid,
               error: null,
-              feedback: isValid ? tSignup('validation.passwordsMatch') : tSignup('validation.passwordsNoMatch')
+              feedback: isValid ? tSignup('validation.passwordsMatch') : tSignup('validation.passwordsMismatch')
             }
           }));
         }
@@ -354,12 +354,20 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     try {
       const result = await SignupApiService.validateDocument(documentNumber, documentType);
 
+      // Translate error_key from backend to localized message
+      let errorMessage: string | null = null;
+      if (!result.valid && result.error_key) {
+        errorMessage = tValidation(`document.${result.error_key}`);
+      } else if (!result.valid) {
+        errorMessage = tValidation('document.documentInvalid');
+      }
+
       setValidationStates(prev => ({
         ...prev,
         documentNumber: {
           isValidating: false,
           isValid: result.valid,
-          error: result.valid ? null : result.error || tSignup('validation.documentInvalid')
+          error: errorMessage
         }
       }));
     } catch (error) {
@@ -368,7 +376,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         documentNumber: {
           isValidating: false,
           isValid: false,
-          error: tSignup('validation.documentValidationError')
+          error: tValidation('document.documentValidationError')
         }
       }));
     }
@@ -378,12 +386,20 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     try {
       const result = await SignupApiService.validateEmail(email);
 
+      // Translate error_key from backend to localized message
+      let errorMessage: string | null = null;
+      if (!result.valid && result.error_key) {
+        errorMessage = tValidation(`email.${result.error_key}`);
+      } else if (!result.valid) {
+        errorMessage = tValidation('email.emailInvalid');
+      }
+
       setValidationStates(prev => ({
         ...prev,
         email: {
           isValidating: false,
           isValid: result.valid,
-          error: result.valid ? null : result.error || tSignup('validation.emailInvalid')
+          error: errorMessage
         }
       }));
     } catch (error) {
@@ -392,7 +408,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         email: {
           isValidating: false,
           isValid: false,
-          error: tSignup('validation.emailValidationError')
+          error: tValidation('email.emailValidationError')
         }
       }));
     }
@@ -428,7 +444,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         isValidating: false,
         isValid,
         error: isValid ? null : tSignup('validation.passwordsMismatch'),
-        feedback: isValid ? tSignup('validation.passwordsMatch') : tSignup('validation.passwordsNoMatch')
+        feedback: isValid ? tSignup('validation.passwordsMatch') : tSignup('validation.passwordsMismatch')
       }
     }));
   };

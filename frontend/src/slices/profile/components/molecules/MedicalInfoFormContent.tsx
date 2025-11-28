@@ -5,7 +5,7 @@
  */
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { SelectField } from '../atoms/SelectField';
 import { TextAreaField } from '../atoms/TextAreaField';
@@ -79,6 +79,14 @@ export function MedicalInfoFormContent({
 }: MedicalInfoFormContentProps) {
   const t = useTranslations('profile.forms');
   const tPhone = useTranslations('phone.group');
+
+  // Translate emergency contact relationship options
+  const translatedRelationshipOptions = useMemo(() => {
+    return emergencyContactRelationshipOptions.map(option => ({
+      value: option.value,
+      label: t(`options.emergencyRelationships.${option.value}`)
+    }));
+  }, [t]);
 
   return (
     <div className="space-y-6">
@@ -237,7 +245,7 @@ export function MedicalInfoFormContent({
               label={t('labels.emergencyRelationship')}
               value={formData.emergency_contact_relationship || ''}
               onChange={(value) => handleFieldChange('emergency_contact_relationship', value)}
-              options={emergencyContactRelationshipOptions}
+              options={translatedRelationshipOptions}
               placeholder={t('placeholders.emergencyRelationship')}
               required
               error={errors.emergency_contact_relationship}
@@ -256,74 +264,21 @@ export function MedicalInfoFormContent({
             />
           </div>
           <div className="md:col-span-2">
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <h4 className="text-sm font-medium text-gray-900">
-                  {t('labels.emergencyPhoneAlt')}
-                </h4>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="lg:col-span-1">
-                  <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                    {t('labels.dialCode')} <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={emergencyPhoneAltCountryCode}
-                    onChange={(e) => {
-                      const country = convertedCountries.find(c => c.code === e.target.value);
-                      if (country) handleEmergencyAltCountryChange(country);
-                    }}
-                    disabled={isFormLoading}
-                    className="w-full px-3 py-2 border rounded-md text-base focus:outline-none focus:ring-2 transition-colors duration-150 border-vitalgo-dark-lighter focus:ring-vitalgo-green focus:border-vitalgo-green"
-                  >
-                    {convertedCountries.map((country) => (
-                      <option key={country.code} value={country.code}>
-                        {country.flag} {country.dialCode} {country.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="lg:col-span-1">
-                  <label className="block text-sm font-medium text-vitalgo-dark mb-1">
-                    {t('labels.phoneNumber')}
-                  </label>
-                  <input
-                    type="tel"
-                    value={emergencyPhoneAltNumber}
-                    onChange={(e) => handleEmergencyPhoneAltChange(e.target.value)}
-                    disabled={isFormLoading}
-                    placeholder="3001234567"
-                    className="w-full px-3 py-2 border rounded-md text-base focus:outline-none focus:ring-2 transition-colors duration-150 border-vitalgo-dark-lighter focus:ring-vitalgo-green focus:border-vitalgo-green"
-                    style={{ fontSize: '16px' }}
-                  />
-                  {errors.emergency_contact_phone_alt && (
-                    <p className="mt-1 text-sm text-red-600 font-medium">
-                      {errors.emergency_contact_phone_alt}
-                    </p>
-                  )}
-                </div>
-              </div>
-              {emergencyPhoneAltNumber && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      {tPhone('fullNumber')}
-                    </span>
-                    <div className="flex items-center space-x-2">
-                      <CountryFlag countryCode={emergencyPhoneAltCountryCode} size="md" className="flex-shrink-0" />
-                      <span className="font-mono text-sm text-gray-900 flex items-center">
-                        <span className="text-blue-600 font-medium">
-                          {convertedCountries.find(c => c.code === emergencyPhoneAltCountryCode)?.dialCode || ''}
-                        </span>
-                        <span className="ml-1">
-                          {emergencyPhoneAltNumber.replace(/\D/g, '')}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
+            <div className="space-y-1 mb-2">
+              <h4 className="text-sm font-medium text-gray-900">
+                {t('labels.emergencyPhoneAlt')}
+              </h4>
             </div>
+            <PhoneInputGroup
+              countryCode={emergencyPhoneAltCountryCode}
+              phoneNumber={emergencyPhoneAltNumber}
+              onCountryChange={handleEmergencyAltCountryChange}
+              onPhoneChange={handleEmergencyPhoneAltChange}
+              error={errors.emergency_contact_phone_alt}
+              disabled={isFormLoading}
+              data-testid={`${testId}-emergency-phone-alt-group`}
+              countries={convertedCountries.length > 0 ? convertedCountries : undefined}
+            />
           </div>
         </div>
       </div>

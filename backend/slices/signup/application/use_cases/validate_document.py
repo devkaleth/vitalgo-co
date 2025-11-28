@@ -5,6 +5,13 @@ from typing import Dict, Any
 from slices.signup.application.ports.patient_repository import PatientRepository
 
 
+class DocumentValidationError(Exception):
+    """Custom exception for document validation errors with error_key"""
+    def __init__(self, error_key: str):
+        self.error_key = error_key
+        super().__init__(error_key)
+
+
 class ValidateDocumentUseCase:
     """Use case for validating document number uniqueness (onBlur)"""
 
@@ -24,18 +31,18 @@ class ValidateDocumentUseCase:
             if exists:
                 return {
                     "valid": False,
-                    "error": "Este número de documento ya está registrado"
+                    "error_key": "document_already_registered"
                 }
 
             return {
                 "valid": True,
-                "message": "Número de documento disponible"
+                "message_key": "document_available"
             }
 
-        except ValueError as e:
+        except DocumentValidationError as e:
             return {
                 "valid": False,
-                "error": str(e)
+                "error_key": e.error_key
             }
 
     def _validate_document_format(self, document_number: str, document_type: str) -> None:
@@ -43,21 +50,21 @@ class ValidateDocumentUseCase:
 
         if document_type == "CC":  # Cédula de Ciudadanía
             if not document_number.isdigit() or not (6 <= len(document_number) <= 10):
-                raise ValueError("Cédula debe tener entre 6 y 10 dígitos")
+                raise DocumentValidationError("cc_invalid_length")
 
         elif document_type == "TI":  # Tarjeta de Identidad
             if not document_number.isdigit() or not (8 <= len(document_number) <= 11):
-                raise ValueError("Tarjeta de Identidad debe tener entre 8 y 11 dígitos")
+                raise DocumentValidationError("ti_invalid_length")
 
         elif document_type == "CE":  # Cédula de Extranjería
             if not document_number.isdigit() or not (6 <= len(document_number) <= 9):
-                raise ValueError("Cédula de Extranjería debe tener entre 6 y 9 dígitos")
+                raise DocumentValidationError("ce_invalid_length")
 
         elif document_type == "PA":  # Pasaporte
             if not (6 <= len(document_number) <= 12):
-                raise ValueError("Pasaporte debe tener entre 6 y 12 caracteres alfanuméricos")
+                raise DocumentValidationError("passport_invalid_length")
 
         else:
             # For other document types (AS, MS, RC) - basic validation
             if not (6 <= len(document_number) <= 20):
-                raise ValueError("Número de documento debe tener entre 6 y 20 caracteres")
+                raise DocumentValidationError("document_invalid_length")

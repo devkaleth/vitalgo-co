@@ -29,7 +29,9 @@ export interface PatientRegistrationForm {
 export interface ValidationResult {
   valid: boolean;
   error?: string;
+  error_key?: string;
   message?: string;
+  message_key?: string;
 }
 
 export interface UserResponse {

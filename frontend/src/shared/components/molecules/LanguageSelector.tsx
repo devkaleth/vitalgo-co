@@ -4,6 +4,8 @@ import React from 'react';
 import { useLanguage } from '@/shared/contexts/LanguageContext';
 import { useTranslations } from 'next-intl';
 import { Locale } from '@/i18n/request';
+import { Globe } from 'lucide-react';
+import 'flag-icons/css/flag-icons.min.css';
 
 export function LanguageSelector() {
   const { locale, setLocale, isChanging } = useLanguage();
@@ -37,6 +39,11 @@ export function LanguageSelector() {
 }
 
 // Compact version for mobile or tight spaces
+const LANGUAGES = [
+  { code: 'es' as Locale, native: 'Español', flag: 'es' },
+  { code: 'en' as Locale, native: 'English', flag: 'gb' }
+];
+
 export function LanguageSelectorCompact() {
   const { locale, setLocale, isChanging } = useLanguage();
 
@@ -47,38 +54,33 @@ export function LanguageSelectorCompact() {
   };
 
   return (
-    <div className="flex items-center space-x-1">
-      <button
-        onClick={() => handleLanguageChange('es')}
-        disabled={isChanging}
-        className={`px-3 py-1.5 text-sm font-medium rounded transition-colors flex items-center space-x-1.5 ${
-          locale === 'es'
-            ? 'bg-primary-600 text-white cursor-default'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
-        aria-label="Español"
-        aria-current={locale === 'es' ? 'true' : 'false'}
-      >
-        <span className="text-base">🇪🇸</span>
-        <span>ES</span>
-      </button>
-      <button
-        onClick={() => handleLanguageChange('en')}
-        disabled={isChanging}
-        className={`px-3 py-1.5 text-sm font-medium rounded transition-colors flex items-center space-x-1.5 ${
-          locale === 'en'
-            ? 'bg-primary-600 text-white cursor-default'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
-        aria-label="English"
-        aria-current={locale === 'en' ? 'true' : 'false'}
-      >
-        <span className="text-base">🇺🇸</span>
-        <span>EN</span>
-      </button>
+    <div className="flex items-center gap-2">
+      <Globe className="w-5 h-5 text-gray-500" />
+      <div className="flex gap-1">
+        {LANGUAGES.map((lang) => (
+          <button
+            key={lang.code}
+            onClick={() => handleLanguageChange(lang.code)}
+            disabled={isChanging}
+            className={`
+              px-3 py-1.5 text-sm font-medium rounded-md transition-all
+              ${locale === lang.code
+                ? 'bg-vitalgo-green text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }
+              disabled:opacity-50 disabled:cursor-not-allowed
+            `}
+            aria-label={lang.native}
+            aria-current={locale === lang.code ? 'true' : 'false'}
+          >
+            <span className={`fi fi-${lang.flag} sm:mr-1.5`} />
+            <span className="hidden sm:inline">{lang.native}</span>
+          </button>
+        ))}
+      </div>
       {isChanging && (
         <div className="ml-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-vitalgo-green"></div>
         </div>
       )}
     </div>

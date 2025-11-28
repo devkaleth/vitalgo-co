@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { LogOut } from "lucide-react"
 
 interface LogoutButtonProps {
@@ -10,6 +11,7 @@ interface LogoutButtonProps {
 }
 
 export function LogoutButton({ onLogout, variant = 'default', className = "", 'data-testid': testId }: LogoutButtonProps) {
+  const t = useTranslations('nav')
   const baseClasses = "flex items-center space-x-2 transition-colors"
   const variantClasses = {
     default: "px-3 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md",
@@ -23,7 +25,7 @@ export function LogoutButton({ onLogout, variant = 'default', className = "", 'd
       data-testid={testId}
     >
       <LogOut className="h-4 w-4" />
-      <span>Cerrar Sesión</span>
+      <span>{t('logout')}</span>
     </button>
   )
 }

@@ -5,6 +5,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronDown, Search } from 'lucide-react';
+import { CountryFlag } from '../../../../shared/components/atoms/CountryFlag';
 
 interface SelectOption {
   value: string;
@@ -23,6 +24,7 @@ interface SearchableSelectProps {
   required?: boolean;
   hasOtherOption?: boolean;
   otherValue?: string;
+  useCountryFlag?: boolean; // Use CSS-based CountryFlag instead of emoji
   'data-testid'?: string;
 }
 
@@ -37,6 +39,7 @@ export function SearchableSelect({
   required = false,
   hasOtherOption = false,
   otherValue = '',
+  useCountryFlag = false,
   'data-testid': testId
 }: SearchableSelectProps) {
   const t = useTranslations('common');
@@ -118,10 +121,16 @@ export function SearchableSelect({
           aria-describedby={error ? `${label}-error` : undefined}
         >
           <div className="flex items-center justify-between">
-            <span className={selectedOption || isOtherSelected ? 'text-vitalgo-dark' : 'text-gray-500'}>
-              {selectedOption?.flag && <span className="mr-2">{selectedOption.flag}</span>}
-              {selectedOption?.label || (isOtherSelected ? t('other') : (placeholder || t('selectOption')))}
-            </span>
+            <div className={`flex items-center ${selectedOption || isOtherSelected ? 'text-vitalgo-dark' : 'text-gray-500'}`}>
+              {selectedOption && (
+                useCountryFlag ? (
+                  <span className="mr-2"><CountryFlag countryCode={selectedOption.value} size="md" /></span>
+                ) : (
+                  selectedOption.flag && <span className="mr-2">{selectedOption.flag}</span>
+                )
+              )}
+              <span>{selectedOption?.label || (isOtherSelected ? t('other') : (placeholder || t('selectOption')))}</span>
+            </div>
             <ChevronDown
               className={`h-4 w-4 text-gray-400 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
             />
@@ -159,7 +168,11 @@ export function SearchableSelect({
                   `}
                 >
                   <div className="flex items-center">
-                    {option.flag && <span className="mr-2">{option.flag}</span>}
+                    {useCountryFlag ? (
+                      <span className="mr-2"><CountryFlag countryCode={option.value} size="md" /></span>
+                    ) : (
+                      option.flag && <span className="mr-2">{option.flag}</span>
+                    )}
                     <span>{option.label}</span>
                   </div>
                 </button>

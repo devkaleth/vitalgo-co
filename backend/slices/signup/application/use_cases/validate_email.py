@@ -23,7 +23,7 @@ class ValidateEmailUseCase:
             if not self._validate_email_format(email):
                 return {
                     "valid": False,
-                    "error": "Formato de email inválido"
+                    "error_key": "email_invalid_format"
                 }
 
             # Check uniqueness
@@ -32,18 +32,18 @@ class ValidateEmailUseCase:
             if exists:
                 return {
                     "valid": False,
-                    "error": "Este email ya está registrado"
+                    "error_key": "email_already_registered"
                 }
 
             return {
                 "valid": True,
-                "message": "Email disponible"
+                "message_key": "email_available"
             }
 
         except Exception as e:
             return {
                 "valid": False,
-                "error": "Error validando email"
+                "error_key": "email_validation_error"
             }
 
     def _validate_email_format(self, email: str) -> bool:

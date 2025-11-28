@@ -77,6 +77,11 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
     flag: country.flag_emoji || '',
   }));
 
+  // Helper function to get country by code
+  const getCountryByCode = (code: string): Country | undefined => {
+    return convertedCountries.find(c => c.code === code);
+  };
+
   // Phone field states for separated input
   const [emergencyPhoneCountryCode, setEmergencyPhoneCountryCode] = useState<string>('CO');
   const [emergencyPhoneNumber, setEmergencyPhoneNumber] = useState<string>('');

@@ -3,6 +3,7 @@
  * Password Input atom component with strength indicator
  */
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface PasswordInputProps {
   id: string;
@@ -31,6 +32,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   autocomplete,
   'data-testid': testId
 }) => {
+  const t = useTranslations('password');
   const [showPassword, setShowPassword] = useState(false);
 
   const getPasswordStrength = (password: string) => {
@@ -45,9 +47,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
     score = Object.values(checks).filter(Boolean).length;
 
-    if (score < 3) return { level: 'weak', color: 'bg-red-500', text: 'Débil' };
-    if (score < 4) return { level: 'medium', color: 'bg-yellow-500', text: 'Media' };
-    return { level: 'strong', color: 'bg-vitalgo-green', text: 'Fuerte' };
+    if (score < 3) return { level: 'weak', color: 'bg-red-500', text: t('strength.weak') };
+    if (score < 4) return { level: 'medium', color: 'bg-yellow-500', text: t('strength.medium') };
+    return { level: 'strong', color: 'bg-vitalgo-green', text: t('strength.strong') };
   };
 
   const strength = getPasswordStrength(value);
@@ -113,22 +115,22 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
           </div>
 
           <div className="text-xs text-gray-600 space-y-1">
-            <p>La contraseña debe tener:</p>
+            <p>{t('requirements.title')}</p>
             <ul className="space-y-0.5 ml-2">
               <li className={value.length >= 8 ? 'text-vitalgo-green' : 'text-red-500'}>
-                • Mínimo 8 caracteres
+                • {t('requirements.minLength')}
               </li>
               <li className={/[A-Z]/.test(value) ? 'text-vitalgo-green' : 'text-red-500'}>
-                • Una letra mayúscula
+                • {t('requirements.uppercase')}
               </li>
               <li className={/[a-z]/.test(value) ? 'text-vitalgo-green' : 'text-red-500'}>
-                • Una letra minúscula
+                • {t('requirements.lowercase')}
               </li>
               <li className={/\d/.test(value) ? 'text-vitalgo-green' : 'text-red-500'}>
-                • Un número
+                • {t('requirements.number')}
               </li>
               <li className={/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(value) ? 'text-vitalgo-green' : 'text-red-500'}>
-                • Un carácter especial (ej: !@#$%&*)
+                • {t('requirements.special')}
               </li>
             </ul>
           </div>

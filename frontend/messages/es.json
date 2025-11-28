@@ -174,6 +174,7 @@
     },
     "documentNumber": "Número de Documento",
     "birthDate": "Fecha de Nacimiento",
+    "ageRequirement": "Debe ser mayor de 18 años para registrarse",
     "gender": "Género",
     "male": "Masculino",
     "female": "Femenino",
@@ -783,6 +784,19 @@
           "sibling": "Hermano/a",
           "friend": "Amigo/a",
           "other": "Otro"
+        },
+        "emergencyRelationships": {
+          "MADRE": "Madre",
+          "PADRE": "Padre",
+          "ESPOSO": "Esposo(a)",
+          "HERMANO": "Hermano(a)",
+          "HIJO": "Hijo(a)",
+          "ABUELO": "Abuelo(a)",
+          "TIO": "Tío(a)",
+          "PRIMO": "Primo(a)",
+          "AMIGO": "Amigo(a)",
+          "PAREJA": "Pareja",
+          "OTRO": "Otro familiar"
         }
       },
       "buttons": {
@@ -2527,7 +2541,41 @@
     "email": "Correo electrónico inválido",
     "minLength": "Mínimo {min} caracteres",
     "maxLength": "Máximo {max} caracteres",
-    "invalidFormat": "Formato inválido"
+    "invalidFormat": "Formato inválido",
+    "valid": "Válido",
+    "document": {
+      "document_already_registered": "Este número de documento ya está registrado",
+      "document_available": "Número de documento disponible",
+      "cc_invalid_length": "Cédula debe tener entre 6 y 10 dígitos",
+      "ti_invalid_length": "Tarjeta de Identidad debe tener entre 8 y 11 dígitos",
+      "ce_invalid_length": "Cédula de Extranjería debe tener entre 6 y 9 dígitos",
+      "passport_invalid_length": "Pasaporte debe tener entre 6 y 12 caracteres alfanuméricos",
+      "document_invalid_length": "Número de documento debe tener entre 6 y 20 caracteres",
+      "documentInvalid": "Número de documento inválido",
+      "documentValidationError": "Error al validar el documento"
+    },
+    "email": {
+      "email_invalid_format": "Formato de email inválido",
+      "email_already_registered": "Este email ya está registrado",
+      "email_available": "Email disponible",
+      "emailInvalid": "Email inválido",
+      "emailValidationError": "Error al validar el email"
+    }
+  },
+  "password": {
+    "strength": {
+      "weak": "Débil",
+      "medium": "Media",
+      "strong": "Fuerte"
+    },
+    "requirements": {
+      "title": "La contraseña debe tener:",
+      "minLength": "Mínimo 8 caracteres",
+      "uppercase": "Una letra mayúscula",
+      "lowercase": "Una letra minúscula",
+      "number": "Un número",
+      "special": "Un carácter especial (ej: !@#$%&*)"
+    }
   },
   "help": {
     "title": "Centro de Ayuda",
@@ -2745,7 +2793,7 @@
       "description": "Únete a miles de personas que ya tienen su expediente médico digital seguro y siempre accesible. Registro rápido con verificación de identidad médica.",
       "patientButton": "Crear Cuenta Personal",
       "professionalButton": "Registrarse como Profesional",
-      "pricingButton": "Ver Planes y Precios",
+      "loginButton": "Ingresar al Sistema",
       "note": "Protección de datos médicos • Verificación de identidad • Acceso autorizado únicamente"
     }
   },

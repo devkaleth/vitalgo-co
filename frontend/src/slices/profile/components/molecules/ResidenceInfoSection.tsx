@@ -84,6 +84,7 @@ export function ResidenceInfoSection({
           hasOtherOption={true}
           otherValue={data.residence_country_other || ''}
           onOtherChange={(value) => onChange('residence_country_other', value)}
+          useCountryFlag={true}
         />
 
         {showColombianResidenceFields && (

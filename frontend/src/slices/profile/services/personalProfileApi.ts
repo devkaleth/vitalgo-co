@@ -78,6 +78,12 @@ class PersonalProfileAPIService {
     try {
       console.log('📝 Updating personal patient info:', data);
 
+      // Helper function to convert empty strings to null for date fields
+      const sanitizeDate = (value: string | null | undefined): string | null => {
+        if (!value || value.trim() === '') return null;
+        return value;
+      };
+
       // Data is already in snake_case format from our types - include medical fields
       const apiRequest = {
         biological_sex: data.biological_sex,
@@ -104,10 +110,10 @@ class PersonalProfileAPIService {
         emergency_contact_relationship: data.emergency_contact_relationship,
         emergency_contact_phone: data.emergency_contact_phone,
         emergency_contact_phone_alt: data.emergency_contact_phone_alt,
-        // Gynecological information fields
+        // Gynecological information fields - sanitize date fields to convert empty strings to null
         is_pregnant: data.is_pregnant,
         pregnancy_weeks: data.pregnancy_weeks,
-        last_menstruation_date: data.last_menstruation_date,
+        last_menstruation_date: sanitizeDate(data.last_menstruation_date),
         pregnancies_count: data.pregnancies_count,
         births_count: data.births_count,
         cesareans_count: data.cesareans_count,

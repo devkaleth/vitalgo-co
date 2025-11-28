@@ -1,7 +1,10 @@
 /**
  * Text Input atom component with validation states
  */
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { FieldValidationState } from '../../types';
 
 interface TextInputProps {
@@ -35,6 +38,8 @@ export const TextInput: React.FC<TextInputProps> = ({
   autocomplete,
   'data-testid': testId
 }) => {
+  const t = useTranslations('validation');
+
   const getInputClasses = () => {
     let classes = "w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors";
 
@@ -110,7 +115,7 @@ export const TextInput: React.FC<TextInputProps> = ({
       {/* Success message */}
       {validation?.isValid === true && !validation.error && (
         <p className="text-sm text-vitalgo-green">
-          ✓ Válido
+          ✓ {t('valid')}
         </p>
       )}
     </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { ChevronDown } from "lucide-react"
 import { UserAvatar } from "../atoms/UserAvatar"
 import { LogoutButton } from "../atoms/LogoutButton"
@@ -19,6 +20,7 @@ interface UserMenuProps {
 
 export function UserMenu({ user, onLogout, className = "", 'data-testid': testId }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const t = useTranslations('nav')
 
   return (
     <div className={`relative ${className}`} data-testid={testId}>
@@ -60,7 +62,7 @@ export function UserMenu({ user, onLogout, className = "", 'data-testid': testId
                 <svg className="h-4 w-4 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
-                Perfil
+                {t('profile')}
               </Link>
             </div>
 
