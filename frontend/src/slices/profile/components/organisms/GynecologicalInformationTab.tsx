@@ -6,13 +6,14 @@
 
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { TabContentProps, GynecologicalInfo, CONTRACEPTIVE_METHODS } from '../../types';
+import { TabContentProps, GynecologicalInfo } from '../../types';
 import { PersonalPatientUpdate } from '../../types/personalInfo';
 import { usePersonalPatientInfo } from '../../hooks/usePersonalPatientInfo';
 import { GynecologicalInfoEditModal } from '../molecules/GynecologicalInfoEditModal';
 
 export function GynecologicalInformationTab({ 'data-testid': testId }: TabContentProps) {
   const t = useTranslations('profile.gynecological');
+  const tForms = useTranslations('profile.forms');
   const tCommon = useTranslations('common');
   const { personalInfo, loading, error, updatePersonalInfo, refetch } = usePersonalPatientInfo();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,8 +89,23 @@ export function GynecologicalInformationTab({ 'data-testid': testId }: TabConten
 
   const getContraceptiveMethodLabel = (method: string | null | undefined) => {
     if (!method) return t('notSpecified');
-    const found = CONTRACEPTIVE_METHODS.find(m => m.value === method);
-    return found?.label || method;
+    // Map database values to translation keys
+    const methodMap: Record<string, string> = {
+      'NINGUNO': 'none',
+      'PILDORA': 'pill',
+      'PRESERVATIVO': 'condom',
+      'DIU': 'iud',
+      'IMPLANTE': 'implant',
+      'INYECCION': 'injection',
+      'DIAFRAGMA': 'diaphragm',
+      'NATURAL': 'natural',
+      'OTRO': 'other',
+    };
+    const translationKey = methodMap[method];
+    if (translationKey) {
+      return tForms(`options.contraceptiveMethods.${translationKey}`);
+    }
+    return method; // Fallback to raw value if not found
   };
 
   const getPregnancyStatusLabel = (isPregnant: boolean | null | undefined) => {

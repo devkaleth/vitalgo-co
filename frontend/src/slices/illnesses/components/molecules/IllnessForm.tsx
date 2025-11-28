@@ -17,6 +17,7 @@ export const IllnessForm: React.FC<IllnessFormProps> = ({
   'data-testid': testId
 }) => {
   const t = useTranslations('illnesses.form');
+  const tIllness = useTranslations('illnesses');
 
   const {
     formData,
@@ -125,7 +126,7 @@ export const IllnessForm: React.FC<IllnessFormProps> = ({
             >
               {ILLNESS_STATUS_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.label}
+                  {tIllness(`statusLabels.${option.value}`)}
                 </option>
               ))}
             </select>

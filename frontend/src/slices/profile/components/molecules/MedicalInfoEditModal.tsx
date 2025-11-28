@@ -99,31 +99,59 @@ export const MedicalInfoEditModal: React.FC<MedicalInfoEditModalProps> = ({
       console.log('🔍 MedicalInfoEditModal initializing with data:', initialData);
 
       // Parse primary emergency phone
-      let emergencyCountryCode = initialData.emergency_contact_country_code || 'CO';
+      // FIX: If country_code is null, try to detect from phone number
+      let emergencyCountryCode = initialData.emergency_contact_country_code || '';
       let emergencyPhone = initialData.emergency_contact_phone_number || '';
 
-      if (!emergencyPhone && initialData.emergency_contact_phone) {
+      // Determine the phone source for parsing
+      const primaryPhoneSource = emergencyPhone || initialData.emergency_contact_phone || '';
+
+      if (!emergencyCountryCode && primaryPhoneSource) {
+        // No country code stored, try to detect from phone number
+        const phoneData = splitPhoneInternational(primaryPhoneSource, '', false);
+        emergencyCountryCode = phoneData.countryCode;
+        emergencyPhone = phoneData.phoneNumber;
+        console.log('🔍 Detected country from phone:', { source: primaryPhoneSource, detected: phoneData });
+      } else if (!emergencyPhone && initialData.emergency_contact_phone) {
+        // Have country code but no separated phone, parse from legacy field
         const phoneData = splitPhoneInternational(
           initialData.emergency_contact_phone,
           emergencyCountryCode,
           true
         );
-        emergencyCountryCode = phoneData.countryCode;
         emergencyPhone = phoneData.phoneNumber;
       }
 
-      // Parse alternative emergency phone
-      let emergencyAltCountryCode = initialData.emergency_contact_country_code_alt || 'CO';
+      // Default to CO only if no country was detected
+      if (!emergencyCountryCode) {
+        emergencyCountryCode = 'CO';
+      }
+
+      // Parse alternative emergency phone (same logic)
+      let emergencyAltCountryCode = initialData.emergency_contact_country_code_alt || '';
       let emergencyAltPhone = initialData.emergency_contact_phone_number_alt || '';
 
-      if (!emergencyAltPhone && initialData.emergency_contact_phone_alt) {
+      const altPhoneSource = emergencyAltPhone || initialData.emergency_contact_phone_alt || '';
+
+      if (!emergencyAltCountryCode && altPhoneSource) {
+        // No country code stored, try to detect from phone number
+        const phoneData = splitPhoneInternational(altPhoneSource, '', false);
+        emergencyAltCountryCode = phoneData.countryCode;
+        emergencyAltPhone = phoneData.phoneNumber;
+        console.log('🔍 Detected alt country from phone:', { source: altPhoneSource, detected: phoneData });
+      } else if (!emergencyAltPhone && initialData.emergency_contact_phone_alt) {
+        // Have country code but no separated phone, parse from legacy field
         const phoneData = splitPhoneInternational(
           initialData.emergency_contact_phone_alt,
           emergencyAltCountryCode,
           true
         );
-        emergencyAltCountryCode = phoneData.countryCode;
         emergencyAltPhone = phoneData.phoneNumber;
+      }
+
+      // Default to CO only if no country was detected
+      if (!emergencyAltCountryCode) {
+        emergencyAltCountryCode = 'CO';
       }
 
       setFormData({

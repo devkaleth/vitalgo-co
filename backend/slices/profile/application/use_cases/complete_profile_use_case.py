@@ -130,6 +130,7 @@ class CompleteProfileUseCase:
             is_pregnant=patient.is_pregnant,
             pregnancy_weeks=patient.pregnancy_weeks,
             last_menstruation_date=patient.last_menstruation_date,
+            menstrual_status=patient.menstrual_status,
             pregnancies_count=patient.pregnancies_count,
             births_count=patient.births_count,
             cesareans_count=patient.cesareans_count,
@@ -242,6 +243,8 @@ class CompleteProfileUseCase:
                 patient.pregnancy_weeks = profile_data.pregnancy_weeks
             if profile_data.last_menstruation_date is not None:
                 patient.last_menstruation_date = profile_data.last_menstruation_date
+            if profile_data.menstrual_status is not None:
+                patient.menstrual_status = profile_data.menstrual_status
             if profile_data.pregnancies_count is not None:
                 patient.pregnancies_count = profile_data.pregnancies_count
             if profile_data.births_count is not None:
@@ -361,8 +364,8 @@ class CompleteProfileUseCase:
             phone_international=patient.phone_international,
             birth_date=patient.birth_date,
             origin_country=patient.origin_country or 'CO',  # Safe fallback to default Colombia
-            birth_country=patient.birth_country,  # Birth country field
-            residence_country=patient.residence_country,  # Residence country field
+            birth_country=patient.birth_country if patient.birth_country else None,  # Convert empty string to None
+            residence_country=patient.residence_country if patient.residence_country else None,  # Convert empty string to None
             country_code=patient.country_code or patient.origin_country or 'CO',  # Phone country code fallback to origin country
             dial_code=patient.dial_code,  # Add database field
             phone_number=patient.phone_number,  # Add database field
