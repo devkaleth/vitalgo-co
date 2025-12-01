@@ -65,6 +65,8 @@ export interface RegistrationResponse {
 
   // Error handling
   errors?: Record<string, string[]>;
+  error_key?: string;  // i18n key for translation (e.g., "email_already_registered")
+  field?: string;      // Field that caused the error (e.g., "email", "document")
 }
 
 export interface FieldValidationState {

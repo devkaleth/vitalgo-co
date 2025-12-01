@@ -95,6 +95,14 @@ export const BasicInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) => {
 
 export const PersonalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) => {
   const t = useTranslations('emergencyAccess.cards.personalInfo');
+  const tEnums = useTranslations('emergencyAccess.enums');
+
+  const getRelationshipLabel = (relationship?: string): string | undefined => {
+    if (!relationship) return undefined;
+    const key = relationship.toUpperCase();
+    const translated = tEnums(`relationships.${key}`);
+    return translated.startsWith('relationships.') ? relationship : translated;
+  };
 
   return (
     <InfoCard title={t('title')} icon="📋">
@@ -114,7 +122,7 @@ export const PersonalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) =>
             </h3>
           </div>
           <InfoRow label={t('name')} value={data.emergencyContactName} />
-          <InfoRow label={t('relationship')} value={data.emergencyContactRelationship} />
+          <InfoRow label={t('relationship')} value={getRelationshipLabel(data.emergencyContactRelationship)} />
           <InfoRow label={t('phone')} value={data.emergencyContactPhone} critical={true} />
           <InfoRow label={t('alternativePhone')} value={data.emergencyContactPhoneAlt} />
         </>
@@ -125,6 +133,21 @@ export const PersonalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) =>
 
 export const MedicalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) => {
   const t = useTranslations('emergencyAccess.cards.medicalInfo');
+  const tEnums = useTranslations('emergencyAccess.enums');
+
+  const getSeverityLabel = (severity?: string): string => {
+    if (!severity) return '';
+    const key = severity.toLowerCase();
+    const translated = tEnums(`severityLevels.${key}`);
+    return translated.startsWith('severityLevels.') ? severity : translated;
+  };
+
+  const getIllnessStatusLabel = (status?: string): string => {
+    if (!status) return '';
+    const key = status.toLowerCase();
+    const translated = tEnums(`illnessStatus.${key}`);
+    return translated.startsWith('illnessStatus.') ? status : translated;
+  };
 
   const hasMedicalData =
     data.medications.length > 0 ||
@@ -146,7 +169,7 @@ export const MedicalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) => 
               <p className="font-bold text-red-700 text-lg mb-2">{allergy.allergen}</p>
               <div className="space-y-1">
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold">{t('severity')}:</span> {allergy.severityLevel}
+                  <span className="font-semibold">{t('severity')}:</span> {getSeverityLabel(allergy.severityLevel)}
                 </p>
                 {allergy.reactionDescription && (
                   <p className="text-sm text-gray-700">
@@ -212,7 +235,7 @@ export const MedicalInfoCard: React.FC<{ data: EmergencyData }> = ({ data }) => 
               </p>
               <div className="space-y-1">
                 <p className="text-sm text-gray-700">
-                  <span className="font-semibold">{t('status')}:</span> {illness.status}
+                  <span className="font-semibold">{t('status')}:</span> {getIllnessStatusLabel(illness.status)}
                 </p>
                 <p className="text-sm text-gray-700">
                   <span className="font-semibold">{t('diagnosisDate')}:</span> {illness.diagnosisDate}

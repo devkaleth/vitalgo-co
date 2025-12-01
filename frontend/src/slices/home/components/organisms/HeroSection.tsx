@@ -11,8 +11,8 @@ export function HeroSection() {
   const t = useTranslations('home')
 
   const stats = [
-    { number: "10K+", label: t('hero.stats.patients'), icon: <ArrowRight className="h-5 w-5 text-vitalgo-green" /> },
-    { number: "500+", label: t('hero.stats.healthCenters'), icon: <Stethoscope className="h-5 w-5 text-vitalgo-green" /> },
+    { number: "1K+", label: t('hero.stats.patients'), icon: <ArrowRight className="h-5 w-5 text-vitalgo-green" /> },
+    { number: "5+", label: t('hero.stats.healthCenters'), icon: <Stethoscope className="h-5 w-5 text-vitalgo-green" /> },
     { number: "70%", label: t('hero.stats.timeSaved'), icon: <Globe className="h-5 w-5 text-vitalgo-green" /> },
     { number: "24/7", label: t('hero.stats.availability'), icon: <ArrowRight className="h-5 w-5 text-vitalgo-green" /> }
   ]

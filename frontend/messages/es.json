@@ -141,7 +141,12 @@
     "step3": "Información Médica",
     "completedTitle": "¡Perfil Completado!",
     "completedMessage": "Has completado tu información médica. Redirigiendo a tu panel de control...",
-    "progress": "Paso {current} de {total}"
+    "progress": "Paso {current} de {total}",
+    "errors": {
+      "updateFailed": "Error al guardar la información. Por favor, intenta nuevamente.",
+      "loadFailed": "Error al cargar la información del perfil.",
+      "connectionError": "Error de conexión. Verifica tu internet."
+    }
   },
   "internalSignup": {
     "badge": "Modo Interno",
@@ -202,9 +207,11 @@
       "weakPassword": "La contraseña debe tener al menos 8 caracteres",
       "mustAcceptTerms": "Debes aceptar los términos y condiciones",
       "loadCountries": "Error al cargar países",
+      "loadDocumentTypes": "Error al cargar tipos de documento",
       "registrationFailed": "Error al registrar la cuenta",
       "connectionError": "Error de conexión. Verifica tu internet.",
       "completeAllFields": "Por favor completa todos los campos",
+      "validationError": "Error de validación. Por favor revisa los campos.",
       "serverError": "Error del servidor. Intenta más tarde.",
       "unknownError": "Error desconocido"
     },
@@ -279,7 +286,7 @@
     },
     "plan": {
       "selectedPlan": "Plan Seleccionado",
-      "freeForever": "Gratis - Para siempre",
+      "freeForever": "Gratis - Por tiempo limitado",
       "days": "días",
       "changePlan": "Cambiar plan"
     },
@@ -322,6 +329,7 @@
       "passwordUppercase": "Debe incluir una mayúscula",
       "passwordLowercase": "Debe incluir una minúscula",
       "passwordNumber": "Debe incluir un número",
+      "passwordsMatch": "Las contraseñas coinciden",
       "passwordsMismatch": "Las contraseñas no coinciden",
       "confirmPasswordRequired": "Confirma tu contraseña",
       "birthDateRequired": "La fecha de nacimiento es obligatoria",
@@ -2307,6 +2315,32 @@
       "NO_BINARIO": "No binario",
       "PREFIERO_NO_DECIR": "Prefiero no decir",
       "OTRO": "Otro"
+    },
+    "enums": {
+      "severityLevels": {
+        "leve": "Leve",
+        "moderada": "Moderada",
+        "severa": "Severa",
+        "critica": "Crítica"
+      },
+      "illnessStatus": {
+        "activa": "Activa",
+        "en_tratamiento": "En tratamiento",
+        "curada": "Curada",
+        "cronica": "Crónica"
+      },
+      "relationships": {
+        "MADRE": "Madre",
+        "PADRE": "Padre",
+        "ESPOSO": "Esposo(a)",
+        "HERMANO": "Hermano(a)",
+        "HIJO": "Hijo(a)",
+        "ABUELO": "Abuelo(a)",
+        "TIO": "Tío(a)",
+        "PRIMO": "Primo(a)",
+        "AMIGO": "Amigo(a)",
+        "OTRO": "Otro"
+      }
     }
   },
   "emergency": {
@@ -2560,6 +2594,17 @@
       "email_available": "Email disponible",
       "emailInvalid": "Email inválido",
       "emailValidationError": "Error al validar el email"
+    },
+    "registration": {
+      "email_already_registered": "Este correo electrónico ya está registrado.",
+      "email_already_registered_login_prompt": "¿Deseas iniciar sesión?",
+      "document_already_registered": "Este número de documento ya está registrado en el sistema.",
+      "password_mismatch": "Las contraseñas no coinciden.",
+      "age_requirement": "Debes ser mayor de 18 años para registrarte.",
+      "terms_required": "Debes aceptar los términos y condiciones.",
+      "privacy_required": "Debes aceptar la política de privacidad.",
+      "invalid_country": "El código de país seleccionado no es válido.",
+      "registration_failed": "Error al procesar el registro. Por favor, intenta nuevamente."
     }
   },
   "password": {
@@ -2748,7 +2793,7 @@
       "description": "Descubre cómo VitalGo está mejorando la vida de pacientes y profesionales de la salud en Colombia",
       "testimonial1": {
         "name": "Dr. María González",
-        "role": "Médica Internista - Hospital San Ignacio",
+        "role": "Médica Internista",
         "content": "VitalGo cambió mi forma de atender urgencias. Ahora tengo la información del paciente al instante, sin esperas ni papeles."
       },
       "testimonial2": {
@@ -2758,7 +2803,7 @@
       },
       "testimonial3": {
         "name": "Ana Patricia Silva",
-        "role": "Paramédica - Cruz Roja Colombia",
+        "role": "Paramédica",
         "content": "En emergencias cada segundo cuenta. Con VitalGo veo las alergias y condiciones del paciente antes de llegar al hospital."
       }
     },
@@ -2770,7 +2815,8 @@
       "freePlan": {
         "title": "Plan Gratuito",
         "price": "Gratis",
-        "subtitle": "Para siempre",
+        "subtitle": "Por tiempo limitado",
+        "limitedTime": "Por tiempo limitado",
         "description": "Para pacientes que necesitan gestionar su información médica básica",
         "recommended": "Recomendado",
         "includes": "Incluye:",
@@ -2804,7 +2850,7 @@
     "loading": "Cargando planes...",
     "plan": {
       "free": "Gratis",
-      "forever": "Para siempre",
+      "forever": "Por tiempo limitado",
       "limitedTime": "Por tiempo limitado",
       "startPlan": "Iniciar Plan",
       "popular": "Popular"
@@ -2812,7 +2858,7 @@
     "free": {
       "title": "Plan Gratuito",
       "price": "Gratis",
-      "priceDetail": "Para siempre",
+      "priceDetail": "Por tiempo limitado",
       "description": "Perfecto para empezar a digitalizar tu historial médico",
       "features": {
         "qr": "Código QR de emergencia",
@@ -2854,15 +2900,15 @@
         "description": "Tu información disponible en cualquier centro médico autorizado"
       },
       "free": {
-        "title": "Siempre gratis",
+        "title": "Gratis por tiempo limitado",
         "description": "Sin costos ocultos, sin suscripciones, sin sorpresas"
       }
     },
     "faq": {
       "title": "Preguntas Frecuentes",
       "q1": {
-        "question": "¿Realmente es gratis para siempre?",
-        "answer": "Sí, el plan gratuito de VitalGo te permite acceder a todas las funciones esenciales sin límite de tiempo."
+        "question": "¿Realmente es gratis?",
+        "answer": "Sí, el plan gratuito de VitalGo te permite acceder a todas las funciones esenciales por tiempo limitado. Aprovecha esta oportunidad para conocer la plataforma."
       },
       "q2": {
         "question": "¿Cómo obtengo un código de descuento?",

@@ -141,7 +141,12 @@
     "step3": "Medical Information",
     "completedTitle": "Profile Completed!",
     "completedMessage": "You have completed your medical information. Redirecting to your dashboard...",
-    "progress": "Step {current} of {total}"
+    "progress": "Step {current} of {total}",
+    "errors": {
+      "updateFailed": "Error saving information. Please try again.",
+      "loadFailed": "Error loading profile information.",
+      "connectionError": "Connection error. Check your internet."
+    }
   },
   "internalSignup": {
     "badge": "Internal Mode",
@@ -208,6 +213,7 @@
       "passwordUppercase": "Password must include at least one uppercase letter",
       "passwordLowercase": "Password must include at least one lowercase letter",
       "passwordNumber": "Password must include at least one number",
+      "passwordsMatch": "Passwords match",
       "passwordsMismatch": "Passwords do not match",
       "confirmPasswordRequired": "Please confirm your password",
       "birthDateRequired": "Birth date is required",
@@ -227,7 +233,7 @@
     },
     "plan": {
       "selectedPlan": "Selected Plan",
-      "freeForever": "Free - Forever",
+      "freeForever": "Free - For a limited time",
       "days": "days",
       "changePlan": "Change plan"
     },
@@ -242,6 +248,8 @@
       "serverError": "Server error. Please try again later.",
       "unknownError": "An unknown error occurred",
       "loadCountries": "Error loading countries",
+      "loadDocumentTypes": "Error loading document types",
+      "validationError": "Validation error. Please check the fields.",
       "passwordMismatch": "Passwords do not match",
       "invalidDocument": "Invalid document number",
       "emailExists": "This email is already registered",
@@ -2308,6 +2316,32 @@
       "NO_BINARIO": "Non-binary",
       "PREFIERO_NO_DECIR": "Prefer not to say",
       "OTRO": "Other"
+    },
+    "enums": {
+      "severityLevels": {
+        "leve": "Mild",
+        "moderada": "Moderate",
+        "severa": "Severe",
+        "critica": "Critical"
+      },
+      "illnessStatus": {
+        "activa": "Active",
+        "en_tratamiento": "Under treatment",
+        "curada": "Cured",
+        "cronica": "Chronic"
+      },
+      "relationships": {
+        "MADRE": "Mother",
+        "PADRE": "Father",
+        "ESPOSO": "Spouse",
+        "HERMANO": "Sibling",
+        "HIJO": "Son/Daughter",
+        "ABUELO": "Grandparent",
+        "TIO": "Uncle/Aunt",
+        "PRIMO": "Cousin",
+        "AMIGO": "Friend",
+        "OTRO": "Other"
+      }
     }
   },
   "emergency": {
@@ -2561,6 +2595,17 @@
       "email_available": "Email available",
       "emailInvalid": "Invalid email",
       "emailValidationError": "Error validating email"
+    },
+    "registration": {
+      "email_already_registered": "This email is already registered.",
+      "email_already_registered_login_prompt": "Would you like to log in?",
+      "document_already_registered": "This document number is already registered in the system.",
+      "password_mismatch": "Passwords do not match.",
+      "age_requirement": "You must be 18 years or older to register.",
+      "terms_required": "You must accept the terms and conditions.",
+      "privacy_required": "You must accept the privacy policy.",
+      "invalid_country": "The selected country code is not valid.",
+      "registration_failed": "Error processing registration. Please try again."
     }
   },
   "password": {
@@ -2749,7 +2794,7 @@
       "description": "Discover how VitalGo is improving the lives of patients and health professionals in Colombia",
       "testimonial1": {
         "name": "Dr. María González",
-        "role": "Internal Medicine Physician - Hospital San Ignacio",
+        "role": "Internal Medicine Physician",
         "content": "VitalGo changed the way I handle emergencies. Now I have patient information instantly, without waiting or paperwork."
       },
       "testimonial2": {
@@ -2759,7 +2804,7 @@
       },
       "testimonial3": {
         "name": "Ana Patricia Silva",
-        "role": "Paramedic - Colombian Red Cross",
+        "role": "Paramedic",
         "content": "In emergencies every second counts. With VitalGo I can see the patient's allergies and conditions before arriving at the hospital."
       }
     },
@@ -2770,7 +2815,8 @@
       "freePlan": {
         "title": "Free Plan",
         "price": "Free",
-        "subtitle": "Forever",
+        "subtitle": "For a limited time",
+        "limitedTime": "For a limited time",
         "description": "For patients who need to manage their basic medical information",
         "recommended": "Recommended",
         "includes": "Includes:",
@@ -2805,15 +2851,15 @@
     "loading": "Loading plans...",
     "plan": {
       "free": "Free",
-      "forever": "Forever",
-      "limitedTime": "Limited time",
+      "forever": "For a limited time",
+      "limitedTime": "For a limited time",
       "startPlan": "Start Plan",
       "popular": "Popular"
     },
     "free": {
       "title": "Free Plan",
       "price": "Free",
-      "priceDetail": "Forever",
+      "priceDetail": "For a limited time",
       "description": "Perfect to start digitizing your medical history",
       "features": {
         "qr": "Emergency QR code",
@@ -2855,15 +2901,15 @@
         "description": "Your information available at any authorized medical center"
       },
       "free": {
-        "title": "Always free",
+        "title": "Free for limited time",
         "description": "No hidden costs, no subscriptions, no surprises"
       }
     },
     "faq": {
       "title": "Frequently Asked Questions",
       "q1": {
-        "question": "Is it really free forever?",
-        "answer": "Yes, VitalGo's free plan gives you access to all essential features with no time limit."
+        "question": "Is it really free?",
+        "answer": "Yes, VitalGo's free plan gives you access to all essential features for a limited time. Take advantage of this opportunity to explore the platform."
       },
       "q2": {
         "question": "How do I get a discount code?",

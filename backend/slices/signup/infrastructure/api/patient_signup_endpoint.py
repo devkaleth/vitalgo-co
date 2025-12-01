@@ -54,12 +54,45 @@ async def register_patient(
         return result
 
     except ValueError as e:
+        error_message = str(e)
+
+        # Map error messages to specific fields and error_keys for i18n
+        error_mapping = {
+            "El email ya está registrado": ("email", "email_already_registered"),
+            "El número de documento ya está registrado": ("document", "document_already_registered"),
+            "Las contraseñas no coinciden": ("password", "password_mismatch"),
+            "Debe ser mayor de 18 años para registrarse": ("birthDate", "age_requirement"),
+            "Debe aceptar los términos y condiciones": ("acceptTerms", "terms_required"),
+            "Debe aceptar la política de privacidad": ("acceptPrivacy", "privacy_required"),
+        }
+
+        # Check if error matches any known pattern
+        field = "general"
+        error_key = "registration_failed"
+
+        for msg_pattern, (mapped_field, mapped_key) in error_mapping.items():
+            if msg_pattern in error_message:
+                field = mapped_field
+                error_key = mapped_key
+                break
+
+        # Check for invalid country code pattern
+        if "Código de país inválido" in error_message:
+            field = "originCountry"
+            error_key = "invalid_country"
+
+        # Use HTTP 409 CONFLICT for duplicate entries (email/document already registered)
+        is_conflict = error_key in ("email_already_registered", "document_already_registered")
+        status_code = status.HTTP_409_CONFLICT if is_conflict else status.HTTP_400_BAD_REQUEST
+
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status_code,
             detail={
                 "success": False,
-                "message": "Error en validación",
-                "errors": {"general": [str(e)]}
+                "message": error_message,
+                "error_key": error_key,
+                "field": field,
+                "errors": {field: [error_message]}
             }
         )
 

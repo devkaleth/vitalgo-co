@@ -1,6 +1,6 @@
 -- VitalGo Countries Data Export
 -- Generated: 2025-11-20 10:45:13
--- Total Records: 218 countries
+-- Total Records: 221 countries
 
 -- Table structure for countries
 CREATE TABLE IF NOT EXISTS countries (
@@ -52,7 +52,7 @@ INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (33, 'Francia', 'FR', '🇫🇷', '+33', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (34, 'Italia', 'IT', '🇮🇹', '+39', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (35, 'Alemania', 'DE', '🇩🇪', '+49', TRUE);
-INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (36, 'Reino Unido', 'GB', '🇬🇧', '+44', TRUE);
+INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (36, 'Inglaterra', 'GB', '🇬🇧', '+44', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (37, 'Portugal', 'PT', '🇵🇹', '+351', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (38, 'Países Bajos', 'NL', '🇳🇱', '+31', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (39, 'Suiza', 'CH', '🇨🇭', '+41', TRUE);
@@ -235,8 +235,11 @@ INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (216, 'Isla de Man', 'IM', '🇮🇲', '+44', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (217, 'Jersey', 'JE', '🇯🇪', '+44', TRUE);
 INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (218, 'Guernsey', 'GG', '🇬🇬', '+44', TRUE);
+INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (219, 'Escocia', 'XS', '🏴󠁧󠁢󠁳󠁣󠁴󠁿', '+44', TRUE);
+INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (220, 'Gales', 'XW', '🏴󠁧󠁢󠁷󠁬󠁳󠁿', '+44', TRUE);
+INSERT INTO countries (id, name, code, flag_emoji, phone_code, is_active) VALUES (221, 'Bonaire', 'BQ', '🇧🇶', '+599', TRUE);
 
 -- Reset sequence to continue from max ID
 SELECT setval('countries_id_seq', (SELECT MAX(id) FROM countries));
 
--- Total records inserted: 218
+-- Total records inserted: 221

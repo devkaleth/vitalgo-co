@@ -119,10 +119,29 @@ export class SignupApiService {
 
       if (!response.ok) {
         console.error('❌ SignupAPI: Registration failed:', data);
+
+        // Extract specific error information from backend response
+        const errorDetail = data.detail || {};
+        const errors = errorDetail.errors || {};
+        const errorKey = errorDetail.error_key;
+        const field = errorDetail.field;
+
+        // Get the specific error message from errors object or fallback to message
+        let specificMessage = errorDetail.message || 'Error en el registro';
+
+        // If there are field-specific errors, use the first one
+        if (field && errors[field]?.length) {
+          specificMessage = errors[field][0];
+        } else if (errors.general?.length) {
+          specificMessage = errors.general[0];
+        }
+
         return {
           success: false,
-          message: data.detail?.message || 'Error en el registro',
-          errors: data.detail?.errors || {}
+          message: specificMessage,
+          error_key: errorKey,
+          field: field,
+          errors: errors
         };
       }
 

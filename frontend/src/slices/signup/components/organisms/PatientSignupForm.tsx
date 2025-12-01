@@ -20,7 +20,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface PatientSignupFormProps {
   onSuccess: (response: RegistrationResponse) => void;
-  onError: (error: string) => void;
+  onError: (error: string, errorKey?: string) => void;
 }
 
 export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
@@ -478,21 +478,21 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
       switch (countryCode) {
         case 'CO': // Colombia
           isValid = /^3\d{9}$/.test(cleanNumber);
-          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidCO');
+          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidColombia');
           break;
         case 'US':
         case 'CA': // North America
           isValid = /^\d{10}$/.test(cleanNumber);
-          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidUSCA');
+          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidUSA');
           break;
         case 'MX': // México
           isValid = /^\d{10}$/.test(cleanNumber);
-          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidMX');
+          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidMexico');
           break;
         default:
           // Generic validation for other countries
           isValid = cleanNumber.length >= 7 && cleanNumber.length <= 15;
-          errorMessage = isValid ? '' : tSignup('validation.phoneInvalidGeneric');
+          errorMessage = isValid ? '' : tSignup('validation.phoneInvalid');
       }
     }
 
@@ -516,7 +516,7 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
     if (age < 18) {
       setErrors(prev => ({ ...prev, birthDate: tSignup('validation.ageRestriction') }));
     } else if (age > 120) {
-      setErrors(prev => ({ ...prev, birthDate: tSignup('validation.ageInvalid') }));
+      setErrors(prev => ({ ...prev, birthDate: tSignup('validation.ageTooOld') }));
     } else {
       setErrors(prev => ({ ...prev, birthDate: '' }));
     }
@@ -574,9 +574,43 @@ export const PatientSignupForm: React.FC<PatientSignupFormProps> = ({
         localStorage.removeItem('selectedPlanId');
         onSuccess(response);
       } else {
-        onError(response.message || tSignup('errors.registrationFailed'));
+        // Determine the error message to display
+        let errorMessage: string;
+
+        // Try to use translated error_key first, then fallback to message
+        if (response.error_key) {
+          const translatedError = tValidation(`registration.${response.error_key}`);
+          // Check if translation exists (next-intl returns the key if not found)
+          errorMessage = translatedError.startsWith('registration.')
+            ? response.message || tSignup('errors.registrationFailed')
+            : translatedError;
+        } else {
+          errorMessage = response.message || tSignup('errors.registrationFailed');
+        }
+
+        // Mark specific field with error for visual feedback
+        if (response.field === 'email') {
+          setValidationStates(prev => ({
+            ...prev,
+            email: { isValidating: false, isValid: false, error: errorMessage }
+          }));
+        } else if (response.field === 'document') {
+          setValidationStates(prev => ({
+            ...prev,
+            documentNumber: { isValidating: false, isValid: false, error: errorMessage }
+          }));
+        } else if (response.field === 'password') {
+          setValidationStates(prev => ({
+            ...prev,
+            confirmPassword: { isValidating: false, isValid: false, error: errorMessage }
+          }));
+        }
+
+        // Pass error message and error_key to parent for conditional rendering (e.g., login link)
+        onError(errorMessage, response.error_key);
       }
     } catch (error) {
+      console.error('Registration error:', error);
       onError(tSignup('errors.connectionError'));
     } finally {
       setIsSubmitting(false);

@@ -28,39 +28,45 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
   // Skip basic info step since it was already completed during registration
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('personal');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Hooks para cargar y actualizar datos
   const { basicInfo, loading: basicLoading, updateBasicInfo } = useBasicPatientInfo();
   const { personalInfo, loading: personalLoading, updatePersonalInfo } = usePersonalPatientInfo();
 
+  // Clear error when step changes
+  const clearError = () => setErrorMessage(null);
+
   const handleBasicInfoSubmit = async (data: any) => {
+    clearError();
     setIsSubmitting(true);
     const result = await updateBasicInfo(data);
     setIsSubmitting(false);
 
     if (result.success) {
       setCurrentStep('personal');
+    } else {
+      setErrorMessage(result.error || t('errors.updateFailed'));
     }
     return result;
   };
 
   const handlePersonalInfoSubmit = async (data: any) => {
-    console.log('🟢 ProfileOnboarding: handlePersonalInfoSubmit called with data:', data);
+    clearError();
     setIsSubmitting(true);
     const result = await updatePersonalInfo(data);
-    console.log('🟢 ProfileOnboarding: updatePersonalInfo result:', result);
     setIsSubmitting(false);
 
     if (result.success) {
-      console.log('🟢 ProfileOnboarding: Success! Changing step from personal to medical');
       setCurrentStep('medical');
     } else {
-      console.log('🔴 ProfileOnboarding: Update failed, staying on personal step');
+      setErrorMessage(result.error || t('errors.updateFailed'));
     }
     return result;
   };
 
   const handleMedicalInfoSubmit = async (data: any) => {
+    clearError();
     setIsSubmitting(true);
     const result = await updatePersonalInfo(data);
     setIsSubmitting(false);
@@ -71,6 +77,8 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
       setTimeout(() => {
         onComplete();
       }, 1500);
+    } else {
+      setErrorMessage(result.error || t('errors.updateFailed'));
     }
     return result;
   };
@@ -132,6 +140,18 @@ export const ProfileOnboarding: React.FC<ProfileOnboardingProps> = ({
 
   return (
     <div className="space-y-6" data-testid={testId}>
+      {/* Error Message */}
+      {errorMessage && (
+        <div className="p-4 rounded-lg bg-red-50 border border-red-200" data-testid="onboarding-error">
+          <div className="flex items-center">
+            <svg className="h-5 w-5 text-red-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <span className="text-red-800 font-medium">{errorMessage}</span>
+          </div>
+        </div>
+      )}
+
       {/* Header con progreso */}
       <div className="border-b border-gray-200 pb-6">
         <div className="mb-4">

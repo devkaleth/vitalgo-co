@@ -10,6 +10,12 @@ interface CountryFlagProps {
   className?: string;
 }
 
+// Map non-standard codes to flag-icons codes
+const FLAG_CODE_MAP: Record<string, string> = {
+  'XS': 'gb-sct',  // Scotland
+  'XW': 'gb-wls',  // Wales
+};
+
 export const CountryFlag: React.FC<CountryFlagProps> = ({
   countryCode,
   size = 'md',
@@ -20,13 +26,16 @@ export const CountryFlag: React.FC<CountryFlagProps> = ({
     return null;
   }
 
+  // Map special codes or use lowercase standard code
+  const flagCode = FLAG_CODE_MAP[countryCode.toUpperCase()] || countryCode.toLowerCase();
+
   // Size class mapping for flag-icons
   // sm: default (1em), md: fi-lg (1.33em), lg: fi-xl (2em)
   const sizeClass = size === 'lg' ? 'fi-xl' : size === 'sm' ? '' : 'fi-lg';
 
   return (
     <span
-      className={`fi fi-${countryCode.toLowerCase()} ${sizeClass} ${className}`.trim()}
+      className={`fi fi-${flagCode} ${sizeClass} ${className}`.trim()}
       role="img"
       aria-label={`Flag of ${countryCode.toUpperCase()}`}
     />

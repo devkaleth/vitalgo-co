@@ -5,6 +5,7 @@
  */
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { PatientSignupForm } from '../organisms/PatientSignupForm';
 import { AutoLoginLoader } from '../atoms/AutoLoginLoader';
 import { ProfileOnboarding } from '../organisms/ProfileOnboarding';
@@ -15,8 +16,10 @@ import { LocalStorageService } from '../../../../shared/services/local-storage-s
 
 export default function PatientSignupPage() {
   const t = useTranslations('signup.page');
+  const tValidation = useTranslations('validation');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
   const [isAutoLogging, setIsAutoLogging] = useState<boolean>(false);
   const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
   const [registrationResponse, setRegistrationResponse] = useState<RegistrationResponse | null>(null);
@@ -54,9 +57,10 @@ export default function PatientSignupPage() {
     window.location.href = '/dashboard';
   };
 
-  const handleError = (error: string) => {
+  const handleError = (error: string, key?: string) => {
     setSuccessMessage('');
     setErrorMessage(error);
+    setErrorKey(key);
 
     // Scroll to top to show error
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -119,11 +123,25 @@ export default function PatientSignupPage() {
             {/* Error Message */}
             {errorMessage && (
               <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" data-testid="error-message">
-                <div className="flex items-center">
-                  <svg className="h-5 w-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <div className="flex items-center flex-wrap">
+                  <svg className="h-5 w-5 text-red-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-red-800 font-medium">{errorMessage}</span>
+                  <span className="text-red-800 font-medium">
+                    {errorMessage}
+                    {/* Show login link for duplicate email error */}
+                    {errorKey === 'email_already_registered' && (
+                      <>
+                        {' '}
+                        <Link
+                          href="/login"
+                          className="text-vitalgo-green hover:text-vitalgo-green-light underline font-semibold"
+                        >
+                          {tValidation('registration.email_already_registered_login_prompt')}
+                        </Link>
+                      </>
+                    )}
+                  </span>
                 </div>
               </div>
             )}

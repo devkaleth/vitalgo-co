@@ -275,9 +275,6 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   <span className="text-5xl font-bold text-vitalgo-green">
                     {t('plan.free')}
                   </span>
-                  <span className="text-gray-600 text-lg">
-                    /{t('plan.forever')}
-                  </span>
                 </div>
                 <div className="mb-3">
                   <span className="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">

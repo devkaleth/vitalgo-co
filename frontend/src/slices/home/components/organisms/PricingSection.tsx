@@ -65,8 +65,10 @@ export function PricingSection() {
                 <span className="text-5xl font-bold text-vitalgo-green">
                   {t('pricing.freePlan.price')}
                 </span>
-                <span className="text-xl text-gray-600 ml-2">
-                  {t('pricing.freePlan.subtitle')}
+              </div>
+              <div className="mb-3">
+                <span className="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full">
+                  ⚡ {t('pricing.freePlan.limitedTime')}
                 </span>
               </div>
               <p className="text-gray-600">{t('pricing.freePlan.description')}</p>
