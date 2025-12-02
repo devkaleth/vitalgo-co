@@ -121,12 +121,12 @@ export const SurgeriesCard: React.FC<SurgeriesCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-xl border border-vitalgo-dark-lightest p-6 hover:shadow-lg hover:border-vitalgo-green transition-all duration-200 ${className}`}
+      className={`bg-white rounded-xl border border-vitalgo-dark-lightest hover:shadow-lg hover:border-vitalgo-green transition-all duration-200 flex flex-col ${className}`}
       data-testid={testId}
     >
       {/* Header */}
       <div
-        className="flex items-center justify-between mb-6 cursor-pointer"
+        className="flex items-center justify-between p-6 pb-0 cursor-pointer flex-shrink-0"
         onClick={handleViewAll}
       >
         <div className="flex items-center flex-1">
@@ -165,6 +165,7 @@ export const SurgeriesCard: React.FC<SurgeriesCardProps> = ({
       </div>
 
       {/* Content */}
+      <div className="p-6 pt-6 flex-1 flex flex-col">
       {loading ? (
         <div className="space-y-4">
           {[...Array(maxItems)].map((_, index) => (
@@ -235,6 +236,7 @@ export const SurgeriesCard: React.FC<SurgeriesCardProps> = ({
           )}
         </div>
       )}
+      </div>
     </div>
   );
 };

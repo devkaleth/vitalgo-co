@@ -116,7 +116,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
       )}
 
       {/* Medical Cards Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
         {/* Illnesses Management Card */}
         <div id="illnesses-section" className="h-full">
           <IllnessesCard

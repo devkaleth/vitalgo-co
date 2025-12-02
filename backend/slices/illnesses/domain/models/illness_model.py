@@ -17,8 +17,8 @@ class PatientIllness(Base):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
     patient_id = Column(UUID(as_uuid=True), ForeignKey("patients.id", ondelete="CASCADE"), nullable=False)
     illness_name = Column(String(200), nullable=False)
-    diagnosis_date = Column(Date, nullable=False)
-    status = Column(String(50), nullable=False)  # activa, en_tratamiento, curada, cronica
+    diagnosis_date = Column(Date, nullable=True)
+    status = Column(String(50), nullable=False)  # activa, inactiva, en_tratamiento, curada
     is_chronic = Column(Boolean, default=False, nullable=False)
     treatment_description = Column(Text, nullable=True)
     cie10_code = Column(String(10), nullable=True)

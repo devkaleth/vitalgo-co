@@ -29,9 +29,9 @@ const transformFromApiResponse = (apiData: any): PatientIllnessDTO => ({
 // Transform frontend format (camelCase) to API request (snake_case)
 const transformToApiRequest = (frontendData: IllnessFormData): Record<string, any> => ({
   illness_name: frontendData.illnessName,            // camelCase → snake_case
-  diagnosis_date: frontendData.diagnosisDate,        // ISO date string
+  diagnosis_date: frontendData.diagnosisDate || null, // ISO date string or null if empty
   status: frontendData.status,
-  is_chronic: frontendData.status === 'cronica',     // Auto-calculated from status
+  is_chronic: frontendData.isChronic,                // camelCase → snake_case (from checkbox)
   treatment_description: frontendData.treatmentDescription, // camelCase → snake_case
   cie10_code: frontendData.cie10Code,                // camelCase → snake_case
   diagnosed_by: frontendData.diagnosedBy,            // camelCase → snake_case

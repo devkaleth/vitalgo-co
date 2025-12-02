@@ -4,14 +4,14 @@
  */
 
 // Core illness status types
-export type IllnessStatus = 'activa' | 'en_tratamiento' | 'curada' | 'cronica';
+export type IllnessStatus = 'activa' | 'inactiva' | 'en_tratamiento' | 'curada';
 
 // Main illness DTO interface - matches backend PatientIllnessDTO
 export interface PatientIllnessDTO {
   id: number;                         // BigInteger primary key from backend
   patientId: string;                  // UUID as string (sophisticated serialization)
   illnessName: string;
-  diagnosisDate: string;              // ISO date string
+  diagnosisDate?: string;             // ISO date string (optional)
   status: IllnessStatus;
   isChronic: boolean;
   treatmentDescription?: string;
@@ -25,8 +25,9 @@ export interface PatientIllnessDTO {
 // Form data interface for creating/updating illnesses
 export interface IllnessFormData {
   illnessName: string;
-  diagnosisDate: string;
+  diagnosisDate?: string;
   status: IllnessStatus;
+  isChronic: boolean;
   treatmentDescription?: string;
   cie10Code?: string;
   diagnosedBy?: string;
@@ -92,9 +93,9 @@ export interface UseIllnessFormResult {
 // Status options for forms
 export const ILLNESS_STATUS_OPTIONS: { value: IllnessStatus; label: string }[] = [
   { value: 'activa', label: 'Activa' },
+  { value: 'inactiva', label: 'Inactiva' },
   { value: 'en_tratamiento', label: 'En Tratamiento' },
   { value: 'curada', label: 'Curada' },
-  { value: 'cronica', label: 'Crónica' },
 ];
 
 // Illness icon props

@@ -134,12 +134,12 @@ export const IllnessesCard: React.FC<IllnessesCardProps> = ({
 
   return (
     <div
-      className={`${cardClasses} hover:shadow-lg hover:border-vitalgo-green transition-all duration-200`}
+      className={`${cardClasses} hover:shadow-lg hover:border-vitalgo-green transition-all duration-200 flex flex-col`}
       data-testid={testId}
     >
       {/* Card Header */}
       <div
-        className="flex items-center justify-between p-6 cursor-pointer"
+        className="flex items-center justify-between p-6 cursor-pointer flex-shrink-0"
         onClick={handleViewAll}
       >
         <div className="flex items-center space-x-3 flex-1">
@@ -171,7 +171,7 @@ export const IllnessesCard: React.FC<IllnessesCardProps> = ({
       </div>
 
       {/* Card Content */}
-      <div className="p-6">
+      <div className="p-6 flex-1 flex flex-col">
         {/* Show Form ONLY when adding or editing */}
         {(showAddForm || editingIllness) ? (
           <div>

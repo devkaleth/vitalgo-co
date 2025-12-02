@@ -89,7 +89,7 @@ export const IllnessCard: React.FC<IllnessCardProps> = ({
               {illness.illnessName}
             </h3>
             <p className={`${subtitleClasses} mt-1`}>
-              {t('labels.diagnosed')}: {formatDate(illness.diagnosisDate, locale)}
+              {t('labels.diagnosed')}: {illness.diagnosisDate ? formatDate(illness.diagnosisDate, locale) : t('emptyStates.noDate')}
             </p>
             {illness.diagnosedBy && !compact && (
               <p className={`${metadataClasses} mt-1`}>

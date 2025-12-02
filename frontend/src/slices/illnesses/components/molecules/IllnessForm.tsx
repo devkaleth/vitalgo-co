@@ -108,7 +108,7 @@ export const IllnessForm: React.FC<IllnessFormProps> = ({
           </div>
         </div>
 
-        {/* Row 2: Status */}
+        {/* Row 2: Status and Chronic */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Status */}
           <div>
@@ -133,6 +133,22 @@ export const IllnessForm: React.FC<IllnessFormProps> = ({
             {errors.status && (
               <p className={errorClasses}>{errors.status}</p>
             )}
+          </div>
+
+          {/* Chronic Checkbox */}
+          <div className="flex items-center pt-7">
+            <input
+              type="checkbox"
+              id="isChronic"
+              checked={formData.isChronic}
+              onChange={(e) => handleChange('isChronic', e.target.checked)}
+              className="h-4 w-4 text-vitalgo-green border-gray-300 rounded focus:ring-vitalgo-green focus:ring-2"
+              disabled={isFormLoading}
+              data-testid={`${testId}-is-chronic`}
+            />
+            <label htmlFor="isChronic" className="ml-2 text-sm font-medium text-vitalgo-dark">
+              {tIllness('chronicCondition')}?
+            </label>
           </div>
         </div>
 

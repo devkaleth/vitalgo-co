@@ -18,6 +18,7 @@ const defaultFormData: IllnessFormData = {
   illnessName: '',
   diagnosisDate: '',
   status: 'activa' as IllnessStatus,
+  isChronic: false,
   treatmentDescription: '',
   cie10Code: '',
   diagnosedBy: '',
@@ -27,8 +28,9 @@ const defaultFormData: IllnessFormData = {
 // Convert illness DTO to form data
 const illnessToFormData = (illness: PatientIllnessDTO): IllnessFormData => ({
   illnessName: illness.illnessName,
-  diagnosisDate: illness.diagnosisDate,
+  diagnosisDate: illness.diagnosisDate || '',
   status: illness.status,
+  isChronic: illness.isChronic,
   treatmentDescription: illness.treatmentDescription || '',
   cie10Code: illness.cie10Code || '',
   diagnosedBy: illness.diagnosedBy || '',

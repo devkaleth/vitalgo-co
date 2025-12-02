@@ -9,8 +9,8 @@ from pydantic import BaseModel, Field, field_serializer, field_validator
 class CreateIllnessDTO(BaseModel):
     """DTO for creating a new illness"""
     illness_name: str = Field(..., max_length=200, description="Illness name")
-    diagnosis_date: date = Field(..., description="Date when illness was diagnosed")
-    status: str = Field(..., max_length=50, description="Status: activa, en_tratamiento, curada, cronica")
+    diagnosis_date: Optional[date] = Field(None, description="Date when illness was diagnosed")
+    status: str = Field(..., max_length=50, description="Status: activa, inactiva, en_tratamiento, curada")
     is_chronic: bool = Field(default=False, description="Whether the illness is chronic")
     treatment_description: Optional[str] = Field(None, description="Description of treatment")
     cie10_code: Optional[str] = Field(None, max_length=10, description="CIE-10 code for the illness")
@@ -35,7 +35,7 @@ class PatientIllnessDTO(BaseModel):
     id: int
     patient_id: str  # UUID as string
     illness_name: str
-    diagnosis_date: date
+    diagnosis_date: Optional[date] = None
     status: str
     is_chronic: bool
     treatment_description: Optional[str] = None
@@ -57,9 +57,9 @@ class PatientIllnessDTO(BaseModel):
         return str(patient_id)
 
     @field_serializer('diagnosis_date', when_used='json')
-    def serialize_diagnosis_date(self, diagnosis_date) -> str:
+    def serialize_diagnosis_date(self, diagnosis_date) -> str | None:
         """Serialize date as ISO string"""
-        return diagnosis_date.isoformat()
+        return diagnosis_date.isoformat() if diagnosis_date else None
 
     @field_serializer('created_at', when_used='json')
     def serialize_created_at(self, created_at) -> str:
